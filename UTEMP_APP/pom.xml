@@ -2,139 +2,149 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.una.programmingIII</groupId>
-  <artifactId>UTEMP_APP</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>UTEMP_APP</name>
+    <groupId>org.una.programmingIII</groupId>
+    <artifactId>UTEMP_APP</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>UTEMP_APP</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<junit.version>5.10.2</junit.version>  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.10.2</junit.version>
+    </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>21</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>21</version>
-    </dependency>
-<dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-web</artifactId>
-      <version>21</version>
-    </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-swing</artifactId>
-        <version>21</version>
-      </dependency>
-<dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-media</artifactId>
-      <version>21</version>
-    </dependency><dependency>
-      <groupId>org.controlsfx</groupId>
-      <artifactId>controlsfx</artifactId>
-      <version>11.2.1</version>
-    </dependency><dependency>
-      <groupId>com.dlsc.formsfx</groupId>
-      <artifactId>formsfx-core</artifactId>
-      <version>11.6.0</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.openjfx</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency><dependency>
-      <groupId>net.synedra</groupId>
-      <artifactId>validatorfx</artifactId>
-      <version>0.5.0</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.openjfx</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency><dependency>
-      <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-javafx</artifactId>
-      <version>12.3.1</version>
-    </dependency><dependency>
-      <groupId>org.kordamp.bootstrapfx</groupId>
-      <artifactId>bootstrapfx-core</artifactId>
-      <version>0.4.0</version>
-    </dependency><dependency>
-      <groupId>eu.hansolo</groupId>
-      <artifactId>tilesfx</artifactId>
-      <version>21.0.3</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.openjfx</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency><dependency>
-      <groupId>com.github.almasb</groupId>
-      <artifactId>fxgl</artifactId>
-      <version>17.3</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.openjfx</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-<dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>  </dependencies>
+    <dependencies>
+        <!--    requeridos  -->
+        <!-- JavaFX FXML: Permite el uso de FXML para definir interfaces de usuario -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>22</version>
+        </dependency>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
-        <configuration>
-          <source>21</source>
-          <target>21</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-maven-plugin</artifactId>
-        <version>0.0.8</version>
-        <executions>
-          <execution>
-            <!-- Default configuration for running with: mvn clean javafx:run -->
-            <id>default-cli</id>
-            <configuration>
-              <mainClass>org.una.programmingiii.utemp_app/org.una.programmingiii.utemp_app.UTEMP_Application</mainClass>
-              <launcher>app</launcher>
-              <jlinkZipName>app</jlinkZipName>
-              <jlinkImageName>app</jlinkImageName>
-              <noManPages>true</noManPages>
-              <stripDebug>true</stripDebug>
-              <noHeaderFiles>true</noHeaderFiles>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+        <!-- JavaFX Controls: Proporciona componentes de interfaz de usuario básicos como botones, etiquetas, etc. -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21</version>
+        </dependency>
+
+        <!-- Jackson Databind: Facilita la serialización y deserialización de objetos Java a y desde JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+
+        <!-- HTTP Client: Proporciona una forma moderna de realizar solicitudes HTTP -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.1</version>
+        </dependency>
+
+
+        <!--        opcionales  -->
+        <!-- Gson: Alternativa a Jackson para la manipulación de JSON -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.google.code.gson</groupId>-->
+        <!--            <artifactId>gson</artifactId>-->
+        <!--            <version>2.10.1</version>-->
+        <!--        </dependency>-->
+
+        <!-- JFoenix: Material Design para JavaFX, proporcionando estilos y componentes modernos -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.jfoenix</groupId>-->
+        <!--            <artifactId>jfoenix</artifactId>-->
+        <!--            <version>9.0.10</version>-->
+        <!--        </dependency>-->
+
+        <!-- FontAwesomeFX: Permite utilizar íconos de Font Awesome en aplicaciones JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>de.jensd</groupId>-->
+        <!--            <artifactId>fontawesomefx</artifactId>-->
+        <!--            <version>8.9</version>-->
+        <!--        </dependency>-->
+
+        <!-- ControlsFX: Proporciona controles adicionales para JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.controlsfx</groupId>-->
+        <!--            <artifactId>controlsfx</artifactId>-->
+        <!--            <version>11.2.1</version>-->
+        <!--        </dependency>-->
+
+        <!-- FormsFX: Facilita la creación de formularios en JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.dlsc.formsfx</groupId>-->
+        <!--            <artifactId>formsfx</artifactId>-->
+        <!--            <version>11.6.0</version>-->
+        <!--        </dependency>-->
+
+        <!-- ValidatorFX: Para la validación de formularios en JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>net.synedra.validatorfx</groupId>-->
+        <!--            <artifactId>validatorfx</artifactId>-->
+        <!--            <version>11.0.0</version>-->
+        <!--        </dependency>-->
+
+        <!-- Ikonli: Proporciona una amplia colección de íconos -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.kordamp.ikonli</groupId>-->
+        <!--            <artifactId>ikonli-javafx</artifactId>-->
+        <!--            <version>12.3.1</version>-->
+        <!--        </dependency>-->
+
+        <!-- BootstrapFX: Para aplicar estilos de Bootstrap a JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.kordamp.bootstrapfx</groupId>-->
+        <!--            <artifactId>bootstrapfx-core</artifactId>-->
+        <!--            <version>0.4.0</version>-->
+        <!--        </dependency>-->
+
+        <!-- TilesFX: Proporciona componentes gráficos adicionales -->
+        <!--        <dependency>-->
+        <!--            <groupId>eu.hansolo.tilesfx</groupId>-->
+        <!--            <artifactId>tilesfx</artifactId>-->
+        <!--            <version>11.0.0</version>-->
+        <!--        </dependency>-->
+
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <executions>
+                    <execution>
+                        <!-- Default configuration for running with: mvn clean javafx:run -->
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>
+                                org.una.programmingiii.utemp_app/org.una.programmingiii.utemp_app.UTEMP_Application
+                            </mainClass>
+                            <launcher>app</launcher>
+                            <jlinkZipName>app</jlinkZipName>
+                            <jlinkImageName>app</jlinkImageName>
+                            <noManPages>true</noManPages>
+                            <stripDebug>true</stripDebug>
+                            <noHeaderFiles>true</noHeaderFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
