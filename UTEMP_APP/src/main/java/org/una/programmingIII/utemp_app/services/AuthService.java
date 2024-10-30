@@ -1,6 +1,5 @@
 package org.una.programmingIII.utemp_app.services;
 
-import javafx.scene.control.Alert;
 import org.una.programmingIII.utemp_app.exceptions.AccessDeniedException;
 import org.una.programmingIII.utemp_app.exceptions.BadRequestException;
 import org.una.programmingIII.utemp_app.exceptions.InvalidCredentialsException;
@@ -8,7 +7,6 @@ import org.una.programmingIII.utemp_app.exceptions.http.ApiException;
 import org.una.programmingIII.utemp_app.services.request.AuthRequest;
 import org.una.programmingIII.utemp_app.services.responses.ApiResponse;
 import org.una.programmingIII.utemp_app.services.responses.MessageResponse;
-import org.una.programmingIII.utemp_app.utils.Message;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -19,7 +17,6 @@ import java.util.Optional;
  * Servicio para la autenticación de clientes.
  */
 public class AuthService extends BaseHttpClient<String> {
-    Message message = new Message();
 
     public AuthService() {
         super(BASE_URL, 10000, 30000);
@@ -27,6 +24,7 @@ public class AuthService extends BaseHttpClient<String> {
 
     public MessageResponse<String> login(AuthRequest authRequest) {
         MessageResponse<String> response = new MessageResponse<>();
+        String title = " ", error = " ";
         HttpURLConnection connection = null;
 
         try {
@@ -38,22 +36,23 @@ public class AuthService extends BaseHttpClient<String> {
             Optional<ApiResponse<String>> apiResponseOptional = handleResponse(connection);
             if (apiResponseOptional.isPresent()) {
                 response.setData(apiResponseOptional.get().getData());
-                response.setMessage("Autenticación exitosa");
+                title = "Autenticación exitosa";
                 setToken(response.getData());
                 response.setSuccess(true);
             } else {
-                response.setErrorCode("Token no disponible después de autenticación.");
-                throw new ApiException("Token no disponible después de autenticación.");
+                title = "Fallo la operación";
+                error = "Token no disponible después de autenticación.";
+                throw new ApiException(error);
             }
 
         } catch (InvalidCredentialsException | AccessDeniedException | BadRequestException e) {
-            response.setErrorCode(e.getMessage());
+            error += e.getMessage() + "\n";
             response.setSuccess(false);
         } catch (ApiException e) {
-            response.setErrorCode("Error en el servidor: " + e.getMessage());
+            error += "Error en el servidor: " + e.getMessage() + "\n";
             response.setSuccess(false);
         } catch (Exception e) {
-            response.setErrorCode("Error al autenticar: " + e.getMessage());
+            error += "Error al autenticar: " + e.getMessage() + "\n";
             response.setSuccess(false);
         } finally {
             if (connection != null) {
@@ -61,9 +60,11 @@ public class AuthService extends BaseHttpClient<String> {
             }
         }
 
-        if (!response.isSuccess()) {
-            message.showModal(Alert.AlertType.ERROR, response.getMessage(), response.getErrorCode());
-        }
+        // Imprimir los mensajes para el registro
+        System.out.println(title.trim() + "\n" + error.trim());
+
+        response.setMessage(title.trim());
+        response.setErrorCode(error.trim());
 
         return response;
     }
