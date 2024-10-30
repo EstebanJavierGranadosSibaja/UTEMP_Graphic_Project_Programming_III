@@ -1,7 +1,7 @@
 module org.una.programmingIII.utemp_app {
     // Requiere módulos de JavaFX
-    requires javafx.controls; // Para controles de UI básicos
-    requires javafx.fxml; // Para manejar FXML
+    // Para controles de UI básicos
+    // Para manejar FXML
 
     requires com.fasterxml.jackson.databind;
     requires org.apache.httpcomponents.client5.httpclient5;
@@ -9,12 +9,12 @@ module org.una.programmingIII.utemp_app {
     requires validation.api;
     requires jakarta.validation;
     requires org.slf4j; // Framework para el desarrollo de juegos en JavaFX
-    requires java.desktop;
+    requires MaterialFX;
 
     // Abre el paquete principal para FXML
     opens org.una.programmingIII.utemp_app to javafx.fxml; // Exporta para su uso en otros módulos
 
-    opens org.una.programmingIII.utemp_app.ViewControllers to javafx.fxml; // Permite que FXML acceda a los controladores
+    opens org.una.programmingIII.utemp_app.view_controllers to javafx.fxml; // Permite que FXML acceda a los controladores
     // Abre otros paquetes que necesiten ser accesibles para la reflexión
     opens org.una.programmingIII.utemp_app.dtos to com.fasterxml.jackson.databind; // Modelos para JSON
     opens org.una.programmingIII.utemp_app.services.responses to com.fasterxml.jackson.databind; // Respuestas para JSON

@@ -1,4 +1,4 @@
-package org.una.programmingIII.utemp_app.ViewControllers;
+package org.una.programmingIII.utemp_app.view_controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -1,0 +1,80 @@
+/*------------ROOT-----------*/
+
+/* Fondo principal */
+#root {
+    -fx-background-color: #2a2a2a; /* Gris oscuro */
+}
+
+/*------------LABELS-----------*/
+
+/* Estilo para las etiquetas */
+#label {
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 48px; /* Tamaño de fuente grande */
+    -fx-text-fill: #d8a3e1; /* Color morado claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 15px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.5, 0, 1); /* Sombra sutil */
+}
+
+/*------------FIELDS-----------*/
+
+/* Estilo para los campos de texto y contraseñas */
+#mfx-text-field, #mfx-password-field {
+    -fx-text-fill: #e0d5e5; /* Color morado claro */
+    -fx-background-color: #2a2a2a; /* Fondo gris oscuro */
+    -fx-padding: 12px; /* Espaciado interno */
+    -fx-font-size: 18px; /* Tamaño de fuente más grande */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-background-radius: 5px; /* Bordes redondeados */
+    -fx-border-color: #d8a3e1; /* Morado claro */
+    -fx-border-width: 2px; /* Grosor del borde */
+}
+
+/* Estilo para los campos de texto al enfocarse */
+#mfx-text-field:hover, #mfx-password-field:hover {
+    -fx-border-color: #723a7c; /* Morado oscuro */
+    -fx-background-color: #3c3c3c; /* Fondo ligeramente más claro */
+}
+
+/* Estilo para los campos de texto al enfocarse */
+#mfx-text-field:focused, #mfx-password-field:focused {
+    -fx-border-color: #d8a3e1; /* Morado claro */
+    -fx-background-color: #2a2a2a; /* Fondo inalterado */
+    -fx-border-width: 2px; /* Grosor del borde */
+}
+
+/*------------BUTTONS-----------*/
+
+/* Estilo para los botones */
+#mfx-button {
+    -fx-background-color: #5a2d68; /* Morado oscuro */
+    -fx-text-fill: #e0d5e5; /* Color de texto morado claro */
+    -fx-font-size: 22px; /* Tamaño de fuente grande */
+    -fx-padding: 12px 24px; /* Espaciado */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 2); /* Sombra */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-button:hover {
+    -fx-background-color: #7c4a9a; /* Morado más claro */
+    -fx-text-fill: #ffffff; /* Blanco brillante para el texto */
+}
+
+/*------------BOXES-----------*/
+
+/* Estilo para los VBox */
+#vbox-login {
+    -fx-spacing: 30px; /* Espaciado entre elementos */
+    -fx-background-color: rgba(186, 159, 236, 0.2); /* Fondo lila suave y translúcido */
+    -fx-background-radius: 15px; /* Bordes redondeados */
+    -fx-padding: 20px; /* Espaciado interno */
+}
+
+/* Estilo para el HBox */
+#hbox-login {
+    -fx-background-color: rgba(34, 34, 34, 0.9); /* Fondo oscuro con transparencia */
+    -fx-padding: 10px; /* Espaciado interno */
+}
