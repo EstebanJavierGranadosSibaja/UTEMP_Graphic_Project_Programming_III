@@ -1,7 +1,8 @@
 module org.una.programmingiii.utemp_app {
     // Requiere módulos de JavaFX
     requires javafx.controls; // Para controles de UI básicos
-    requires javafx.fxml; // Para manejar FXML
+    requires javafx.fxml;
+    requires MaterialFX; // Para manejar FXML
 
     // Requiere bibliotecas para manipulación y estilo
 //    requires org.controlsfx.controls; // Controles adicionales para JavaFX

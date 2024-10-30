@@ -1,0 +1,124 @@
+/*------------ROOT-----------*/
+
+/* Fondo principal */
+.root {
+    -fx-background-color: #2e2e2e; /* Gris oscuro */
+}
+
+
+
+/*------------LABELS-----------*/
+
+
+
+/* Estilo para las etiquetas */
+.label {
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 50px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #e0aaff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.5, 0, 1); /* Sombra sutil */
+}
+
+
+
+/*------------FIELDS-----------*/
+
+
+
+/* Estilo para los campos de texto y contraseñas */
+.mfx-text-field, .mfx-password-field {
+    -fx-text-fill: #d9bbea; /* Color lila claro */
+    -fx-background-color: #2e2e2e; /* Fondo gris oscuro */
+    -fx-padding: 10px; /* Espaciado interno */
+    -fx-font-size: 16px; /* Tamaño de fuente */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-background-radius: 5px; /* Bordes redondeados */
+    -fx-border-color: #e0aaff; /* Lila claro */
+    -fx-border-width: 1.5px; /* Grosor del borde */
+}
+
+/* Estilo para los campos de texto al enfocarse */
+.mfx-text-field:hover, .mfx-password-field:hover {
+    -fx-border-color: #480b67; /* Lila claro */
+    -fx-background-color: #3a3a3a; /* Fondo ligeramente más claro */
+    -fx-border-width: 2.5px; /* Grosor del borde */
+}
+
+/* Estilo para los campos de texto al enfocarse */
+.mfx-text-field:focused, .mfx-password-field:focused {
+    -fx-border-color: #e0aaff; /* Lila claro */
+    -fx-background-color: #2e2e2e; /* Fondo ligeramente más claro */
+    -fx-border-width: 1px; /* Grosor del borde */
+}
+
+
+
+/*------------BUTTONS-----------*/
+
+
+
+/* Estilo para los botones */
+.mfx-button {
+    -fx-background-color: #743885; /* Color lila oscuro */
+    -fx-text-fill: #e0aaff; /* Color de texto lila claro */
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2); /* Sombra */
+}
+
+
+/* Estilo para los botones al pasar el ratón */
+.mfx-button:hover {
+    -fx-background-color: #480b67; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+}
+
+
+
+/*------------BOXES-----------*/
+
+
+
+/* Estilo para los VBox */
+.vbox-login {
+    -fx-spacing: 25px;
+    -fx-background-color: rgba(148, 107, 168, 0.15); /* Fondo lila suave y translúcido */
+    -fx-background-radius: 15px;
+}
+
+/* Estilo para el HBox */
+.hbox {
+    -fx-background-color: rgba(34, 34, 34, 0.8); /* Fondo oscuro con transparencia */
+}
+
+
+/*---------------------ImageView------------------*/
+
+.rounded-image {
+    -fx-background-color: transparent; /* Fondo transparente para que solo se vea la imagen */
+    -fx-background-radius: 50%; /* Hace que las esquinas sean redondas */
+    -fx-padding: 0; /* Asegúrate de que no haya padding */
+    -fx-alignment: center; /* Alinear la imagen en el centro del contenedor */
+    -fx-clip-shape: circle; /* Si deseas recortar en forma de círculo */
+}
+
+
+
+/*------------------------text----------------------*/
+
+.text-style {
+    -fx-text-fill: #3498db; /* Color del texto */
+    -fx-font-family: "Arial"; /* Familia de fuentes */
+    -fx-font-size: 12px; /* Tamaño de fuente */
+    -fx-font-weight: bold; /* Negrita */
+    -fx-font-style: italic; /* Cursiva */
+    -fx-letter-spacing: 1px; /* Espaciado entre letras */
+    -fx-background-color: #f0f0f0; /* Color de fondo */
+    -fx-border-color: #2980b9; /* Color del borde */
+    -fx-border-width: 1px; /* Ancho del borde */
+    -fx-border-radius: 5px; /* Esquinas redondeadas del borde */
+}
