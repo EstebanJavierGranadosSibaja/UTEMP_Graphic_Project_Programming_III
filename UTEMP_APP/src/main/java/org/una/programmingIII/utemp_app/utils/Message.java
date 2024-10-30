@@ -55,7 +55,7 @@ public class Message {
 
     private void styleAlert(Alert alert) {
         alert.getDialogPane().setStyle("-fx-background-color: #4b4b4b;"); // Fondo gris medio
-        alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/GeneralCss.css")).toExternalForm()); // Asegúrate de que la ruta sea correcta
+        alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/General.css")).toExternalForm()); // Asegúrate de que la ruta sea correcta
         alert.getDialogPane().setHeaderText(null);
     }
 
