@@ -12,8 +12,8 @@ public class TestApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         ScreenManager screenManager = new ScreenManager(primaryStage);
-//        screenManager.loadScreen("/fxml/MapManager.fxml", "Initial View");
-        screenManager.loadScreen("/View/prueba.fxml", "Initial View");
+//        screenManager.loadScreen("/fxml/MapManager.fxml", "Initial views");
+        screenManager.loadScreen("/views/prueba.fxml", "Initial views");
 
         Singleton singleton = Singleton.getInstance();
         singleton.setScreenManager(screenManager);
