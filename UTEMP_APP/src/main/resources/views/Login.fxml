@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+
+<AnchorPane id="root" maxHeight="720.0" maxWidth="1280.0" minHeight="650.0" minWidth="550.0" prefHeight="720.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.ViewControllers.LoginController">
+    <children>
+        <VBox id="vbox-login" alignment="TOP_CENTER" layoutX="494.0" layoutY="153.0" prefHeight="200.0" prefWidth="100.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label id="label" alignment="CENTER" contentDisplay="CENTER" maxHeight="200.0" maxWidth="1000.0" minHeight="100.0" minWidth="500.0" prefHeight="100.0" prefWidth="500.0" text="UTEMP PROJECT" VBox.vgrow="ALWAYS" />
+                <VBox alignment="CENTER" prefHeight="449.0" prefWidth="550.0" spacing="25.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <MFXTextField id="mfx-text-field" fx:id="numberIdentificationTxf" floatingText="NUMBER IDENTIFICATION" maxHeight="50.0" maxWidth="600.0" minHeight="70.0" minWidth="200.0" prefHeight="70.0" prefWidth="300.0" textLimit="0">
+                     <textFill>
+                        <Color red="1.0" opacity="0.8700000047683716" />
+                     </textFill></MFXTextField>
+                        <MFXPasswordField id="mfx-password-field" fx:id="passwordPwf" floatingText="PASSWORD" maxHeight="70.0" maxWidth="600.0" minHeight="70.0" minWidth="200.0" prefHeight="70.0" prefWidth="300.0" />
+                        <MFXButton id="mfx-button" fx:id="loginBtn" maxHeight="65.0" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="250.0" text="LOGIN">
+                            <VBox.margin>
+                                <Insets bottom="-25.0" top="25.0" />
+                            </VBox.margin>
+                        </MFXButton>
+                        <HBox id="hbox-login" alignment="CENTER" maxHeight="200.0" maxWidth="600.0" prefHeight="100.0" prefWidth="200.0" spacing="25.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <MFXButton id="mfx-button" fx:id="helpBtn" maxHeight="50.0" maxWidth="100.0" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="HELP" />
+                                <MFXButton id="mfx-button" fx:id="infoBtn" maxHeight="50.0" maxWidth="100.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="INFO" />
+                            </children>
+                            <padding>
+                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets top="25.0" />
+                    </padding>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="100.0" left="25.0" right="25.0" top="75.0" />
+            </padding>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+</AnchorPane>
