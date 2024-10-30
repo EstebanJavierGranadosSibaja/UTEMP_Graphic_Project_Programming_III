@@ -6,30 +6,50 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextFormatter;
+import org.una.programmingIII.utemp_app.Singleton;
+import org.una.programmingIII.utemp_app.services.AuthService;
+import org.una.programmingIII.utemp_app.services.request.AuthRequest;
+import org.una.programmingIII.utemp_app.services.responses.MessageResponse;
 
 public class LoginController {
-
     @FXML
     private MFXTextField numberIdentificationTxf;
-
     @FXML
     private MFXPasswordField passwordPwf;
-
     @FXML
     private MFXButton loginBtn;
-
     @FXML
     private MFXButton helpBtn;
-
     @FXML
     private MFXButton infoBtn;
 
+    private final AuthService authService = new AuthService();
+    private final Singleton singleton = Singleton.getInstance();
+
     @FXML
     public void initialize() {
-        // Configurar el botón de inicio de sesión para que maneje el clic
+        // Solo permitir letras en el campo de identificación
+//        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+//            String newText = change.getControlNewText();
+//            if (newText.matches("[a-zA-Z]*")) { // Aceptar solo letras
+//                return change;
+//            }
+//            return null; // Rechazar cambios no válidos
+//        });
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) { // Aceptar solo números
+                return change;
+            }
+            return null; // Rechazar cambios no válidos
+        });
+        numberIdentificationTxf.setTextFormatter(textFormatter);
+
+        // Configurar el botón de inicio de sesión
         loginBtn.setOnAction(event -> handleLogin());
 
-        // Configurar botones adicionales (help, info) si es necesario
+        // Configurar botones adicionales
         helpBtn.setOnAction(event -> showHelp());
         infoBtn.setOnAction(event -> showInfo());
     }
@@ -38,21 +58,21 @@ public class LoginController {
         String numberId = numberIdentificationTxf.getText();
         String password = passwordPwf.getText();
 
-        // Aquí debes implementar la lógica para autenticar al usuario.
-        // Este es un ejemplo simple.
+        // Validar campos vacíos
         if (numberId.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Please enter your identification number and password.");
-        } else if (authenticateUser(numberId, password)) {
-            showAlert("Success", "Login successful!");
-            // Redirigir a la siguiente vista o realizar acción adicional
-        } else {
-            showAlert("Error", "Invalid identification number or password.");
+            return;
         }
-    }
 
-    private boolean authenticateUser(String numberId, String password) {
-        // Implementa aquí la lógica para autenticar al usuario, por ejemplo, comprobando con una base de datos.
-        return "user123".equals(numberId) && "pass123".equals(password); // Ejemplo estático
+        // Lógica de autenticación
+        MessageResponse<String> response = authService.login(new AuthRequest(numberId, password));
+
+        if (response.isSuccess()) {
+            showAlert("Exitoso", "Bienvenido: usuario ");
+            singleton.getScreenManager().loadScreen(Views.MENU, "MyApplication");
+        } else {
+            showAlert(response.getMessage(), response.getErrorCode());
+        }
     }
 
     private void showHelp() {
