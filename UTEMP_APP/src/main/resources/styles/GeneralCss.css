@@ -2,76 +2,94 @@
 
 /* Fondo principal */
 #root {
-    -fx-background-color: #2f2f2f; /* Gris oscuro */
+    -fx-background-color: #2e2e2e; /* Gris oscuro */
 }
 
+
+
 /*------------LABELS-----------*/
+
+
 
 /* Estilo para las etiquetas */
 #label {
     -fx-font-family: "Arial Black"; /* Nueva fuente */
     -fx-font-size: 50px; /* Tamaño de fuente más grande */
-    -fx-text-fill: #e3b0f5; /* Lila brillante para contraste en texto */
+    -fx-text-fill: #e0aaff; /* Color lila claro para contraste en texto */
     -fx-font-weight: bold; /* Texto en negrita */
     -fx-padding: 10px; /* Espaciado alrededor del texto */
-    -fx-effect: dropshadow(gaussian, rgba(255, 0, 255, 0.3), 4, 0.5, 0, 1); /* Sombra sutil */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.5, 0, 1); /* Sombra sutil */
 }
+
+
 
 /*------------FIELDS-----------*/
 
+
+
 /* Estilo para los campos de texto y contraseñas */
 #mfx-text-field, #mfx-password-field {
-    -fx-text-fill: #ffffff; /* Color del texto */
-    -fx-background-color: #4b4b4b; /* Fondo gris medio */
+    -fx-text-fill: #d9bbea; /* Color lila claro */
+    -fx-background-color: #2e2e2e; /* Fondo gris oscuro */
     -fx-padding: 10px; /* Espaciado interno */
     -fx-font-size: 16px; /* Tamaño de fuente */
     -fx-font-weight: bold; /* Texto en negrita */
     -fx-background-radius: 5px; /* Bordes redondeados */
-    -fx-border-color: #e3b0f5; /* Lila brillante */
+    -fx-border-color: #e0aaff; /* Lila claro */
     -fx-border-width: 1.5px; /* Grosor del borde */
 }
 
-/* Estilo para los campos de texto al pasar el ratón */
+/* Estilo para los campos de texto al enfocarse */
 #mfx-text-field:hover, #mfx-password-field:hover {
-    -fx-border-color: #b75bd1; /* Lila más intenso */
-    -fx-background-color: #5d5d5d; /* Fondo ligeramente más claro */
+    -fx-border-color: #480b67; /* Lila claro */
+    -fx-background-color: #3a3a3a; /* Fondo ligeramente más claro */
+    -fx-border-width: 2.5px; /* Grosor del borde */
 }
 
 /* Estilo para los campos de texto al enfocarse */
 #mfx-text-field:focused, #mfx-password-field:focused {
-    -fx-border-color: #e3b0f5; /* Lila brillante */
-    -fx-background-color: #4b4b4b; /* Fondo gris medio */
+    -fx-border-color: #e0aaff; /* Lila claro */
+    -fx-background-color: #2e2e2e; /* Fondo ligeramente más claro */
+    -fx-border-width: 1px; /* Grosor del borde */
 }
+
+
 
 /*------------BUTTONS-----------*/
 
+
+
 /* Estilo para los botones */
 #mfx-button {
-    -fx-background-color: #8e5ab1; /* Lila brillante */
-    -fx-text-fill: #ffffff; /* Color de texto blanco */
+    -fx-background-color: #743885; /* Color lila oscuro */
+    -fx-text-fill: #e0aaff; /* Color de texto lila claro */
     -fx-font-size: 20px;
     -fx-padding: 10px 20px;
     -fx-font-weight: bold;
     -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
-    -fx-effect: dropshadow(gaussian, rgba(255, 255, 0, 0.3), 5, 0, 0, 2); /* Sombra */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2); /* Sombra */
 }
 
 /* Estilo para los botones al pasar el ratón */
 #mfx-button:hover {
-    -fx-background-color: #723d8e; /* Lila más oscuro */
-    -fx-text-fill: #ffffff; /* Texto blanco */
+    -fx-background-color: #480b67; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
 }
 
+
+
 /*------------BOXES-----------*/
+
+
 
 /* Estilo para los VBox */
 #vbox-login {
     -fx-spacing: 25px;
-    -fx-background-color: rgba(162, 0, 255, 0.5); /* Fondo lila brillante y menos translúcido */
+    -fx-background-color: rgba(148, 107, 168, 0.15); /* Fondo lila suave y translúcido */
     -fx-background-radius: 15px;
 }
 
 /* Estilo para el HBox */
 #hbox {
-    -fx-background-color: rgba(200, 200, 200, 0.8); /* Fondo gris más claro con menos opacidad */
+    -fx-background-color: rgba(34, 34, 34, 0.8); /* Fondo oscuro con transparencia */
 }
