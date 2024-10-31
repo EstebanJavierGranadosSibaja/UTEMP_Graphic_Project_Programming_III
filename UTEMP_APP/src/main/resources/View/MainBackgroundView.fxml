@@ -8,25 +8,24 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" styleClass="hbox" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imvLogo" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../../Downloads/images.png" />
                </image>
             </ImageView>
-            <MFXButton text="Usuarios" />
-            <MFXButton text="Cursos" />
-            <MFXButton text="Mis cursos" />
-            <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+            <MFXButton fx:id="btnUsers" styleClass="mfx-button" text="Usuarios" />
+            <MFXButton fx:id="btnCourses" text="Cursos" />
+            <MFXButton fx:id="btnMyCourses" text="Mis cursos" />
+            <ImageView fx:id="imvNotifications" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../../Downloads/descarga.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="525.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" styleClass="rounded-image">
+            <ImageView fx:id="imvUser" fitHeight="100.0" fitWidth="100.0" layoutX="525.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" styleClass="rounded-image">
                <image>
                   <Image url="@../../../../../../../../Downloads/descarga.png" />
                </image>
