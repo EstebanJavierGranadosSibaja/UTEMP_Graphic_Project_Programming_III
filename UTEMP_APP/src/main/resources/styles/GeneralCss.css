@@ -7,15 +7,7 @@
     -fx-border-radius: 5;
     -fx-border-width: 1px;
     -fx-border-color: #d68fff;
-
-
-    /*-fx-padding: 10px; !* Agregar relleno alrededor del contenido *!*/
-    /*-fx-font-family: "Rage Italic", sans-serif; !* Fuente predeterminada *!*/
-    /*-fx-font-family: 'Roboto', sans-serif;*/
-    /*font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;*/
     font-family: 'Lato', sans-serif;
-
-
     -fx-font-size: 14px; /* Tamaño de fuente para los textos generales */
     -fx-text-fill: white; /* Color del texto por defecto */
 }
@@ -271,3 +263,81 @@
 
 }
 
+/* ----------- TABLEVIEW ----------- */
+.table-view {
+    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-border-radius: 10px; /* Bordes redondeados */
+    -fx-border-color: #d68fff; /* Color del borde exterior */
+    -fx-padding: 5px; /* Relleno externo */
+    -fx-font-family: 'Lato', sans-serif; /* Fuente */
+    -fx-font-weight: bold;
+}
+
+/* Estilo para las filas del TableView */
+.table-view .table-row-cell {
+    -fx-background-color: transparent; /* Fondo por defecto */
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent; /* Sin borde por defecto */
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+/* Alternancia de colores en las filas */
+.table-view .table-row-cell:odd {
+    -fx-background-color: rgb(255, 255, 255); /* Fondo de la pista */
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: rgb(255, 255, 255); /* Fondo de la pista */
+}
+
+/* Color de la fila seleccionada */
+.table-view .table-row-cell:selected {
+    -fx-background-color: #cbb7dd; /* Color de fondo para la fila seleccionada */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+}
+
+/* ----------- ENCABEZADO DE LA TABLA ----------- */
+.table-view .column-header {
+    -fx-background-color: #8056bc; /* Color de fondo para encabezado */
+    -fx-text-fill: #ffffff; /* Color del texto */
+    -fx-font-size: 15px; /* Tamaño del texto */
+    /*-fx-font-weight: bold; /* Texto en negrita */
+    -fx-border-color: #d68fff; /* Borde inferior */
+    -fx-border-width: 0 0 2px 0; /* Solo borde inferior */
+    -fx-alignment: CENTER; /* Alineación central del texto */
+}
+
+/* ----------- CELDAS DE LA TABLA ----------- */
+.table-view .cell {
+    -fx-padding: 10px; /* Espaciado interno de celdas */
+    -fx-text-fill: #000000; /* Color del texto en celdas */
+    -fx-alignment: CENTER-LEFT; /* Alineación del texto */
+}
+
+/* Efecto hover para las celdas */
+.table-view .cell:hover {
+    -fx-background-color: #cbb7dd; /* Color de fondo en hover */
+    -fx-text-fill: #000000; /* Color del texto en hover */
+}
+
+/* ----------- BORDES Y SOMBRAS ----------- */
+.table-view .column-header-background {
+    -fx-background-color: transparent; /* Fondo transparente para el área de encabezado */
+    -fx-border-color: #d68fff; /* Color del borde de encabezado */
+    -fx-border-radius: 10px; /* Bordes redondeados */
+}
+
+/* ----------- SCROLLBAR ----------- */
+.table-view .scroll-bar {
+    -fx-background-color: transparent; /* Fondo transparente */
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: #8056bc; /* Color para el control de desplazamiento */
+    -fx-background-radius: 5px; /* Bordes redondeados */
+}
+
+.table-view .scroll-bar .track {
+    -fx-background-color: rgb(203, 183, 221); /* Fondo de la pista */
+}
