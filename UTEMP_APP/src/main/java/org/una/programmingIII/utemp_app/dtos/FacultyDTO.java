@@ -33,4 +33,14 @@ public class FacultyDTO {
     private LocalDateTime createdAt;
 
     private LocalDateTime lastUpdate;
+
+    public String getUniversityName() {
+        if (university != null && university.getName() != null) {
+            return university.getName();
+        } else {
+            return "Desconocida";
+        }
+    }
+
+
 }

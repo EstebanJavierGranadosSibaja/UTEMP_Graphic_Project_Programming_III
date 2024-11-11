@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.una.programmingIII.utemp_app.exceptions.http.ApiException;
 import org.una.programmingIII.utemp_app.exceptions.http.ForbiddenException;
 import org.una.programmingIII.utemp_app.exceptions.http.UnauthorizedException;
-import org.una.programmingIII.utemp_app.services.responses.ApiResponse;
+import org.una.programmingIII.utemp_app.responses.ApiResponse;
 
 import java.net.HttpURLConnection;
 

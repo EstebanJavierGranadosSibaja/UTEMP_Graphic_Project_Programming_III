@@ -2,7 +2,7 @@
 
 /* Fondo principal */
 #root {
-    -fx-background-color: #2e2e2e; /* Gris oscuro */
+    -fx-background-color: #352d5a; /* Gris oscuro */
 }
 
 
@@ -12,45 +12,39 @@
 
 
 /* Estilo para las etiquetas */
-#label {
+#label-title {
     -fx-font-family: "Arial Black"; /* Nueva fuente */
     -fx-font-size: 50px; /* Tamaño de fuente más grande */
-    -fx-text-fill: #e0aaff; /* Color lila claro para contraste en texto */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
     -fx-font-weight: bold; /* Texto en negrita */
     -fx-padding: 10px; /* Espaciado alrededor del texto */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.5, 0, 1); /* Sombra sutil */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 2.5, 1, -1, 2.5); /* Sombra sutil */
 }
 
-
-
-/*------------FIELDS-----------*/
-
-
-
-/* Estilo para los campos de texto y contraseñas */
-#mfx-text-field, #mfx-password-field {
-    -fx-text-fill: #d9bbea; /* Color lila claro */
-    -fx-background-color: #2e2e2e; /* Fondo gris oscuro */
-    -fx-padding: 10px; /* Espaciado interno */
-    -fx-font-size: 16px; /* Tamaño de fuente */
+/* Estilo para las etiquetas */
+#label {
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 20px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
     -fx-font-weight: bold; /* Texto en negrita */
-    -fx-background-radius: 5px; /* Bordes redondeados */
-    -fx-border-color: #e0aaff; /* Lila claro */
-    -fx-border-width: 1.5px; /* Grosor del borde */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 0.8, 1, -1, 2.5); /* Sombra sutil */
 }
 
-/* Estilo para los campos de texto al enfocarse */
-#mfx-text-field:hover, #mfx-password-field:hover {
-    -fx-border-color: #480b67; /* Lila claro */
-    -fx-background-color: #3a3a3a; /* Fondo ligeramente más claro */
-    -fx-border-width: 2.5px; /* Grosor del borde */
+/* Estilo para las etiquetas */
+#label-username {
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 15px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1.5, 1, -1, 2.5); /* Sombra sutil */
 }
 
-/* Estilo para los campos de texto al enfocarse */
-#mfx-text-field:focused, #mfx-password-field:focused {
-    -fx-border-color: #e0aaff; /* Lila claro */
-    -fx-background-color: #2e2e2e; /* Fondo ligeramente más claro */
-    -fx-border-width: 1px; /* Grosor del borde */
+#label-number{
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-font-size: 15px; /* Tamaño de fuente más grande */
 }
 
 
@@ -62,21 +56,87 @@
 /* Estilo para los botones */
 #mfx-button {
     -fx-background-color: #743885; /* Color lila oscuro */
-    -fx-text-fill: #e0aaff; /* Color de texto lila claro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
     -fx-font-size: 20px;
     -fx-padding: 10px 20px;
     -fx-font-weight: bold;
     -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2); /* Sombra */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
 }
 
 /* Estilo para los botones al pasar el ratón */
 #mfx-button:hover {
-    -fx-background-color: #480b67; /* Lila más oscuro */
+    -fx-background-color: #8a4b9c; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+}
+
+/* Estilo para los botones */
+#mfx-button-important {
+    -fx-background-color: #8056bc; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-button-important:hover {
+    -fx-background-color: #8c62c8; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+}
+
+/* Estilo para los botones */
+#mfx-small-button-important {
+    -fx-background-color: #743885; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 10px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-small-button-important:hover {
+    -fx-background-color: #8a4b9c; /* Lila más oscuro */
     -fx-text-fill: #ffffff; /* Lila claro más brillante */
 }
 
+/* Estilo para los botones */
+#mfx-small-button {
+    -fx-background-color: #8056bc; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 10px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
 
+/* Estilo para los botones al pasar el ratón */
+#mfx-small-button:hover {
+    -fx-background-color: #8c62c8; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+}
+
+/* Estilo para los botones */
+#mfx-small-menu-button-important {
+    -fx-background-color: #743885; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 15px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-small-menu-button-important:hover {
+    -fx-background-color: #8a4b9c; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+}
 
 /*------------BOXES-----------*/
 
@@ -85,11 +145,69 @@
 /* Estilo para los VBox */
 #vbox-login {
     -fx-spacing: 25px;
-    -fx-background-color: rgba(148, 107, 168, 0.15); /* Fondo lila suave y translúcido */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
     -fx-background-radius: 15px;
 }
 
 /* Estilo para el HBox */
 #hbox {
-    -fx-background-color: rgba(34, 34, 34, 0.8); /* Fondo oscuro con transparencia */
+    -fx-background-color: rgba(63, 53, 108, 0.7); /* Lila más oscuro con transparencia */
+    -fx-background-radius: 15px;
 }
+
+
+
+/*---------CHECK-BOX-----------*/
+
+
+
+#mfx-check-box{
+    -fx-background-color: #743885; /* Fondo oscuro con transparencia */
+    -fx-background-radius: 15px; /* Bordes ligeramente redondeados */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+    -fx-font-weight: bold;
+}
+
+/* CheckBoxes seleccionados */
+#mfx-check-box:selected {
+    -fx-border-radius: 15px; /* Bordes ligeramente redondeados */
+    -fx-background-color: #39b63f; /* Fondo oscuro con transparencia */
+    -fx-border-color: #0b8810; /* Bordes ligeramente redondeados */
+    -fx-text-fill: #ffffff; /* Verde cuando está seleccionado */
+}
+
+
+/*---------TEXT-FIELD-----------*/
+
+
+
+#mfx-text-filed{
+    -fx-font-weight: bold;
+}
+
+#mfx-text-filed:hover {
+    -fx-background-color: #cbb7dd; /* Color lila más oscuro al pasar el ratón */
+    -fx-border-color: #6f42bd; /* Bordes ligeramente redondeados */
+    -fx-border-width: 2px; /* Ancho del borde */
+}
+
+
+
+/*------------MFX-DATEPICKER-----------*/
+
+
+
+/* Estilo del MFXDatePicker */
+#mfx-datepicker {
+    -fx-font-weight: bold;
+}
+
+/* Hover para el MFXDatePicker */
+#mfx-datepicker:hover {
+    -fx-background-color: #cbb7dd; /* Color lila más oscuro al pasar el ratón */
+    -fx-border-color: #6f42bd; /* Bordes ligeramente redondeados */
+    -fx-border-width: 2px; /* Ancho del borde */
+
+}
+

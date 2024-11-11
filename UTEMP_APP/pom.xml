@@ -15,43 +15,33 @@
     </properties>
 
     <dependencies>
-        <!--    requeridos  -->
-        <!-- JavaFX FXML: Permite el uso de FXML para definir interfaces de usuario -->
+        <!-- Requeridos -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>22.0.1</version>
         </dependency>
-
-        <!-- JavaFX Controls: Proporciona componentes de interfaz de usuario básicos como botones, etiquetas, etc. -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>22.0.1</version>
         </dependency>
-
-        <!-- Jackson Databind: Facilita la serialización y deserialización de objetos Java a y desde JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.17.2</version>
         </dependency>
-
-        <!-- HTTP Client: Proporciona una forma moderna de realizar solicitudes HTTP -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>5.1</version>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -68,9 +58,6 @@
             <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
-
-
-        <!--validations-->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -82,29 +69,39 @@
             <version>1.1.0.Final</version>
         </dependency>
 
-
-        <!--        logger -->
+        <!-- Logger -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.16</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.13</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.8</version> <!-- Verifica si hay una versión más reciente -->
         </dependency>
 
-        <!--        materialfx      -->
+        <!-- MaterialFX -->
         <dependency>
             <groupId>io.github.palexdev</groupId>
             <artifactId>materialfx</artifactId>
-            <version>11.17.0</version> <!-- Verifica la última versión disponible -->
+            <version>11.16.1</version> <!-- Verifica la última versión disponible -->
+            <type>jar</type>
         </dependency>
 
+        <!-- Paginación -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>3.3.4</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.5.6</version>
+        </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
@@ -126,9 +123,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>
-                                org.una.programmingIII.utemp_app/org.una.programmingIII.utemp_app.UTEMP_Application
-                            </mainClass>
+                            <mainClass>org.una.programmingIII.utemp_app.UTEMP_Application</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

@@ -1,12 +1,18 @@
 package org.una.programmingIII.utemp_app.services;
 
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.una.programmingIII.utemp_app.configs.BaseConfig;
 import org.una.programmingIII.utemp_app.exceptions.AccessDeniedException;
 import org.una.programmingIII.utemp_app.exceptions.BadRequestException;
 import org.una.programmingIII.utemp_app.exceptions.InvalidCredentialsException;
 import org.una.programmingIII.utemp_app.exceptions.http.ApiException;
-import org.una.programmingIII.utemp_app.services.request.AuthRequest;
-import org.una.programmingIII.utemp_app.services.responses.ApiResponse;
-import org.una.programmingIII.utemp_app.services.responses.MessageResponse;
+import org.una.programmingIII.utemp_app.requests.AuthRequest;
+import org.una.programmingIII.utemp_app.responses.ApiResponse;
+import org.una.programmingIII.utemp_app.responses.MessageResponse;
+import org.una.programmingIII.utemp_app.responses.TokenResponse;
+import org.una.programmingIII.utemp_app.utils.services.HttpClientConnectionManager;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -14,59 +20,65 @@ import java.util.Optional;
 
 
 /**
- * Servicio para la autenticación de clientes.
+ * Servicio para la autenticación de clientes. del la aplicacion de fronten con el controller de la APi
  */
-public class AuthService extends BaseHttpClient<String> {
+public class AuthService extends HttpClientConnectionManager {
 
     public AuthService() {
-        super(BASE_URL, 10000, 30000);
+        super(BaseConfig.BASE_URL, 10000, 30000);
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
-    public MessageResponse<String> login(AuthRequest authRequest) {
-        MessageResponse<String> response = new MessageResponse<>();
-        String title = " ", error = " ";
+    public MessageResponse<TokenResponse> login(AuthRequest authRequest) {
+        String title = "Autenticación fallida";
+        StringBuilder errorMessages = new StringBuilder();
         HttpURLConnection connection = null;
 
         try {
+            connection = createLoginConnection();
             validateAuthRequest(authRequest);
-            connection = createUnauthenticatedConnection(EndPoint.getAuth() + "/login", HttpMethod.POST);
             setupConnectionForOutput(connection);
-            sendRequest(connection, authRequest);
+            sendAuthRequest(connection, authRequest);
 
-            Optional<ApiResponse<String>> apiResponseOptional = handleResponse(connection);
+            // Manejo de la respuesta de autenticación
+            Optional<ApiResponse<TokenResponse>> apiResponseOptional = handleResponseWithType(
+                    connection, new TypeReference<ApiResponse<TokenResponse>>() {
+                    }
+            );
+
+            // Procesar la respuesta de autenticación
             if (apiResponseOptional.isPresent()) {
-                response.setData(apiResponseOptional.get().getData());
+                TokenResponse tokenResponse = apiResponseOptional.get().getData();
+                setToken(tokenResponse.getToken());
                 title = "Autenticación exitosa";
-                setToken(response.getData());
-                response.setSuccess(true);
+                return new MessageResponse<>(tokenResponse, true, title, null);
             } else {
-                title = "Fallo la operación";
-                error = "Token no disponible después de autenticación.";
-                throw new ApiException(error);
+                throw new ApiException("Token no disponible después de autenticación.");
             }
 
         } catch (InvalidCredentialsException | AccessDeniedException | BadRequestException e) {
-            error += e.getMessage() + "\n";
-            response.setSuccess(false);
+            return createErrorResponse(title, errorMessages, e.getMessage());
         } catch (ApiException e) {
-            error += "Error en el servidor: " + e.getMessage() + "\n";
-            response.setSuccess(false);
+            return createErrorResponse(title, errorMessages, "Error en el servidor: " + e.getMessage());
         } catch (Exception e) {
-            error += "Error al autenticar: " + e.getMessage() + "\n";
-            response.setSuccess(false);
+            return createErrorResponse(title, errorMessages, "Error al autenticar: " + e.getMessage());
         } finally {
             if (connection != null) {
-                disconnectConnection(connection);
+                connection.disconnect();
             }
         }
+    }
 
-        // Imprimir los mensajes para el registro
-        System.out.println(title.trim() + "\n" + error.trim());
+    private MessageResponse<TokenResponse> createErrorResponse(String title, StringBuilder errorMessages, String errorMessage) {
+        appendErrorMessage(errorMessages, errorMessage);
+        return new MessageResponse<>(null, false, title, errorMessages.toString().trim());
+    }
 
-        response.setMessage(title.trim());
-        response.setErrorCode(error.trim());
-
-        return response;
+    private void appendErrorMessage(StringBuilder errorMessages, String message) {
+        if (!errorMessages.isEmpty()) {
+            errorMessages.append("\n");
+        }
+        errorMessages.append(message);
     }
 
     private void validateAuthRequest(AuthRequest authRequest) throws InvalidCredentialsException {
@@ -81,42 +93,10 @@ public class AuthService extends BaseHttpClient<String> {
         }
     }
 
-    private void sendRequest(HttpURLConnection connection, AuthRequest authRequest) throws Exception {
+    private void sendAuthRequest(HttpURLConnection connection, AuthRequest authRequest) throws Exception {
         try (OutputStream os = connection.getOutputStream()) {
             objectMapper.writeValue(os, authRequest);
             os.flush();
         }
     }
-
-    private RuntimeException mapErrorResponse(int responseCode) {
-        return switch (responseCode) {
-            case HttpURLConnection.HTTP_UNAUTHORIZED -> new InvalidCredentialsException("Credenciales inválidas.");
-            case HttpURLConnection.HTTP_FORBIDDEN -> new AccessDeniedException("Acceso denegado.");
-            case HttpURLConnection.HTTP_BAD_REQUEST -> new BadRequestException("Solicitud incorrecta.");
-            default -> new ApiException("Error inesperado, código de respuesta: " + responseCode);
-        };
-    }
 }
-
-/*
-    clase de mensaje de respuesta para la parte grafica
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class MessageResponse<T> {
-    private T data;
-    private String message;
-    private boolean success;
-}
- */
-
-
-/**
- * Realiza la autenticación del usuario.
- * Se requiere una contraseña de mínimo 8 caracteres y un número de identificación de mínimo 9 caracteres numéricos.
- *
- * @param authRequest Información de autenticación del usuario.
- * @return MessageResponse<String> que contiene el token en caso de éxito.
- */

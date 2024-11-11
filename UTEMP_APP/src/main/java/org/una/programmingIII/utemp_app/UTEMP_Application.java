@@ -2,8 +2,11 @@ package org.una.programmingIII.utemp_app;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.una.programmingIII.utemp_app.manager.ScreenManager;
-import org.una.programmingIII.utemp_app.view_controllers.Views;
+import javafx.scene.image.Image;
+import org.una.programmingIII.utemp_app.utils.Views;
+import org.una.programmingIII.utemp_app.utils.view.ViewManager;
+
+import java.util.Objects;
 
 public class UTEMP_Application extends Application {
 
@@ -13,11 +16,14 @@ public class UTEMP_Application extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ScreenManager screenManager = new ScreenManager(primaryStage);
-        screenManager.loadScreen(Views.MAIN_VIEW, "Initial views");
+        primaryStage.setTitle("UTEMP Application");
 
-        Singleton singleton = Singleton.getInstance();
-        singleton.setScreenManager(screenManager);
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/University.png"))); // Asegúrate de que el ícono esté en esta ruta
+        primaryStage.getIcons().add(icon);
 
+        // Inicializar y mostrar la vista principal
+        ViewManager viewManager = ViewManager.getInstance();
+        viewManager.initialize(primaryStage);
+        viewManager.showMainView(Views.LOGIN);
     }
 }

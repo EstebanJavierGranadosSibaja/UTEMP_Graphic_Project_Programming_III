@@ -22,8 +22,8 @@ public class NotificationDTO {
     @Builder.Default
     private UserDTO user = new UserDTO();
 
-    @NotBlank(message = "Message must not be blank")
-    @Size(max = 500, message = "Message must be at most 500 characters long")
+    @NotBlank(message = "AlertNotifier must not be blank")
+    @Size(max = 500, message = "AlertNotifier must be at most 500 characters long")
     private String message;
 
     @NotNull(message = "Status must not be null")
