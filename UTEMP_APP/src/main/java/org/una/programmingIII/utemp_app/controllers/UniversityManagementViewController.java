@@ -83,11 +83,12 @@ public class UniversityManagementViewController extends Controller {
     }
 
     private void loadPage(int page) {
-        try {
+
             MessageResponse<PageDTO<UniversityDTO>> response = baseApiServiceManager.getAllEntities(
                     PageRequest.of(page, 10), new TypeReference<PageDTO<UniversityDTO>>() {
                     });
             super.showReadResponse(response);
+
             if (response.isSuccess()) {
                 loadTable(response.getData());
                 pageNumberLbl.setText(String.valueOf(page + 1));
@@ -95,9 +96,6 @@ public class UniversityManagementViewController extends Controller {
                 nextPageBtn.setDisable(page >= maxPage - 1);
                 pageNumber = page;
             }
-        } catch (Exception e) {
-            showError("Error al cargar la página: " + e.getMessage());
-        }
     }
 
     protected void loadTable(PageDTO<UniversityDTO> page) {

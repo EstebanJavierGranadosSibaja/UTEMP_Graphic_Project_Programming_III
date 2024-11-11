@@ -17,6 +17,7 @@ import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.AssignmentAPIService;
 import org.una.programmingIII.utemp_app.services.models.FileAPIService;
 import org.una.programmingIII.utemp_app.services.models.SubmissionAPIService;
+import org.una.programmingIII.utemp_app.utils.DTOFiller;
 import org.una.programmingIII.utemp_app.utils.Views;
 import org.una.programmingIII.utemp_app.utils.services.BaseApiServiceManager;
 import org.una.programmingIII.utemp_app.utils.view.AppContext;
@@ -27,9 +28,10 @@ import java.util.Optional;
 
 public class SubmissionsViewController extends Controller {
 
+
     /*---------------------------- FXML Elements ----------------------------*/
     @FXML
-    private MFXTextField findByIdTxtF, courseAssigmentTxtF, studentTextF, gradeTxtF, commentaryTxtF;
+    private MFXTextField findByIdTxtF, courseAssignmentTxtF, studentTextF, gradeTxtF, commentaryTxtF, fileUploadPathTxtF;
     @FXML
     private MFXButton prevPageBtn, nextPageBtn, backBtn;
     @FXML
@@ -38,6 +40,8 @@ public class SubmissionsViewController extends Controller {
     private TableColumn<SubmissionDTO, String> idC, assignmentC, studentC, gradeC, infoC;
     @FXML
     private Label pageNumberLbl;
+
+    DTOFiller dtoFiller = new DTOFiller();
 
     /*---------------------------- Services ----------------------------*/
     private final BaseApiServiceManager<SubmissionDTO> baseApiServiceManager = new SubmissionAPIService();
@@ -60,6 +64,7 @@ public class SubmissionsViewController extends Controller {
         loadSubmissions();
         assignmentDTO = AppContext.getInstance().getAssignmentDTO();
         userDTO = AppContext.getInstance().getUserDTO();
+        assignmentDTO = dtoFiller.getAssignmentDTO();
     }
 
     /*---------------------------- TableView Setup ----------------------------*/
@@ -105,7 +110,7 @@ public class SubmissionsViewController extends Controller {
     }
 
     private void fillFieldsFromSelectedSubmission(SubmissionDTO dto) {
-        courseAssigmentTxtF.setText(dto.getAssignment().getTitle());
+        courseAssignmentTxtF.setText(dto.getAssignment().getTitle());
         studentTextF.setText(dto.getStudent().getName());
         gradeTxtF.setText(String.valueOf(dto.getGrade()));
         commentaryTxtF.setText(dto.getComments());
@@ -197,9 +202,11 @@ public class SubmissionsViewController extends Controller {
                 return;
             }
 
+
             uploadPath = selectedFile.getAbsolutePath();
             FileMetadatumDTO fileMetadatumDTO = new FileMetadatumDTO();
             fileMetadatumDTO.setSubmission(selectedSubmissionDTO);
+            fileMetadatumDTO.setStudent(userDTO);
 
             MessageResponse<Void> response = fileAPIService.uploadFile(uploadPath, fileMetadatumDTO);
             showReadResponse(response);
@@ -211,11 +218,11 @@ public class SubmissionsViewController extends Controller {
     /*---------------------------- Helper Methods ----------------------------*/
 
     private boolean isAnyFieldEmpty() {
-        return courseAssigmentTxtF.getText().isEmpty() || studentTextF.getText().isEmpty();
+        return courseAssignmentTxtF.getText().isEmpty() || studentTextF.getText().isEmpty();
     }
 
     private void clearFields() {
-        courseAssigmentTxtF.clear();
+        courseAssignmentTxtF.clear();
         studentTextF.clear();
         gradeTxtF.clear();
         commentaryTxtF.clear();
