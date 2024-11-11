@@ -1,0 +1,127 @@
+/* Estilo general para el cuadro de diálogo (ventana) */
+.alert {
+    -fx-background-color: #f4f4f9; /* Fondo claro para el cuadro de diálogo */
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 14px; /* Tamaño de fuente para todo el texto */
+    -fx-padding: 20px; /* Espaciado alrededor del contenido */
+    -fx-border-radius: 15px; /* Bordes redondeados para la ventana */
+    -fx-border-color: #b0b0b0; /* Color gris para los bordes */
+    -fx-border-width: 2px; /* Ancho de los bordes */
+}
+
+/* Estilo para el encabezado de la alerta */
+.alert .header {
+    -fx-text-fill: #2d87f0; /* Color azul para el encabezado */
+    -fx-font-size: 18px; /* Tamaño más grande para el encabezado */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding-bottom: 10px; /* Espaciado debajo del encabezado */
+}
+
+/* Estilo para el contenido de la alerta */
+.alert .content {
+    -fx-text-fill: #333333; /* Texto gris oscuro para el contenido */
+    -fx-font-size: 16px; /* Aumentar tamaño de la fuente del contenido */
+    -fx-font-weight: normal; /* No es necesario en negrita */
+    -fx-padding-bottom: 15px; /* Espaciado debajo del contenido */
+}
+
+/* Estilo para los botones en la alerta */
+.alert .button {
+    -fx-font-size: 14px; /* Tamaño de la fuente en los botones */
+    -fx-font-weight: bold; /* Botones en negrita */
+    -fx-padding: 10px 20px; /* Espaciado interno para los botones */
+    -fx-border-radius: 10px; /* Bordes redondeados en los botones */
+    -fx-background-radius: 10px; /* Bordes redondeados del fondo del botón */
+    -fx-border-width: 2px; /* Ancho de borde en los botones */
+    -fx-border-color: #c8c8c8; /* Color gris claro para los bordes */
+    -fx-text-fill: white; /* Texto blanco */
+}
+
+/* Efecto de hover para los botones */
+.alert .button:hover {
+    -fx-background-color: #5aaf60; /* Fondo verde más oscuro para el hover */
+    -fx-border-color: #5aaf60; /* Bordes del botón también se oscurecen */
+}
+
+/* Efecto cuando el botón está enfocado */
+.alert .button:focused {
+    -fx-background-color: #4e9f55; /* Fondo verde para cuando el botón está enfocado */
+    -fx-border-color: #4e9f55; /* Bordes se enfocan en verde */
+}
+
+/* Efecto cuando el botón está presionado */
+.alert .button:pressed {
+    -fx-background-color: #468c4a; /* Fondo verde más oscuro al presionar */
+    -fx-border-color: #468c4a; /* Bordes oscuros cuando se presiona */
+}
+
+/* Estilos específicos para el botón de "Aceptar" (OK) */
+.alert .button[defaultButton] {
+    -fx-background-color: #4CAF50; /* Fondo verde para "Aceptar" */
+    -fx-text-fill: white;
+}
+
+.alert .button[defaultButton]:hover {
+    -fx-background-color: #45a049; /* Hover más oscuro para "Aceptar" */
+}
+
+.alert .button[defaultButton]:focused {
+    -fx-background-color: #388e3c; /* Fondo verde más oscuro cuando se enfoca */
+}
+
+.alert .button[defaultButton]:pressed {
+    -fx-background-color: #357a38; /* Color aún más oscuro al presionar "Aceptar" */
+}
+
+/* Estilos específicos para el botón de "Cancelar" */
+.alert .button.cancel {
+    -fx-background-color: #f44336; /* Fondo rojo para "Cancelar" */
+}
+
+.alert .button.cancel:hover {
+    -fx-background-color: #e53935; /* Hover más oscuro para "Cancelar" */
+}
+
+.alert .button.cancel:focused {
+    -fx-background-color: #d32f2f; /* Cambio de color para "Cancelar" cuando está enfocado */
+}
+
+.alert .button.cancel:pressed {
+    -fx-background-color: #c62828; /* Color más oscuro al presionar "Cancelar" */
+}
+
+/* Estilos para el botón de "Aceptar" (OK) por ID */
+#okButton {
+    -fx-background-color: #4CAF50; /* Fondo verde para "Aceptar" */
+    -fx-text-fill: white;
+}
+
+#okButton:hover {
+    -fx-background-color: #6df673; /* Hover más oscuro para "Aceptar" */
+}
+
+#okButton:focused {
+    -fx-background-color: #5def64; /* Fondo verde más oscuro cuando se enfoca */
+}
+
+#okButton:pressed {
+    -fx-background-color: #2baf31; /* Color aún más oscuro al presionar "Aceptar" */
+}
+
+/* Estilos para el botón de "Cancelar" por ID */
+#cancelButton {
+    -fx-background-color: #f44336; /* Fondo rojo para "Cancelar" */
+    -fx-text-fill: white;
+}
+
+#cancelButton:hover {
+    -fx-background-color: #e53935; /* Hover más oscuro para "Cancelar" */
+}
+
+#cancelButton:focused {
+    -fx-background-color: #d32f2f; /* Cambio de color para "Cancelar" cuando está enfocado */
+}
+
+#cancelButton:pressed {
+    -fx-background-color: #c62828; /* Color más oscuro al presionar "Cancelar" */
+}
