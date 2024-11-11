@@ -1,8 +1,8 @@
 package org.una.programmingIII.utemp_app.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,15 +12,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
-import org.springframework.data.domain.PageRequest;
 import org.una.programmingIII.utemp_app.dtos.*;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.AssignmentAPIService;
 import org.una.programmingIII.utemp_app.services.models.FileAPIService;
 import org.una.programmingIII.utemp_app.services.models.SubmissionAPIService;
-import org.una.programmingIII.utemp_app.services.models.UserAPIService;
 import org.una.programmingIII.utemp_app.utils.Views;
 import org.una.programmingIII.utemp_app.utils.services.BaseApiServiceManager;
+import org.una.programmingIII.utemp_app.utils.view.AppContext;
 import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 
 import java.io.File;
@@ -28,7 +27,7 @@ import java.util.Optional;
 
 public class SubmissionsViewController extends Controller {
 
-    // FXML Elements
+    /*---------------------------- FXML Elements ----------------------------*/
     @FXML
     private MFXTextField findByIdTxtF, courseAssigmentTxtF, studentTextF, gradeTxtF, commentaryTxtF;
     @FXML
@@ -40,45 +39,52 @@ public class SubmissionsViewController extends Controller {
     @FXML
     private Label pageNumberLbl;
 
-    // Services
+    /*---------------------------- Services ----------------------------*/
     private final BaseApiServiceManager<SubmissionDTO> baseApiServiceManager = new SubmissionAPIService();
     private final AssignmentAPIService assignmentAPIService = new AssignmentAPIService();
-    private final SubmissionAPIService submissionAPIService = new SubmissionAPIService();
-    private final UserAPIService userAPIService = new UserAPIService();
     private final FileAPIService fileAPIService = new FileAPIService();
 
+    /*---------------------------- Page Data ----------------------------*/
     private PageDTO<SubmissionDTO> pagesData;
-    private int currentPage = 1, maxPage = 1, assignmentID = 0;
-    TypeReference<PageDTO<SubmissionDTO>> datoEsperado = new TypeReference<PageDTO<SubmissionDTO>>() {
-    };
+    private int currentPage = 1, maxPage = 1;
 
-    SubmissionDTO selectsubmissionDTO;
-    AssignmentDTO assignmentDTO;
-    UserDTO userDTO;
+    /*---------------------------- Selected Data ----------------------------*/
+    private SubmissionDTO selectedSubmissionDTO;
+    private AssignmentDTO assignmentDTO;
+    private UserDTO userDTO;
 
-
+    /*---------------------------- Initialization ----------------------------*/
     @FXML
     public void initialize() {
         setTableView();
         loadSubmissions();
+        assignmentDTO = AppContext.getInstance().getAssignmentDTO();
+        userDTO = AppContext.getInstance().getUserDTO();
     }
 
+    /*---------------------------- TableView Setup ----------------------------*/
     private void setTableView() {
         table.setEditable(false);
-        idC.setCellValueFactory(new PropertyValueFactory<>("id"));
-        assignmentC.setCellValueFactory(new PropertyValueFactory<>("assignment"));
-        studentC.setCellValueFactory(new PropertyValueFactory<>("student"));
-        gradeC.setCellValueFactory(new PropertyValueFactory<>("grade"));
-        infoC.setCellValueFactory(new PropertyValueFactory<>("info"));
 
+        // Configuración de las columnas con PropertyValueFactory
+        idC.setCellValueFactory(new PropertyValueFactory<>("id"));
+        assignmentC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAssignment().getTitle()));
+        studentC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudent().getName()));
+
+        // Columnas de grade e info (por ahora, no modificarlas)
+        gradeC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGrade().toString()));
+        infoC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComments()));
+
+        // Listener de selección de fila
         table.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) fillFieldsFromSelectedSubmission(newValue);
         });
     }
 
+    /*---------------------------- Data Management ----------------------------*/
     private void loadSubmissions() {
-        var response = baseApiServiceManager.getAllEntities(PageRequest.of(currentPage, 10), datoEsperado);
-        super.showReadResponse(response);//siempre se devuelve algo solo se debe leer la respuesta
+        var response = assignmentAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), currentPage, 10);
+        showReadResponse(response);
         if (response.isSuccess()) {
             pagesData = response.getData();
             table.setItems(FXCollections.observableArrayList(pagesData.getContent()));
@@ -93,6 +99,21 @@ public class SubmissionsViewController extends Controller {
         nextPageBtn.setDisable(currentPage >= maxPage);
     }
 
+    private void loadPage(int page) {
+        currentPage = page;
+        loadSubmissions();
+    }
+
+    private void fillFieldsFromSelectedSubmission(SubmissionDTO dto) {
+        courseAssigmentTxtF.setText(dto.getAssignment().getTitle());
+        studentTextF.setText(dto.getStudent().getName());
+        gradeTxtF.setText(String.valueOf(dto.getGrade()));
+        commentaryTxtF.setText(dto.getComments());
+        selectedSubmissionDTO = dto;  // Se guarda la referencia del objeto seleccionado
+    }
+
+    /*---------------------------- Action Handlers ----------------------------*/
+
     @FXML
     public void onActionPrevPageBtn(ActionEvent event) {
         if (currentPage > 1) loadPage(--currentPage);
@@ -103,11 +124,6 @@ public class SubmissionsViewController extends Controller {
         if (currentPage < maxPage) loadPage(++currentPage);
     }
 
-    private void loadPage(int page) {
-        currentPage = page;
-        loadSubmissions();
-    }
-
     @FXML
     public void onActionReloadPageBtn(ActionEvent event) {
         loadSubmissions();
@@ -115,10 +131,7 @@ public class SubmissionsViewController extends Controller {
 
     @FXML
     public void onActionClearFieldsBtn(ActionEvent event) {
-        courseAssigmentTxtF.clear();
-        studentTextF.clear();
-        gradeTxtF.clear();
-        commentaryTxtF.clear();
+        clearFields();
     }
 
     @FXML
@@ -134,35 +147,16 @@ public class SubmissionsViewController extends Controller {
                 .ifPresentOrElse(this::fillFieldsFromSelectedSubmission, () -> showError("Por favor, selecciona una entrega para editar."));
     }
 
-    private void fillFieldsFromSelectedSubmission(SubmissionDTO dto) {
-        courseAssigmentTxtF.setText(dto.getAssignment().getTitle());
-        studentTextF.setText(dto.getStudent().getName());
-        gradeTxtF.setText(String.valueOf(dto.getGrade()));
-        commentaryTxtF.setText(dto.getComments());
-
-        selectsubmissionDTO = dto;
-    }
-
     @FXML
     public void onActionCreateBtn(ActionEvent event) {
         if (isAnyFieldEmpty()) {
             showError("Por favor, complete todos los campos.");
             return;
         }
-
-        Optional<SubmissionDTO> existingSubmission = pagesData.getContent().stream()
-                .filter(submission -> submission.getId().equals(selectsubmissionDTO.getId()))
-                .findFirst();
-
-        if (existingSubmission.isPresent()) {
-            SubmissionDTO updatedSubmission = existingSubmission.get();
-            updatedSubmission.setAssignment(new AssignmentDTO());//courseAssigmentTxtF.getText())
-            updatedSubmission.setStudent(new UserDTO());//studentTextF.getText()
-            updatedSubmission.setGrade(Double.parseDouble(gradeTxtF.getText()));
-            updatedSubmission.setComments(commentaryTxtF.getText());
-
-            var response = baseApiServiceManager.updateEntity(updatedSubmission.getId(), updatedSubmission);
-            super.showReadResponse(response);
+        if (selectedSubmissionDTO != null) {
+            updateSubmissionDTO();
+            var response = baseApiServiceManager.updateEntity(selectedSubmissionDTO.getId(), selectedSubmissionDTO);
+            showReadResponse(response);
             loadSubmissions();
         }
     }
@@ -172,62 +166,20 @@ public class SubmissionsViewController extends Controller {
         ViewManager.getInstance().loadInternalView(Views.COURSES);
     }
 
-    private boolean isAnyFieldEmpty() {
-        return courseAssigmentTxtF.getText().isEmpty() ||
-                studentTextF.getText().isEmpty() ||
-                gradeTxtF.getText().isEmpty() ||
-                commentaryTxtF.getText().isEmpty();
-    }
+    /*---------------------------- File Upload/Download ----------------------------*/
 
-    private void showError(String message) {
-        showNotificationToast("Error", message, Alert.AlertType.ERROR);
-    }
-
-    private boolean confirmDelete() {
-        return showConfirmationMessage("Eliminar Entrega", "¿Estás seguro de que deseas eliminar esta entrega?");
-    }
-
-    private void deleteSubmission(SubmissionDTO submission) {
-        MessageResponse<Void> response = baseApiServiceManager.deleteEntity(submission.getId());
-        loadSubmissions();
-        super.showReadResponse(response);
-    }
-
-    @FXML
-    public void onActionFindByIDBtn(ActionEvent event) {
-        String idToFind = findByIdTxtF.getText();
-        if (idToFind.isEmpty()) {
-            showError("Por favor, ingresa un ID para buscar.");
-            return;
-        }
-
-        try {
-            long id = Long.parseLong(idToFind);
-            table.getItems().stream()
-                    .filter(submission -> submission.getId().equals(id))
-                    .findFirst()
-                    .ifPresentOrElse(this::fillFieldsFromSelectedSubmission, () -> showError("No se encontró la entrega con el ID proporcionado."));
-        } catch (NumberFormatException e) {
-            showError("Por favor, ingresa un ID válido.");
-        }
-    }
-
-    /*-------------------------*/
-
-    private String upLoadPath;
+    private String uploadPath;
     private final String downloadPath = System.getProperty("user.home") + "/Downloads";
 
     @FXML
     public void onActionDownloadFileBtn(ActionEvent event) {
         try {
-            if (assignmentID <= 0) {
+            if (assignmentDTO.getId() <= 0) {
                 showError("ID de asignación inválido.");
                 return;
             }
-
-            MessageResponse<Void> response = fileAPIService.downloadFileById((long) assignmentID, downloadPath);
+            MessageResponse<Void> response = fileAPIService.downloadFileById((long) assignmentDTO.getId(), downloadPath);
             showReadResponse(response);
-
         } catch (Exception e) {
             showError("Ocurrió un error al intentar descargar el archivo: " + e.getMessage());
         }
@@ -245,31 +197,72 @@ public class SubmissionsViewController extends Controller {
                 return;
             }
 
-            upLoadPath = selectedFile.getAbsolutePath();
+            uploadPath = selectedFile.getAbsolutePath();
             FileMetadatumDTO fileMetadatumDTO = new FileMetadatumDTO();
-            Optional<SubmissionDTO> existingSubmission = pagesData.getContent().stream()
-                    .filter(submission -> submission.getId().equals(selectsubmissionDTO.getId()))
-                    .findFirst();
+            fileMetadatumDTO.setSubmission(selectedSubmissionDTO);
 
-            if (existingSubmission.isPresent()) {
-                SubmissionDTO dto = existingSubmission.get();
-                fileMetadatumDTO.setSubmission(dto);
-                SubmissionDTO updatedSubmission = existingSubmission.get();
-                updatedSubmission.setAssignment(new AssignmentDTO());//courseAssigmentTxtF.getText())
-                updatedSubmission.setStudent(new UserDTO());//studentTextF.getText()
-                
-                updatedSubmission.setGrade(Double.parseDouble(gradeTxtF.getText()));
-                updatedSubmission.setComments(commentaryTxtF.getText());
-            }
-
-            MessageResponse<Void> response = fileAPIService.uploadFile(upLoadPath, fileMetadatumDTO);
+            MessageResponse<Void> response = fileAPIService.uploadFile(uploadPath, fileMetadatumDTO);
             showReadResponse(response);
         } catch (Exception e) {
             showError("Ocurrió un error al intentar subir el archivo: " + e.getMessage());
         }
     }
 
+    /*---------------------------- Helper Methods ----------------------------*/
+
+    private boolean isAnyFieldEmpty() {
+        return courseAssigmentTxtF.getText().isEmpty() || studentTextF.getText().isEmpty();
+    }
+
+    private void clearFields() {
+        courseAssigmentTxtF.clear();
+        studentTextF.clear();
+        gradeTxtF.clear();
+        commentaryTxtF.clear();
+    }
+
+    private void updateSubmissionDTO() {
+        selectedSubmissionDTO.setAssignment(assignmentDTO);
+        selectedSubmissionDTO.setStudent(userDTO);
+        selectedSubmissionDTO.setGrade(Double.parseDouble(gradeTxtF.getText()));
+        selectedSubmissionDTO.setComments(commentaryTxtF.getText());
+    }
+
+    private void showError(String message) {
+        showNotificationToast("Error", message, Alert.AlertType.ERROR);
+    }
+
+    private boolean confirmDelete() {
+        return showConfirmationMessage("Eliminar Entrega", "¿Estás seguro de que deseas eliminar esta entrega?");
+    }
+
+    private void deleteSubmission(SubmissionDTO submission) {
+        MessageResponse<Void> response = baseApiServiceManager.deleteEntity(submission.getId());
+        loadSubmissions();
+        showReadResponse(response);
+    }
+
+    @FXML
+    public void onActionFindByIDBtn(ActionEvent event) {
+        String idToFind = findByIdTxtF.getText();
+        if (idToFind.isEmpty()) {
+            showError("Por favor, ingresa un ID para buscar.");
+            return;
+        }
+        try {
+            long id = Long.parseLong(idToFind);
+            table.getItems().stream()
+                    .filter(submission -> submission.getId().equals(id))
+                    .findFirst()
+                    .ifPresentOrElse(this::fillFieldsFromSelectedSubmission, () -> showError("No se encontró la entrega con el ID proporcionado."));
+        } catch (NumberFormatException e) {
+            showError("Por favor, ingresa un ID válido.");
+        }
+    }
 }
+
+
+
 /*
 referencia
 @Getter
