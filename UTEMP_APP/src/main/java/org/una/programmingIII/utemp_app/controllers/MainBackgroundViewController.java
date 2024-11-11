@@ -12,10 +12,9 @@ import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 public class MainBackgroundViewController extends Controller {
 
     private static final String UNIDENTIFIED_USER_MESSAGE = "Usuario no identificado";
+
+    @FXML
     public MFXButton goMenu, assignations;
-    //    public MFXButton notificationsBtn;
-//    public ImageView imvNotifications1;
-//    public MFXButton logoutBtn;
     @FXML
     private ImageView imvLogo, imvNotifications, imvUser;
     @FXML
@@ -37,7 +36,7 @@ public class MainBackgroundViewController extends Controller {
             usernameLbl.setText(user.getName());
         } else {
             usernameLbl.setText(UNIDENTIFIED_USER_MESSAGE);
-            showAlert("Advertencia", "No se ha podido cargar el nombre de usuario.");
+            showNotificationToast("Advertencia", "No se ha podido cargar el nombre de usuario.");
         }
     }
 
@@ -53,14 +52,14 @@ public class MainBackgroundViewController extends Controller {
 
     @FXML
     void onActionLogoutBtn() {
-        if (confirmationMessage("Logout", "Cerrar sesion?"))
+        if (showConfirmationMessage("Logout", "Cerrar sesion?"))
             ViewManager.getInstance().showMainView(Views.LOGIN);
     }
 
 
     @FXML
     void onActionUserInformationBtn() {
-        showAlert("info", "No se ha podido cargar el nombre de usuario.");
+        super.showNotificationToast("info", "No se ha podido cargar el nombre de usuario.");
     }
 
 //    private void showError(String message) {

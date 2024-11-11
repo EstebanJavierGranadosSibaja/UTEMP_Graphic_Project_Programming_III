@@ -136,7 +136,7 @@ public class FacultyManagementViewController extends Controller {
             return;
         }
         MessageResponse<Void> response = action.get();
-        readResponse(response); // Usar el método readResponse de la clase padre
+        showReadResponse(response); // Usar el método readResponse de la clase padre
         if (response.isSuccess()) {
             loadInitialData(); // Recargar la tabla después de las acciones CRUD
         }
@@ -181,7 +181,7 @@ public class FacultyManagementViewController extends Controller {
     private void loadPage(int page) {
         try {
             MessageResponse<PageDTO<FacultyDTO>> response = facultyAPIService.getFacultiesByUniversityId(AppContext.getInstance().getUniversityDTO().getId(), 0, 10);
-            readResponse(response);
+            showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());
                 pageNumberLbl.setText(String.valueOf(page + 1));
@@ -237,7 +237,7 @@ public class FacultyManagementViewController extends Controller {
         FacultyDTO selectedFaculty = facultiesTbv.getSelectionModel().getSelectedItem();
         if (selectedFaculty != null) {
             MessageResponse<PageDTO<DepartmentDTO>> response = facultyAPIService.getDepartmentsByFacultyId(selectedFaculty.getId(), 0, 10);
-            readResponse(response); // Usar el método readResponse de la clase padre
+            showReadResponse(response); // Usar el método readResponse de la clase padre
             if (response.isSuccess()) {
                 AppContext.getInstance().setPageDepartment(response.getData());
                 AppContext.getInstance().setFacultyDTO(selectedFaculty);
@@ -250,7 +250,7 @@ public class FacultyManagementViewController extends Controller {
 
     @FXML
     public void onActionHelpInfoBtn(ActionEvent event) {
-        super.showAlert("Ayuda gestión universidad", "Usa la tabla para seleccionar información");
+        super.showNotificationToast("Ayuda gestión universidad", "Usa la tabla para seleccionar información");
     }
 
     private Long parseLong(String text) {
@@ -272,12 +272,12 @@ public class FacultyManagementViewController extends Controller {
 
     private void showError(String message) {
         System.err.println(message);
-        showAlert("Error", message, Alert.AlertType.ERROR);
+        showNotificationToast("Error", message, Alert.AlertType.ERROR);
     }
 
     private void showInfo(String message) {
         System.out.println(message);
-        showAlert("Información", message, Alert.AlertType.INFORMATION);
+        showNotificationToast("Información", message, Alert.AlertType.INFORMATION);
     }
 
     @FXML

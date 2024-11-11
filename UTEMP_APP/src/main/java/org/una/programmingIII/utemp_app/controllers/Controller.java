@@ -26,58 +26,24 @@ public abstract class Controller {
     protected String message;
 
     public Controller() {
-        // Inicialización común si es necesaria
     }
 
     @FXML
     public abstract void initialize();
 
     protected void showAlert(String title, String message, Alert.AlertType alertType) {
-//        Alert alert = new Alert(alertType);
-//        alert.setTitle(title);
-//        alert.setHeaderText(null);
-//        alert.setContentText(message);
-//        alert.showAndWait();
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    protected void showNotificationToast(String title, String message, Alert.AlertType alertType) {
         ViewManager.getInstance().createNotification(String.valueOf(alertType), message);
     }
 
-    protected void showAlert(String title, String message) {
-        showAlert(title, message, Alert.AlertType.INFORMATION);
-    }
-
-    protected TextFormatter<String> createTextFormatter(String regex) {
-        return new TextFormatter<>(change -> {
-            String newText = change.getControlNewText();
-            return newText.matches(regex) ? change : null;
-        });
-    }
-
-    // Formateadores
-    protected TextFormatter<String> textFormatterOnlyNumbers() {
-        return createTextFormatter("\\d*");
-    }
-
-    protected TextFormatter<String> textFormatterOnlyLetters() {
-        return createTextFormatter("[a-zA-Z ]*"); // Permite espacios
-    }
-
-    protected void readResponse(MessageResponse<?> response) {
-        if (response.isSuccess()) {
-            showAlert("Éxito", "Operación completada con éxito.", Alert.AlertType.INFORMATION);
-        } else {
-            handleError("Error: " + response.getErrorMessage());
-        }
-
-
-    }
-
-    protected void handleError(String message) {
-        // Registro de errores
-        System.err.println(message);
-        showAlert("Error", message, Alert.AlertType.ERROR);
-    }
-
-    protected boolean confirmationMessage(String header, String content) {
+    protected boolean showConfirmationMessage(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmación");
         alert.setHeaderText(null);
@@ -98,6 +64,41 @@ public abstract class Controller {
         alert.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/alert.css")).toExternalForm());
 
         return alert.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
+    }
+
+    protected void handleError(String message) {
+        System.err.println(message);
+        showNotificationToast("Error", message, Alert.AlertType.ERROR);
+    }
+
+    protected void showNotificationToast(String title, String message) {
+        showNotificationToast(title, message, Alert.AlertType.INFORMATION);
+    }
+
+    protected TextFormatter<String> createTextFormatter(String regex) {
+        return new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            return newText.matches(regex) ? change : null;
+        });
+    }
+
+    // Formateadores
+    protected TextFormatter<String> textFormatterOnlyNumbers() {
+        return createTextFormatter("\\d*");
+    }
+
+    protected TextFormatter<String> textFormatterOnlyLetters() {
+        return createTextFormatter("[a-zA-Z ]*"); // Permite espacios
+    }
+
+    protected void showReadResponse(MessageResponse<?> response) {
+        if (response.isSuccess()) {
+            showNotificationToast("Éxito", "Operación completada con éxito.", Alert.AlertType.INFORMATION);
+        } else {
+            handleError("Error: " + response.getErrorMessage());
+        }
+
+
     }
 }
 //        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/interrogation_icon.png")));

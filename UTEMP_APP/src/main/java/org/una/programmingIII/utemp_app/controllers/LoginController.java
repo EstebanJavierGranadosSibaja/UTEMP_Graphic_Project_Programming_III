@@ -39,13 +39,13 @@ public class LoginController extends Controller {
         String password = passwordPwf.getText();
 
         if (numberId.isEmpty() || password.isEmpty()) {
-            showAlert("Error", "Please enter your identification number and password.");
+            showNotificationToast("Error", "Please enter your identification number and password.");
             return;
         }
 
         MessageResponse<TokenResponse> response = authService.login(new AuthRequest(numberId, password));
 
-        readResponse(response);
+        showReadResponse(response);
         if (response.isSuccess()) {
             AppContext.getInstance().setUserDTO(response.getData().getUser());
             ViewManager.getInstance().showMainView(Views.MAIN_BACKGROUND, Views.MENU);
@@ -53,7 +53,7 @@ public class LoginController extends Controller {
     }
 
     private void showHelp() {
-        showAlert("Help", "This is the help section.");
+        showNotificationToast("Help", "This is the help section.");
     }
 
     private void showInfo() {

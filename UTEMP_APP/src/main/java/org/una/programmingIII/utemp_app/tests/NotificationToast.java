@@ -33,6 +33,11 @@ public class NotificationToast extends Application {
         init("message", "title");
     }
 
+    // Méto-do principal
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     public void init(String message, String title) {
         this.message = message;
         this.title = title;
@@ -147,11 +152,6 @@ public class NotificationToast extends Application {
     // Méto-do para mostrar la notificación
     public void showNotification(Stage primaryStage) {
         start(primaryStage);
-    }
-
-    // Méto-do principal
-    public static void main(String[] args) {
-        launch(args);
     }
 }
 

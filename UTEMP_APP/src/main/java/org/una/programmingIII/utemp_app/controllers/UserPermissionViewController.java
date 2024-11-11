@@ -15,42 +15,78 @@ import java.util.List;
 
 public class UserPermissionViewController extends Controller {
 
-    @FXML private MFXCheckbox manageUsersCkb;
-    @FXML private MFXCheckbox manageEnrollmentsCkb;
-    @FXML private MFXCheckbox manageUniversitiesCkb;
-    @FXML private MFXCheckbox manageFacultiesCkb;
-    @FXML private MFXCheckbox manageDepartmentsCkb;
-    @FXML private MFXCheckbox manageCoursesCkb;
-    @FXML private MFXCheckbox manageAssignmentsCkb;
-    @FXML private MFXCheckbox manageSubmissionsCkb;
-    @FXML private MFXCheckbox manageGradesCkb;
-    @FXML private MFXCheckbox addTeacherCoursesCkb;
-    @FXML private MFXCheckbox addStudentCoursesCkb;
-    @FXML private MFXCheckbox addUniversityFacultiesCkb;
-    @FXML private MFXCheckbox addFacultyDepartmentsCkb;
-    @FXML private MFXCheckbox addDepartmentCoursesCkb;
-    @FXML private MFXCheckbox addCourseAssignmentsCkb;
-    @FXML private MFXCheckbox addAssignmentSubmissionCkb;
-    @FXML private MFXCheckbox addSubmissionFilesCkb;
-    @FXML private MFXCheckbox addSubmissionGradesCkb;
-    @FXML private MFXCheckbox removeTeacherCourseCkb;
-    @FXML private MFXCheckbox removeStudentCoursesCkb;
-    @FXML private MFXCheckbox removeUniversityFacultiesCkb;
-    @FXML private MFXCheckbox removeFacultyDepartmentsCkb;
-    @FXML private MFXCheckbox removeDepartmentCoursesCkb;
-    @FXML private MFXCheckbox removeCourseAssignmentsCkb;
-    @FXML private MFXCheckbox evaluateSubmissionsCkb;
-    @FXML private MFXCheckbox getSubmissionGradesCkb;
-    @FXML private MFXCheckbox getTeacherCoursesCkb;
-    @FXML private MFXCheckbox getStudentCoursesCkb;
-    @FXML private MFXCheckbox getUniversityFacultiesCkb;
-    @FXML private MFXCheckbox getFacultyDepartmentsCkb;
-    @FXML private MFXCheckbox getCourseAssignmentsCkb;
-    @FXML private MFXCheckbox getDepartmentCoursesCkb;
-    @FXML private MFXCheckbox getAssignmentSubmissionCkb;
-    @FXML private MFXCheckbox removeAssignmentSubmissionCkb;
-    @FXML private MFXCheckbox removeSubmissionFilesCkb;
-    @FXML private MFXCheckbox removeSubmissionGradesCkb;
+    @FXML
+    private MFXCheckbox manageUsersCkb;
+    @FXML
+    private MFXCheckbox manageEnrollmentsCkb;
+    @FXML
+    private MFXCheckbox manageUniversitiesCkb;
+    @FXML
+    private MFXCheckbox manageFacultiesCkb;
+    @FXML
+    private MFXCheckbox manageDepartmentsCkb;
+    @FXML
+    private MFXCheckbox manageCoursesCkb;
+    @FXML
+    private MFXCheckbox manageAssignmentsCkb;
+    @FXML
+    private MFXCheckbox manageSubmissionsCkb;
+    @FXML
+    private MFXCheckbox manageGradesCkb;
+    @FXML
+    private MFXCheckbox addTeacherCoursesCkb;
+    @FXML
+    private MFXCheckbox addStudentCoursesCkb;
+    @FXML
+    private MFXCheckbox addUniversityFacultiesCkb;
+    @FXML
+    private MFXCheckbox addFacultyDepartmentsCkb;
+    @FXML
+    private MFXCheckbox addDepartmentCoursesCkb;
+    @FXML
+    private MFXCheckbox addCourseAssignmentsCkb;
+    @FXML
+    private MFXCheckbox addAssignmentSubmissionCkb;
+    @FXML
+    private MFXCheckbox addSubmissionFilesCkb;
+    @FXML
+    private MFXCheckbox addSubmissionGradesCkb;
+    @FXML
+    private MFXCheckbox removeTeacherCourseCkb;
+    @FXML
+    private MFXCheckbox removeStudentCoursesCkb;
+    @FXML
+    private MFXCheckbox removeUniversityFacultiesCkb;
+    @FXML
+    private MFXCheckbox removeFacultyDepartmentsCkb;
+    @FXML
+    private MFXCheckbox removeDepartmentCoursesCkb;
+    @FXML
+    private MFXCheckbox removeCourseAssignmentsCkb;
+    @FXML
+    private MFXCheckbox evaluateSubmissionsCkb;
+    @FXML
+    private MFXCheckbox getSubmissionGradesCkb;
+    @FXML
+    private MFXCheckbox getTeacherCoursesCkb;
+    @FXML
+    private MFXCheckbox getStudentCoursesCkb;
+    @FXML
+    private MFXCheckbox getUniversityFacultiesCkb;
+    @FXML
+    private MFXCheckbox getFacultyDepartmentsCkb;
+    @FXML
+    private MFXCheckbox getCourseAssignmentsCkb;
+    @FXML
+    private MFXCheckbox getDepartmentCoursesCkb;
+    @FXML
+    private MFXCheckbox getAssignmentSubmissionCkb;
+    @FXML
+    private MFXCheckbox removeAssignmentSubmissionCkb;
+    @FXML
+    private MFXCheckbox removeSubmissionFilesCkb;
+    @FXML
+    private MFXCheckbox removeSubmissionGradesCkb;
 
     private UserDTO currentUser;
     private List<UserPermission> initialPermissions;
@@ -154,7 +190,7 @@ public class UserPermissionViewController extends Controller {
 
         if (isSelected && !updatedPermissions.contains(permission)) {
             updatedPermissions.add(permission);
-        } else if (!isSelected && updatedPermissions.contains(permission)) {
+        } else if (!isSelected) {
             updatedPermissions.remove(permission);
         }
 

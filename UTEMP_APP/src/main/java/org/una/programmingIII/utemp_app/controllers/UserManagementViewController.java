@@ -213,7 +213,7 @@ public class UserManagementViewController extends Controller {
             return;
         }
         MessageResponse<Void> response = action.get();
-        super.readResponse(response);
+        super.showReadResponse(response);
         if (response.isSuccess()) {
             loadInitialData();
         }
@@ -251,7 +251,7 @@ public class UserManagementViewController extends Controller {
         try {
             MessageResponse<PageDTO<UserDTO>> response = userAPIService.getAllEntities(PageRequest.of(page, 10), new TypeReference<>() {
             });
-            super.readResponse(response);
+            super.showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());
                 pageNumberLbl.setText(String.valueOf(page + 1));

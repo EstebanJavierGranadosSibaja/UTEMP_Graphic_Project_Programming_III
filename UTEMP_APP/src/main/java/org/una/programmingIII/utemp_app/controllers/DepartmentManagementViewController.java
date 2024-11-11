@@ -127,7 +127,7 @@ public class DepartmentManagementViewController extends Controller {
             return;
         }
         MessageResponse<Void> response = action.get();
-        super.readResponse(response);
+        super.showReadResponse(response);
         if (response.isSuccess()) {
             loadInitialData();
         }
@@ -152,7 +152,7 @@ public class DepartmentManagementViewController extends Controller {
         try {
             MessageResponse<PageDTO<DepartmentDTO>> response = baseApiServiceManager.getAllEntities(PageRequest.of(page, 10), new TypeReference<PageDTO<DepartmentDTO>>() {
             });
-            super.readResponse(response);
+            super.showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());
                 pageNumberLbl.setText(String.valueOf(page + 1));
@@ -235,7 +235,7 @@ public class DepartmentManagementViewController extends Controller {
     @FXML
     public void onActionHelpInfoBtn() {
         System.out.println("Displaying help info...");
-        showAlert("ayuda para administrar", " reinicia el pc");
+        showNotificationToast("ayuda para administrar", " reinicia el pc");
     }
 
     @FXML

@@ -45,7 +45,8 @@ public class FacultyAPIService extends BaseApiServiceManager<FacultyDTO> {
 
     public MessageResponse<PageDTO<FacultyDTO>> getFacultiesByUniversityId(Long universityId, int page, int size) {
         String endpoint = ENTITY_ENDPOINT + "/university/" + universityId + "?page=" + page + "&size=" + size;
-        return super.getEntitiesByEndpoint(endpoint, new TypeReference<PageDTO<FacultyDTO>>() {});
+        return super.getEntitiesByEndpoint(endpoint, new TypeReference<PageDTO<FacultyDTO>>() {
+        });
     }
 
     public MessageResponse<PageDTO<DepartmentDTO>> getDepartmentsByFacultyId(Long facultyId, int page, int size) {

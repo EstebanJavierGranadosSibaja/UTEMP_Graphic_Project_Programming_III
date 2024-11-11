@@ -180,14 +180,14 @@ public class ViewManager {
         }
     }
 
-    // Holder pattern for lazy initialization
-    private static class Holder {
-        private static final ViewManager INSTANCE = new ViewManager();
-    }
-
     public void createNotification(String title, String message) {
         notificationToast.setMessage(message);
         notificationToast.setTitle(title);
         notificationToast.start(mainStage);
+    }
+
+    // Holder pattern for lazy initialization
+    private static class Holder {
+        private static final ViewManager INSTANCE = new ViewManager();
     }
 }

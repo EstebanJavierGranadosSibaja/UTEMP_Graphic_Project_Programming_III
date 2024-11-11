@@ -85,8 +85,9 @@ public class UniversityManagementViewController extends Controller {
     private void loadPage(int page) {
         try {
             MessageResponse<PageDTO<UniversityDTO>> response = baseApiServiceManager.getAllEntities(
-                    PageRequest.of(page, 10), new TypeReference<PageDTO<UniversityDTO>>() {});
-            super.readResponse(response);
+                    PageRequest.of(page, 10), new TypeReference<PageDTO<UniversityDTO>>() {
+                    });
+            super.showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());
                 pageNumberLbl.setText(String.valueOf(page + 1));
@@ -204,7 +205,7 @@ public class UniversityManagementViewController extends Controller {
 
     @FXML
     public void onActionHelpInfoBtn(ActionEvent event) {
-        super.showAlert("Ayuda gestion universidad", "usa la tabla para seleccionar información");
+        super.showNotificationToast("Ayuda gestion universidad", "usa la tabla para seleccionar información");
     }
 
     // Helper Methods
@@ -214,7 +215,7 @@ public class UniversityManagementViewController extends Controller {
             return;
         }
         MessageResponse<Void> response = action.get();
-        super.readResponse(response);
+        super.showReadResponse(response);
         if (response.isSuccess()) {
             loadInitialData();
         }

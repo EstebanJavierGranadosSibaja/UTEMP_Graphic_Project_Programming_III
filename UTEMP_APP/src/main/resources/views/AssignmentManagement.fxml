@@ -1,126 +1,176 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox id="root" alignment="CENTER" prefHeight="550.0" prefWidth="1000.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.DepartmentManagementViewController">
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox id="root" alignment="CENTER" prefHeight="550.0" prefWidth="1000.0" VBox.vgrow="ALWAYS"
+      xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.una.programmingIII.utemp_app.controllers.AssignmentManagementViewController">
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0"/>
             </padding>
             <children>
                 <VBox prefHeight="530.0" prefWidth="383.0" spacing="10.0" HBox.hgrow="ALWAYS">
                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0"
+                              VBox.vgrow="ALWAYS">
                             <children>
-                                <MFXTextField id="mfx-text-filed" fx:id="findByIdTxf" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="242.0" promptText="ASSIGMENT ID HERE: " HBox.hgrow="ALWAYS" />
-                                <MFXButton id="mfx-small-button" fx:id="findByCourseIdBtn" maxHeight="40.0" maxWidth="150.0" onAction="#onActionFindByNameBtn" prefHeight="40.0" prefWidth="107.0" text="FIND BY COURSE ID" HBox.hgrow="ALWAYS" />
+                                <MFXTextField id="mfx-text-filed" fx:id="findByIdTxf" floatMode="ABOVE" maxHeight="40.0"
+                                              maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="242.0"
+                                              promptText="ASSIGMENT ID HERE: " HBox.hgrow="ALWAYS"/>
+                                <MFXButton id="mfx-small-button" fx:id="findByCourseIdBtn" maxHeight="40.0"
+                                           maxWidth="150.0" onAction="#onActionFindByNameBtn" prefHeight="40.0"
+                                           prefWidth="107.0" text="FIND BY COURSE ID" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
-                        <TableView fx:id="assignmentTbv" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="410.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="assignmentTbv" maxHeight="1.7976931348623157E308"
+                                   maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="410.0"
+                                   tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="assignmentdTbc" maxWidth="1.7976931348623157E308" prefWidth="63.73333299160004" resizable="false" text="ID" />
-                                <TableColumn fx:id="assignmentTitleTbc" maxWidth="1.7976931348623157E308" prefWidth="75.20002746582031" resizable="false" text="TITLE" />
-                                <TableColumn fx:id="courseNameTbc" maxWidth="1.7976931348623157E308" prefWidth="84.79998779296875" resizable="false" text="COURSE" />
-                                <TableColumn fx:id="assignmentStateTbc" prefWidth="96.80001831054688" text="STATE" />
-                        <TableColumn fx:id="assignmentDeadlineTbc" prefWidth="92.79998779296875" text="DEADLINE" />
+                                <TableColumn fx:id="assignmentdTbc" maxWidth="1.7976931348623157E308"
+                                             prefWidth="63.73333299160004" resizable="false" text="ID"/>
+                                <TableColumn fx:id="assignmentTitleTbc" maxWidth="1.7976931348623157E308"
+                                             prefWidth="75.20002746582031" resizable="false" text="TITLE"/>
+                                <TableColumn fx:id="courseNameTbc" maxWidth="1.7976931348623157E308"
+                                             prefWidth="84.79998779296875" resizable="false" text="COURSE"/>
+                                <TableColumn fx:id="assignmentStateTbc" prefWidth="96.80001831054688" text="STATE"/>
+                                <TableColumn fx:id="assignmentDeadlineTbc" prefWidth="92.79998779296875"
+                                             text="DEADLINE"/>
                             </columns>
                         </TableView>
                         <HBox alignment="CENTER" prefHeight="74.0" prefWidth="398.0" spacing="5.0">
                             <children>
-                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0"
+                                      HBox.hgrow="ALWAYS">
                                     <children>
-                                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0"
+                                              HBox.hgrow="ALWAYS">
                                             <children>
-                                                <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="35.0" onAction="#onActionReloadPageBtn" prefHeight="35.0" prefWidth="130.0" text="RELOAD PAGE" />
+                                                <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="35.0"
+                                                           onAction="#onActionReloadPageBtn" prefHeight="35.0"
+                                                           prefWidth="130.0" text="RELOAD PAGE"/>
                                             </children>
                                         </HBox>
-                                        <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="90.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS" />
-                                        <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS" />
-                                        <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0" maxWidth="90.0" onAction="#onActionNextPageBtn" prefWidth="90.0" text="NEXT" HBox.hgrow="ALWAYS" />
+                                        <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0"
+                                                   maxWidth="90.0" onAction="#onActionPrevPageBtn" prefWidth="90.0"
+                                                   text="PREVIOUS" HBox.hgrow="ALWAYS"/>
+                                        <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS"/>
+                                        <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0"
+                                                   maxWidth="90.0" onAction="#onActionNextPageBtn" prefWidth="90.0"
+                                                   text="NEXT" HBox.hgrow="ALWAYS"/>
                                     </children>
                                 </HBox>
                             </children>
                         </HBox>
                     </children>
                     <padding>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                 </VBox>
-                <Separator orientation="VERTICAL" prefHeight="470.0" prefWidth="14.0" />
-                <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="406.0" spacing="35.0" HBox.hgrow="ALWAYS">
+                <Separator orientation="VERTICAL" prefHeight="470.0" prefWidth="14.0"/>
+                <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                      prefHeight="530.0" prefWidth="406.0" spacing="35.0" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                     <children>
-                        <Label id="label" alignment="CENTER" prefHeight="18.0" prefWidth="482.0" text="ASSIGMENT MANAGEMENT" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                        <Label id="label" alignment="CENTER" prefHeight="18.0" prefWidth="482.0"
+                               text="ASSIGMENT MANAGEMENT" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                             <VBox.margin>
-                                <Insets bottom="10.0" />
+                                <Insets bottom="10.0"/>
                             </VBox.margin>
                         </Label>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <MFXButton id="mfx-small-button" fx:id="clearFieldsBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionClearFieldsBtn" prefHeight="50.0" prefWidth="100.0" text="CLEAR FIELDS" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button" fx:id="clearFieldsBtn" maxHeight="50.0"
+                                           maxWidth="120.0" onAction="#onActionClearFieldsBtn" prefHeight="50.0"
+                                           prefWidth="100.0" text="CLEAR FIELDS" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="34.0" prefWidth="458.0" spacing="15.0">
                             <children>
-                                <MFXTextField id="mfx-text-filed" fx:id="assigmentIdTxf" editable="false" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="ASSIGMENT ID:" selectable="false" HBox.hgrow="ALWAYS" />
-                                <MFXTextField id="mfx-text-filed" fx:id="courseAssigmentTxf" editable="false" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="COURSE ASSIGNMENT:" selectable="false" HBox.hgrow="ALWAYS" />
+                                <MFXTextField id="mfx-text-filed" fx:id="assigmentIdTxf" editable="false"
+                                              floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308"
+                                              prefHeight="50.0" prefWidth="395.0" promptText="ASSIGMENT ID:"
+                                              selectable="false" HBox.hgrow="ALWAYS"/>
+                                <MFXTextField id="mfx-text-filed" fx:id="courseAssigmentTxf" editable="false"
+                                              floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308"
+                                              prefHeight="50.0" prefWidth="395.0" promptText="COURSE ASSIGNMENT:"
+                                              selectable="false" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="20.0" layoutY="84.0" prefHeight="46.0" prefWidth="458.0" spacing="15.0">
+                        <HBox alignment="CENTER" layoutX="20.0" layoutY="84.0" prefHeight="46.0" prefWidth="458.0"
+                              spacing="15.0">
                             <children>
-                                <MFXTextField id="mfx-text-filed" fx:id="assignmentTitleTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="ASSIGMENT TITLE:" HBox.hgrow="ALWAYS" />
-                                <MFXTextField id="mfx-text-filed" fx:id="assigmentDescriptionTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="ASSIGNMENT DESCRIPTION:" HBox.hgrow="ALWAYS" />
+                                <MFXTextField id="mfx-text-filed" fx:id="assignmentTitleTxf" floatMode="ABOVE"
+                                              maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0"
+                                              prefWidth="395.0" promptText="ASSIGMENT TITLE:" HBox.hgrow="ALWAYS"/>
+                                <MFXTextField id="mfx-text-filed" fx:id="assigmentDescriptionTxf" floatMode="ABOVE"
+                                              maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0"
+                                              prefWidth="395.0" promptText="ASSIGNMENT DESCRIPTION:"
+                                              HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="168.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="168.0" maxHeight="1.7976931348623157E308"
+                              maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0"
+                              VBox.vgrow="ALWAYS">
                             <children>
-                                <MFXComboBox id="mfx-text-filed" fx:id="assigmentStateTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="ASSIGMENT STATE" HBox.hgrow="ALWAYS" />
-                        <MFXDatePicker id="mfx-datepicker" fx:id="assignmentDeadlineDtp" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="DEADLINE" HBox.hgrow="ALWAYS" />
+                                <MFXComboBox id="mfx-text-filed" fx:id="assigmentStateTxf" floatMode="ABOVE"
+                                             maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0"
+                                             promptText="ASSIGMENT STATE" HBox.hgrow="ALWAYS"/>
+                                <MFXDatePicker id="mfx-datepicker" fx:id="assignmentDeadlineDtp" maxHeight="50.0"
+                                               maxWidth="170.0" prefHeight="50.0" prefWidth="170.0"
+                                               promptText="DEADLINE" HBox.hgrow="ALWAYS"/>
                             </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
+                            <VBox.margin>
+                                <Insets/>
+                            </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="470.0" spacing="15.0" VBox.vgrow="ALWAYS">
                             <children>
                                 <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                        <MFXButton id="mfx-small-button-important" fx:id="deleteBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionDeleteAssignmentBtn" prefHeight="50.0" prefWidth="100.0" text="DELETE" HBox.hgrow="ALWAYS" />
+                                        <MFXButton id="mfx-small-button-important" fx:id="deleteBtn" maxHeight="50.0"
+                                                   maxWidth="120.0" onAction="#onActionDeleteAssignmentBtn"
+                                                   prefHeight="50.0" prefWidth="100.0" text="DELETE"
+                                                   HBox.hgrow="ALWAYS"/>
                                     </children>
                                 </HBox>
-                                <MFXButton id="mfx-small-button-important" fx:id="updateBtn" maxHeight="50.0" maxWidth="200.0" onAction="#onActionUpdateAssignmentBtn" prefHeight="50.0" prefWidth="100.0" text="UPDATE" HBox.hgrow="ALWAYS" />
-                                <MFXButton id="mfx-small-button-important" fx:id="createBtn" maxHeight="50.0" maxWidth="200.0" onAction="#onActionCreateAssignmentBtn" prefHeight="50.0" prefWidth="100.0" text="CREATE" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button-important" fx:id="updateBtn" maxHeight="50.0"
+                                           maxWidth="200.0" onAction="#onActionUpdateAssignmentBtn" prefHeight="50.0"
+                                           prefWidth="100.0" text="UPDATE" HBox.hgrow="ALWAYS"/>
+                                <MFXButton id="mfx-small-button-important" fx:id="createBtn" maxHeight="50.0"
+                                           maxWidth="200.0" onAction="#onActionCreateAssignmentBtn" prefHeight="50.0"
+                                           prefWidth="100.0" text="CREATE" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="152.0" prefWidth="387.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="152.0" prefWidth="387.0" spacing="15.0"
+                              VBox.vgrow="ALWAYS">
                             <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                           <children>
-                                      <MFXButton id="mfx-small-button" fx:id="backBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionBackBtn" prefHeight="50.0" prefWidth="120.0" text="BACK" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                        <MFXButton id="mfx-small-button-important" fx:id="downloadFilesBtn" layoutX="247.0" layoutY="11.0" maxHeight="50.0" maxWidth="200.0" onAction="#onActiondownLoadFilesBtn" prefHeight="50.0" prefWidth="122.0" text="DOWNLOAD FILE" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </MFXButton>
-                                <MFXButton id="mfx-small-button-important" fx:id="loadFilesBtn" maxHeight="50.0" maxWidth="200.0" onAction="#onActionLoadFilesBtn" prefHeight="50.0" prefWidth="100.0" text="LOAD FILE" HBox.hgrow="ALWAYS" />
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <MFXButton id="mfx-small-button" fx:id="backBtn" maxHeight="50.0"
+                                                   maxWidth="120.0" onAction="#onActionBackBtn" prefHeight="50.0"
+                                                   prefWidth="120.0" text="BACK" HBox.hgrow="ALWAYS"/>
+                                    </children>
+                                </HBox>
+                                <MFXButton id="mfx-small-button-important" fx:id="downloadFilesBtn" layoutX="247.0"
+                                           layoutY="11.0" maxHeight="50.0" maxWidth="200.0"
+                                           onAction="#onActiondownLoadFilesBtn" prefHeight="50.0" prefWidth="122.0"
+                                           text="DOWNLOAD FILE" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets/>
+                                    </HBox.margin>
+                                </MFXButton>
+                                <MFXButton id="mfx-small-button-important" fx:id="loadFilesBtn" maxHeight="50.0"
+                                           maxWidth="200.0" onAction="#onActionLoadFilesBtn" prefHeight="50.0"
+                                           prefWidth="100.0" text="LOAD FILE" HBox.hgrow="ALWAYS"/>
                             </children>
                             <VBox.margin>
-                                <Insets bottom="15.0" />
+                                <Insets bottom="15.0"/>
                             </VBox.margin>
                         </HBox>
                     </children>
@@ -129,6 +179,6 @@
         </HBox>
     </children>
     <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
     </padding>
 </VBox>
