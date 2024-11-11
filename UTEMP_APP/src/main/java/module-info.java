@@ -46,4 +46,5 @@ module org.una.programmingIII.utemp_app {
     exports org.una.programmingIII.utemp_app.responses;
     exports org.una.programmingIII.utemp_app.dtos;
     exports org.una.programmingIII.utemp_app.services;
+    exports org.una.programmingIII.utemp_app.services.models;
 }

@@ -1,14 +1,82 @@
 /*------------ROOT-----------*/
 
 /* Fondo principal */
-#root {
+.root {
     -fx-background-color: #352d5a; /* Gris oscuro */
+
+    -fx-border-radius: 5;
+    -fx-border-width: 1px;
+    -fx-border-color: #d68fff;
+
+
+    /*-fx-padding: 10px; !* Agregar relleno alrededor del contenido *!*/
+    /*-fx-font-family: "Rage Italic", sans-serif; !* Fuente predeterminada *!*/
+    /*-fx-font-family: 'Roboto', sans-serif;*/
+    /*font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;*/
+    font-family: 'Lato', sans-serif;
+
+
+    -fx-font-size: 14px; /* Tamaño de fuente para los textos generales */
+    -fx-text-fill: white; /* Color del texto por defecto */
+}
+
+.panel .text-field {
+    -fx-border-radius: 15;
+    -fx-border-width: 1px;
+    -fx-border-color: #d68fff;
+}
+
+.content {
+    -fx-background-color: #ffffff;
+
+    /*-fx-padding: 20px; !* Agregar relleno interno *!*/
+    -fx-border-radius: 6px; /* Bordes redondeados */
+    -fx-border-color: rgba(118, 26, 230, 0.71); /* Bordes sutiles */
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 10, 0, 0, 5); /* Sombra alrededor del contenedor */
+
+    font-family: 'Lato', sans-serif;
+
+
+    -fx-font-size: 14px; /* Tamaño de fuente para los textos generales */
+    -fx-text-fill: #000000; /* Color del texto por defecto */
+
+}
+
+/* ========================== */
+/* 8. Estilo del menú contextual */
+/* ========================== */
+
+.context-menu {
+    -fx-background-color: linear-gradient(to top left, #000000, #203935, #000000); /* Fondo oscuro */
+    -fx-border-radius: 8px; /* Bordes redondeados */
+    -fx-padding: 5px; /* Relleno alrededor */
+}
+
+/* ========================== */
+/* 8.2. Estilo de las opciones del menú contextual */
+/* ========================== */
+
+.context-menu .menu-item {
+    -fx-background-color: transparent; /* Fondo transparente por defecto */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+    -fx-padding: 10px 20px; /* Espaciado interno */
+    -fx-font-size: 14px; /* Tamaño de texto */
+    -fx-cursor: hand; /* Cursor de mano al pasar el mouse */
+}
+
+/* Efecto al pasar el mouse sobre una opción del menú */
+.context-menu .menu-item:hover {
+    -fx-background-color: #555555; /* Fondo gris oscuro al hacer hover */
+}
+
+/* Opción seleccionada en el menú */
+.context-menu .menu-item:focused {
+    -fx-background-color: #777777; /* Fondo gris más claro para opción seleccionada */
 }
 
 
-
 /*------------LABELS-----------*/
-
 
 
 /* Estilo para las etiquetas */
@@ -41,16 +109,14 @@
     -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1.5, 1, -1, 2.5); /* Sombra sutil */
 }
 
-#label-number{
+#label-number {
     -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
     -fx-font-weight: bold; /* Texto en negrita */
     -fx-font-size: 15px; /* Tamaño de fuente más grande */
 }
 
 
-
 /*------------BUTTONS-----------*/
-
 
 
 /* Estilo para los botones */
@@ -141,7 +207,6 @@
 /*------------BOXES-----------*/
 
 
-
 /* Estilo para los VBox */
 #vbox-login {
     -fx-spacing: 25px;
@@ -156,12 +221,10 @@
 }
 
 
-
 /*---------CHECK-BOX-----------*/
 
 
-
-#mfx-check-box{
+#mfx-check-box {
     -fx-background-color: #743885; /* Fondo oscuro con transparencia */
     -fx-background-radius: 15px; /* Bordes ligeramente redondeados */
     -fx-text-fill: #ffffff; /* Lila claro más brillante */
@@ -181,8 +244,7 @@
 /*---------TEXT-FIELD-----------*/
 
 
-
-#mfx-text-filed{
+#mfx-text-filed {
     -fx-font-weight: bold;
 }
 
@@ -193,9 +255,7 @@
 }
 
 
-
 /*------------MFX-DATEPICKER-----------*/
-
 
 
 /* Estilo del MFXDatePicker */

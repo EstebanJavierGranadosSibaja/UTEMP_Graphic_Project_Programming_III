@@ -9,40 +9,39 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Data
 public class FileMetadatumDTO {
 
-    private Long id;
+    private Long id;// predefinodo
 
     @Builder.Default
-    private SubmissionDTO submission = new SubmissionDTO();
+    private SubmissionDTO submission = new SubmissionDTO();//predefinido
 
     @Builder.Default
-    private UserDTO student = new UserDTO();
+    private UserDTO student = new UserDTO(); // predefinido
 
     @NotNull(message = "File name must not be null")
     @Size(max = 255, message = "File name must be at most 255 characters long")
-    private String fileName;
+    private String fileName;// se define durante la subida
 
     @NotNull(message = "File size must not be null")
-    private Long fileSize;
+    private Long fileSize;// se define durante la subida
 
     @Size(max = 100, message = "File type must be at most 100 characters long")
-    private String fileType;
+    private String fileType;// se define durante la subida
 
-    @Size(max = 500, message = "Storage path must be at most 500 characters long")
-    private String storagePath;
+    private LocalDateTime createdAt;// se define durante la subida
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastUpdate;
+    private LocalDateTime lastUpdate;// se define durante la subida
 
     // Nuevos campos para manejo de fragmentos
-    private byte[] fileChunk; // Fragmento del archivo
-    private int chunkIndex; // Índice del fragmento
-    private int totalChunks; // Número total de fragmentos
+    private byte[] fileChunk; // Fragmento del archivo// se define durante la subida
+    private int chunkIndex; // Índice del fragmento// se define durante la subida
+    private int totalChunks; // Número total de fragmentos// se define durante la subida
 
+    @Size(max = 500, message = "Storage path must be at most 500 characters long")
+    private String storagePath;// se define durante la subida
 }

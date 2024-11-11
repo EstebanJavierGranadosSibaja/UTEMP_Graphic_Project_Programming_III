@@ -8,6 +8,8 @@ import org.una.programmingIII.utemp_app.exceptions.CustomException;
 import org.una.programmingIII.utemp_app.exceptions.http.*;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.HttpMethod;
+import org.una.programmingIII.utemp_app.utils.Views;
+import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +17,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings("All")
 public class HttpClientConnectionManager {
     protected static final Logger logger = LoggerFactory.getLogger(HttpClientConnectionManager.class);
     protected static final String AUTHORIZATION_HEADER = "Authorization";
@@ -26,7 +30,7 @@ public class HttpClientConnectionManager {
     protected static final String TYPE_JSON = "application/json";
     protected static String token;
     protected final ObjectMapper objectMapper = new ObjectMapper();
-    protected final String baseUrl; // "http://localhost:8080/utemp" va a recibir este
+    protected final String baseUrl;
     private final int connectTimeout;
     private final int readTimeout;
     protected String message;
@@ -41,25 +45,43 @@ public class HttpClientConnectionManager {
         HttpClientConnectionManager.token = token;
     }
 
-    // Métodos de conexión
-    protected HttpURLConnection createConnection(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws Exception {
-        HttpURLConnection connection = (HttpURLConnection) new URI(baseUrl + endpoint).toURL().openConnection();
-        setupConnectionProperties(connection, method);
-        validateToken();
-        connection.setRequestProperty(AUTHORIZATION_HEADER, "Bearer " + token);
+    protected HttpURLConnection createConnection(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws CustomException, IOException {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URI(baseUrl + endpoint).toURL().openConnection();
+            setupConnectionProperties(connection, method);
 
-        // Añadir encabezados personalizados
-        addCustomHeaders(connection, customHeaders);
+            validateToken();
+
+            connection.setRequestProperty(AUTHORIZATION_HEADER, "Bearer " + token);
+            addCustomHeaders(connection, customHeaders);
+        } catch (TokenException e) {
+//            ViewManager.getInstance().showMainView(Views.LOGIN);//TODO
+            return null;
+        } catch (IOException e) {
+            logger.error("Error creating connection for endpoint {}: {}", endpoint, e.getMessage());
+            throw e;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return connection;
     }
 
-    protected HttpURLConnection createLoginConnection() throws Exception {
-        HttpURLConnection connection = (HttpURLConnection) new URI(baseUrl + "/auth/login").toURL().openConnection();
-        setupConnectionProperties(connection, HttpMethod.POST);
+    protected HttpURLConnection createLoginConnection() throws IOException {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URI(baseUrl + "/auth/login").toURL().openConnection();
+            setupConnectionProperties(connection, HttpMethod.POST);
+        } catch (IOException e) {
+            logger.error("Error creating login connection: {}", e.getMessage(), e);
+            throw e;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return connection;
     }
 
-    protected HttpURLConnection createConnectionWithBody(String endpoint, HttpMethod method, Object body, Map<String, String> customHeaders) throws Exception {
+    protected HttpURLConnection createConnectionWithBody(String endpoint, HttpMethod method, Object body, Map<String, String> customHeaders) throws CustomException, IOException {
         HttpURLConnection connection = createConnection(endpoint, method, customHeaders);
         if (body != null) {
             setupConnectionForOutput(connection);
@@ -68,26 +90,24 @@ public class HttpClientConnectionManager {
         return connection;
     }
 
-    protected HttpURLConnection createConnectionWithoutBody(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws Exception {
+    protected HttpURLConnection createConnectionWithoutBody(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws CustomException, IOException {
         return createConnection(endpoint, method, customHeaders);
     }
 
-    // Ejecutar conexión para retornar un resultado vacío (solo código de error)
     protected MessageResponse<Void> executeVoidConnection(String endpoint, HttpMethod method, Map<String, String> customHeaders) {
         HttpURLConnection connection = null;
         try {
             connection = createConnectionWithoutBody(endpoint, method, customHeaders);
             boolean success = handleResponseForVoid(connection);
             return new MessageResponse<>(null, success, success ? "Operación exitosa" : "Error en la conexión", null);
-        } catch (Exception e) {
-            logger.error("Error executing connection: {}", e.getMessage(), e);
+        } catch (IOException | CustomException e) {
+            logger.error("Error executing connection for endpoint {}: {}", endpoint, e.getMessage(), e);
             return new MessageResponse<>(null, false, "Error en la conexión", e.getMessage());
         } finally {
             disconnectConnection(connection);
         }
     }
 
-    // Ejecutar conexión y esperar un tipo de respuesta específico
     protected <C> MessageResponse<C> executeConnectionWithType(String endpoint, HttpMethod method, TypeReference<C> tipoEsperado, Map<String, String> customHeaders) {
         HttpURLConnection connection = null;
         try {
@@ -95,15 +115,14 @@ public class HttpClientConnectionManager {
             Optional<C> response = handleResponseWithType(connection, tipoEsperado);
             return response.map(c -> new MessageResponse<>(c, true, "Operación exitosa", null))
                     .orElseGet(() -> new MessageResponse<>(null, false, "Error en la respuesta", "No se recibió respuesta válida"));
-        } catch (Exception e) {
-            logger.error("Error executing connection: {}", e.getMessage(), e);
+        } catch (IOException | CustomException e) {
+            logger.error("Error executing connection for endpoint {}: {}", endpoint, e.getMessage(), e);
             return new MessageResponse<>(null, false, "Error en la conexión", e.getMessage());
         } finally {
             disconnectConnection(connection);
         }
     }
 
-    // Métodos auxiliares protegidos para su uso en subclases
     protected void addCustomHeaders(HttpURLConnection connection, Map<String, String> customHeaders) {
         if (customHeaders != null) {
             for (Map.Entry<String, String> header : customHeaders.entrySet()) {
@@ -112,17 +131,20 @@ public class HttpClientConnectionManager {
         }
     }
 
-    protected void validateToken() {
+    protected void validateToken() throws CustomException {
         if (token == null || token.isEmpty()) {
             logger.info("Token is empty");
-            throw new CustomException("No hay token");
+            throw new TokenException("No hay token");
         }
     }
 
     protected <R> void writeDataToConnection(HttpURLConnection connection, R dato) throws IOException {
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = objectMapper.writeValueAsBytes(dato);
-            os.write(input, 0, input.length);
+            os.write(input);
+        } catch (IOException e) {
+            logger.error("Error writing data to connection: {}", e.getMessage(), e);
+            throw e;
         }
     }
 
@@ -144,14 +166,12 @@ public class HttpClientConnectionManager {
             int responseCode = connection.getResponseCode();
             validateResponseCode(responseCode);
             String responseContent = readResponse(connection);
-
             return Optional.of(objectMapper.readValue(responseContent, typeReference));
-        } catch (Exception e) {
-            logger.error("Error handling response: {}", e.getMessage(), e);
+        } catch (IOException | ApiException e) {
+            logger.error("Error handling response for connection: {}", e.getMessage(), e);
             return Optional.empty();
         }
     }
-
 
     protected boolean handleResponseForVoid(HttpURLConnection connection) {
         try {
@@ -159,14 +179,14 @@ public class HttpClientConnectionManager {
             logger.info("Response code: {}", responseCode);
             validateResponseCode(responseCode);
             return true;
-        } catch (Exception e) {
+        } catch (IOException | ApiException e) {
             message = e.getMessage();
             logger.error("Error retrieving response code: {}", e.getMessage());
             return false;
         }
     }
 
-    protected String readResponse(HttpURLConnection connection) throws Exception {
+    protected String readResponse(HttpURLConnection connection) throws IOException {
         logger.info("Reading response from connection");
         try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             StringBuilder response = new StringBuilder();
@@ -176,9 +196,6 @@ public class HttpClientConnectionManager {
             }
             logger.info("Response received: {}", response);
             return response.toString();
-        } catch (IOException e) {
-            logger.error("Error reading response: {}", e.getMessage());
-            throw e;
         }
     }
 
@@ -205,7 +222,7 @@ public class HttpClientConnectionManager {
         try {
             logger.info("Parsing response...");
             return Optional.of(objectMapper.readValue(responseContent, typeReference));
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error("Error parsing response: {}", e.getMessage());
             return Optional.empty();
         }
