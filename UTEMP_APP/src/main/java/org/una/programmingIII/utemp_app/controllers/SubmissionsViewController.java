@@ -42,7 +42,8 @@ public class SubmissionsViewController extends Controller {
 
     /*---------------------------- Services ----------------------------*/
     private final BaseApiServiceManager<SubmissionDTO> submissionService = new SubmissionAPIService();
-    private final AssignmentAPIService assignmentAPIService = new AssignmentAPIService();
+//    private final AssignmentAPIService assignmentAPIService = new AssignmentAPIService();
+    private final SubmissionAPIService submissionAPIService = new SubmissionAPIService();
     private final FileAPIService fileAPIService = new FileAPIService();
 
     /*---------------------------- Page Data ----------------------------*/
@@ -87,7 +88,7 @@ public class SubmissionsViewController extends Controller {
             showError("Assignment not selected");
             return;
         }
-        var response = assignmentAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), currentPage, 10);
+        var response = submissionAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), currentPage, 10);
         if (response.isSuccess()) {
             pagesData = response.getData();
             tableView.setItems(FXCollections.observableArrayList(pagesData.getContent()));
@@ -123,7 +124,7 @@ public class SubmissionsViewController extends Controller {
 
     private void loadPage(int pageNumber) {
         currentPage = pageNumber;
-        var response = assignmentAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), currentPage, 10);
+        var response = submissionAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), currentPage, 10);
         if (response.isSuccess()) {
             pagesData = response.getData();
             tableView.setItems(FXCollections.observableArrayList(pagesData.getContent()));

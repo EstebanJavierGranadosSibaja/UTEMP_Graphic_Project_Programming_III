@@ -143,9 +143,9 @@ public class ViewManager {
         FXMLLoader loader = getLoader(viewName);
         Controller controller = loader.getController();
 
-        if (controller != null) {
-            controller.initialize();
-        }
+//        if (controller != null) {
+////            controller.initialize();
+//        }
 
         try {
             if (mainStage != null && mainStage.getScene() != null) {
