@@ -12,7 +12,7 @@ import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 public class MainBackgroundViewController extends Controller {
 
     private static final String UNIDENTIFIED_USER_MESSAGE = "Usuario no identificado";
-    public MFXButton goMenu;
+    public MFXButton goMenu, assignations;
     //    public MFXButton notificationsBtn;
 //    public ImageView imvNotifications1;
 //    public MFXButton logoutBtn;
@@ -27,9 +27,8 @@ public class MainBackgroundViewController extends Controller {
     public void initialize() {
         loadUserInformation();
 
-        goMenu.setOnAction(event -> {
-            ViewManager.getInstance().loadInternalView(Views.MENU);
-        });
+        goMenu.setOnAction(event -> ViewManager.getInstance().loadInternalView(Views.MENU));
+        assignations.setOnAction(event -> ViewManager.getInstance().loadInternalView(Views.ASSIGNMENT));
     }
 
     private void loadUserInformation() {

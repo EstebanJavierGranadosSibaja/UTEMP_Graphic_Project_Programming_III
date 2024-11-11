@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="root" alignment="CENTER" prefHeight="550.0" prefWidth="1000.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.DepartmentManagementViewController">
+<VBox id="root" alignment="CENTER" prefHeight="550.0" prefWidth="1000.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.DepartmentManagementViewController">
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
             <padding>
@@ -112,7 +112,7 @@
                                       <MFXButton id="mfx-small-button" fx:id="backBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionBackBtn" prefHeight="50.0" prefWidth="120.0" text="BACK" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <MFXButton id="mfx-small-button-important" fx:id="downloadFilesBtn" layoutX="247.0" layoutY="11.0" maxHeight="50.0" maxWidth="200.0" onAction="#onActiondownLoadFilesBtn" prefHeight="50.0" prefWidth="100.0" text="DOWNLOAD FILE" HBox.hgrow="ALWAYS">
+                        <MFXButton id="mfx-small-button-important" fx:id="downloadFilesBtn" layoutX="247.0" layoutY="11.0" maxHeight="50.0" maxWidth="200.0" onAction="#onActiondownLoadFilesBtn" prefHeight="50.0" prefWidth="122.0" text="DOWNLOAD FILE" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

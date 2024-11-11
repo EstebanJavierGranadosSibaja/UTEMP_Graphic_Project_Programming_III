@@ -6,14 +6,20 @@ public class Views {
 
     public static final String MENU = "MenuView";
     public static final String PERMISSIONS = "UserPermissionsView";
+
     public static final String UNIVERSITY_MANAGEMENT = "UniversityManagementView";
-    public static final String FACULTIES_MANAGEMENT = "FacultyManagementView";
+
     public static final String DEPARTMENT_MANAGEMENT = "DepartmentManagementView";
-    public static final String COURSE_MANAGEMENT = "CourseManagementView";
-    public static final String USER_MANAGEMENT = "UserManagementView";
     public static final String ENROLLMENT_MANAGEMENT = "EnrollmentManagementView";
-    public static final String MY_COURSES = "";
-    public static final String COURSES = "";
+    public static final String FACULTIES_MANAGEMENT = "FacultyManagementView";
+    public static final String USER_MANAGEMENT = "UserManagementView";
+
+
+    public static final String COURSE_MANAGEMENT = "CourseManagementView";
+    public static final String MY_COURSES = "CourseManagementView";
+    public static final String COURSES = "CourseManagementView";
+
+    public static final String ASSIGNMENT = "AssignmentManagement";
 
 
     private Views() {
