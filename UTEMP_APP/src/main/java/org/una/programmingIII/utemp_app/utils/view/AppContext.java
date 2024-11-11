@@ -14,6 +14,7 @@ public class AppContext {
     private DepartmentDTO departmentDTO;
     private FacultyDTO facultyDTO;
     private CourseDTO courseDTO;
+    private AssignmentDTO assignmentDTO;
 
     private PageDTO<FacultyDTO> pageFaculty;
     private PageDTO<DepartmentDTO> pageDepartment;
