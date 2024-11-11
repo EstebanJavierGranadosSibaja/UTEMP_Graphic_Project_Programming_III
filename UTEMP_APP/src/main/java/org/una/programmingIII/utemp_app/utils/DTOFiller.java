@@ -9,7 +9,6 @@ import org.una.programmingIII.utemp_app.dtos.enums.SubmissionState;
 import org.una.programmingIII.utemp_app.dtos.enums.UserRole;
 import org.una.programmingIII.utemp_app.dtos.enums.UserState;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -40,7 +39,7 @@ public class DTOFiller {
         return submission;
     }
 
-    public AssignmentDTO getAssignmentDTO(){
+    public AssignmentDTO getAssignmentDTO() {
         return findAssignmentById(1L);
     }
 
@@ -81,7 +80,7 @@ public class DTOFiller {
                 .title("Assignment 1")
                 .description("Introduction assignment")
                 .state(AssignmentState.PENDING)
-                .deadline(Instant.from(LocalDateTime.now().plusDays(7)))
+//                .deadline(Instant.from(LocalDateTime.now().plusDays(7)))
                 .build();
     }
 }

@@ -14,7 +14,7 @@ public class MainBackgroundViewController extends Controller {
     private static final String UNIDENTIFIED_USER_MESSAGE = "Usuario no identificado";
 
     @FXML
-    public MFXButton goMenu, assignations;
+    public MFXButton goMenu, assignations, submissionB;
     @FXML
     private ImageView imvLogo, imvNotifications, imvUser;
     @FXML
@@ -28,6 +28,7 @@ public class MainBackgroundViewController extends Controller {
 
         goMenu.setOnAction(event -> ViewManager.getInstance().loadInternalView(Views.MENU));
         assignations.setOnAction(event -> ViewManager.getInstance().loadInternalView(Views.ASSIGNMENT));
+        submissionB.setOnAction(event -> ViewManager.getInstance().loadInternalView(Views.SUBMISSIONS));
     }
 
     private void loadUserInformation() {

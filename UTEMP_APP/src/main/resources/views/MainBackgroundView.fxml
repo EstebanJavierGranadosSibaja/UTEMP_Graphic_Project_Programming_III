@@ -24,6 +24,7 @@
                   <MFXButton id="mfx-small-button-important" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" onAction="#onActionMyCoursesBtn" prefHeight="50.0" prefWidth="120.0" text="MY COURSES" HBox.hgrow="ALWAYS" />
                   <MFXButton id="mfx-small-button-important" fx:id="goMenu" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="120.0" text="Go To Menu" />
                   <MFXButton id="mfx-small-button-important" fx:id="assignations" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="120.0" text="assignations" />
+                  <MFXButton id="mfx-small-button-important" fx:id="submissionB" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="120.0" text="submission" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
