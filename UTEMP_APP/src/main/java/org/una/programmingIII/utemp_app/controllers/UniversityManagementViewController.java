@@ -66,6 +66,10 @@ public class UniversityManagementViewController extends Controller {
     }
 
     private void setTableView() {
+        idTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
+        nameTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.40));
+        locationTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.40));
+
         table.setEditable(false);
         idTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
