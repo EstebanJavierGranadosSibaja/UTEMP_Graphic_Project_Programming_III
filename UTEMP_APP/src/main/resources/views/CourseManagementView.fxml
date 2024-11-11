@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.DepartmentManagementViewController">
+<VBox id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.CourseManagementViewController">
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
             <padding>
@@ -87,7 +87,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="168.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0">
                             <children>
-                                <MFXComboBox id="mfx-text-filed" fx:id="courseStateTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="COURSE STATE" HBox.hgrow="ALWAYS" />
+                                <MFXComboBox id="mfx-text-filed" fx:id="courseStateCbx" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="COURSE STATE" HBox.hgrow="ALWAYS" />
                                 <MFXTextField id="mfx-text-filed" fx:id="teacherIdTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="167.0" prefHeight="50.0" prefWidth="167.0" promptText="TEACHER ID:" />
                                 <MFXButton id="mfx-small-button" fx:id="showTeachersBtn" contentDisplay="GRAPHIC_ONLY" maxHeight="35.0" maxWidth="35.0" minHeight="0.0" minWidth="0.0" onAction="#onActionShowTeachersBtn" prefHeight="7.0" prefWidth="40.0">
                                     <graphic>

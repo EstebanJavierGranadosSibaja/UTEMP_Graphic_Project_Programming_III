@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.dtos.UserDTO;
 import org.una.programmingIII.utemp_app.dtos.enums.UserRole;
@@ -73,7 +74,6 @@ public class UserManagementViewController extends Controller {
 
         userIdTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
         userIdNumberTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
-        userIdNumberTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
         userNameTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
         emailTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
         userRoleTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
@@ -81,6 +81,8 @@ public class UserManagementViewController extends Controller {
 
         usersTbv.setEditable(false);
         userIdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
+        userIdTbc.setSortType(TableColumn.SortType.ASCENDING);
+        usersTbv.getSortOrder().add(userIdTbc);
         userIdNumberTbc.setCellValueFactory(new PropertyValueFactory<>("identificationNumber"));
         emailTbc.setCellValueFactory(new PropertyValueFactory<>("email"));
         userNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -249,8 +251,8 @@ public class UserManagementViewController extends Controller {
 
     private void loadPage(int page) {
         try {
-            MessageResponse<PageDTO<UserDTO>> response = userAPIService.getAllEntities(PageRequest.of(page, 10), new TypeReference<>() {
-            });
+            MessageResponse<PageDTO<UserDTO>> response = userAPIService.getAllEntities(
+                    PageRequest.of(page, 10, Sort.by("id").ascending()), new TypeReference<>() {});
             super.showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());

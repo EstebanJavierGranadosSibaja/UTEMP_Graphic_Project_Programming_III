@@ -79,12 +79,21 @@ public class FacultyManagementViewController extends Controller {
     }
 
     private void setTableView() {
+
+        facultyIdTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.20));
+        facultyNameTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.40));
+        universityNameTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.40));
+
         facultiesTbv.setEditable(false);
         facultyIdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
+        facultyIdTbc.setSortable(true);
         facultyNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
         universityNameTbc.setCellValueFactory(new PropertyValueFactory<>("university"));
         facultiesTbv.setPlaceholder(new Label("No hay facultades disponibles."));
-
+        universityFacultyTxf.setText(AppContext.getInstance().getUniversityDTO().getName());
+        facultiesTbv.getSortOrder().add(facultyIdTbc);
+        facultyIdTbc.setSortType(TableColumn.SortType.ASCENDING);
+        facultiesTbv.sort();
         facultiesTbv.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 fillFieldsFromSelectedFaculty(newValue);
@@ -95,7 +104,6 @@ public class FacultyManagementViewController extends Controller {
     private void fillFieldsFromSelectedFaculty(FacultyDTO faculty) {
         facultyIdTxf.setText(String.valueOf(faculty.getId()));
         facultyNameTxf.setText(faculty.getName());
-        universityFacultyTxf.setText(faculty.getUniversity().getName());
         System.out.print(faculty.getUniversity().getName());
     }
 
@@ -104,31 +112,33 @@ public class FacultyManagementViewController extends Controller {
     }
 
     private FacultyDTO getCurrentFaculty() {
-        Long facultyId = parseLong(facultyIdTxf.getText());
-        Long universityId = parseLong(universityFacultyTxf.getText());
-        if (facultyId == null || universityId == null) {
-            return null; // No continuar si no es un número válido
-        }
+        Long universityId = AppContext.getInstance().getUniversityDTO().getId();
+//        if (facultyId == null || universityId == null) {
+//            return null;
+//        }
         return FacultyDTO.builder()
-                .id(facultyId)
+                .id(parseLong(facultyIdTxf.getText()))
                 .name(facultyNameTxf.getText())
-                .university(universityAPIService.getUniversityById(universityId).getData())
+                .university(AppContext.getInstance().getUniversityDTO())
                 .build();
     }
 
     @FXML
     public void onActionCreateFacultyBtn(ActionEvent event) {
+        System.out.println(getCurrentFaculty());
         handleUniversityAction(() -> baseApiServiceManager.createEntity(getCurrentFaculty()));
+        onActionClearFieldsBtn(event);
     }
 
     @FXML
     public void onActionUpdateFacultyBtn(ActionEvent event) {
         handleUniversityAction(() -> baseApiServiceManager.updateEntity(getCurrentFaculty().getId(), getCurrentFaculty()));
-    }
+        onActionClearFieldsBtn(event);}
 
     @FXML
     public void onActionDeleteFacultyBtn(ActionEvent event) {
         handleUniversityAction(() -> baseApiServiceManager.deleteEntity(parseLong(facultyIdTxf.getText())));
+        onActionClearFieldsBtn(event);
     }
 
     private void handleUniversityAction(Supplier<MessageResponse<Void>> action) {
@@ -143,15 +153,15 @@ public class FacultyManagementViewController extends Controller {
     }
 
     private boolean validateFields() {
-        if (facultyNameTxf.getText().isEmpty() || facultyIdTxf.getText().isEmpty() || universityFacultyTxf.getText().isEmpty()) {
+        if (facultyNameTxf.getText().isEmpty()) {
             showError("Por favor, completa todos los campos requeridos.");
             return false;
         }
-        // Verifica que los campos ID sean números válidos
-        if (parseLong(facultyIdTxf.getText()) == null || parseLong(universityFacultyTxf.getText()) == null) {
-            showError("El ID de la facultad y la universidad deben ser números válidos.");
-            return false;
-        }
+//        // Verifica que los campos ID sean números válidos
+//        if (parseLong(facultyIdTxf.getText()) == null || parseLong(universityFacultyTxf.getText()) == null) {
+//            showError("El ID de la facultad y la universidad deben ser números válidos.");
+//            return false;
+//        }
         return true;
     }
 
@@ -159,7 +169,7 @@ public class FacultyManagementViewController extends Controller {
     public void onActionClearFieldsBtn(ActionEvent event) {
         facultyIdTxf.clear();
         facultyNameTxf.clear();
-        universityFacultyTxf.clear();
+        //universityFacultyTxf.clear();
     }
 
     @FXML
