@@ -1,5 +1,6 @@
 package org.una.programmingIII.utemp_app.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +20,12 @@ public class EnrollmentDTO {
 
     @NotNull(message = "Course must not be null")
     @Builder.Default
+    @JsonBackReference("course-enrollments")  // Unique name for course reference
     private CourseDTO course = new CourseDTO();
 
     @NotNull(message = "Student must not be null")
     @Builder.Default
+    @JsonBackReference("user-enrollments")  // Unique name for student reference
     private UserDTO student = new UserDTO();
 
     @NotNull(message = "State must not be null")
@@ -32,3 +35,4 @@ public class EnrollmentDTO {
 
     private LocalDateTime lastUpdate;
 }
+

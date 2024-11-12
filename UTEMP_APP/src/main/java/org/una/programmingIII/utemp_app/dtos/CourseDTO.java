@@ -1,6 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -29,24 +30,32 @@ public class CourseDTO {
     @Size(max = 500, message = "Description must not exceed 500 characters")
     private String description;
 
+    @NotNull(message = "State must not be null")
+    private CourseState state;
+
+    // Timestamps
+    private LocalDateTime createdAt;
+
+    private LocalDateTime lastUpdate;
+
+    // Relationships
     @NotNull(message = "Teacher must not be null")
     @Builder.Default
+    @JsonBackReference("user-courses")  // Unique name for teacher reference
     private UserDTO teacher = new UserDTO();
 
     @NotNull(message = "Department must not be null")
     @Builder.Default
+    @JsonBackReference("department-courses")  // Unique name for department reference
     private DepartmentDTO department = new DepartmentDTO();
 
+    // Collections
     @Builder.Default
+    @JsonManagedReference("course-assignments")  // Unique name for assignments reference
     private List<AssignmentDTO> assignment = new ArrayList<>();
 
     @Builder.Default
+    @JsonManagedReference("course-enrollments")  // Unique name for enrollments reference
     private List<EnrollmentDTO> enrollments = new ArrayList<>();
-
-    @NotNull(message = "State must not be null")
-    private CourseState state;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastUpdate;
 }
+

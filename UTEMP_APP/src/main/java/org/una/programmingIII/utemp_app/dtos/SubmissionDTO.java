@@ -1,5 +1,6 @@
 package org.una.programmingIII.utemp_app.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,10 +24,12 @@ public class SubmissionDTO {
 
     @NotNull(message = "Assignment must not be null")
     @Builder.Default
+    @JsonBackReference("assignment-submissions")  // Unique name for assignment reference
     private AssignmentDTO assignment = new AssignmentDTO();
 
     @NotNull(message = "Student must not be null")
     @Builder.Default
+    @JsonBackReference("user-submissions")
     private UserDTO student = new UserDTO();
 
     @NotBlank(message = "File name must not be blank")
@@ -38,16 +41,18 @@ public class SubmissionDTO {
     @Size(max = 500, message = "Comments must be at most 500 characters long")
     private String comments;
 
-    @Builder.Default
-    private List<GradeDTO> grades = new ArrayList<>();
-
-    @Builder.Default
-    private List<FileMetadatumDTO> fileMetadata = new ArrayList<>();
-
     @NotNull(message = "State must not be null")
     private SubmissionState state;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime lastUpdate;
+
+    @Builder.Default
+    @JsonBackReference("submission-grades")  // Unique name for grades reference
+    private List<GradeDTO> grades = new ArrayList<>();
+
+    @Builder.Default
+    @JsonBackReference("submission-fileMetadata")  // Unique name for fileMetadata reference
+    private List<FileMetadatumDTO> fileMetadata = new ArrayList<>();
 }

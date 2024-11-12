@@ -1,5 +1,6 @@
 package org.una.programmingIII.utemp_app.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class GradeDTO {
 
     @NotNull(message = "Submission must not be null")
     @Builder.Default
+    @JsonBackReference("submission-grades")
     private SubmissionDTO submission = new SubmissionDTO();
 
     private Double grade;

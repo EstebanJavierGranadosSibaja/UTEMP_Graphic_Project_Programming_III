@@ -1,5 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -23,24 +25,17 @@ public class FacultyDTO {
     @Size(max = 50, message = "Faculty name must be at most 50 characters long")
     private String name;
 
+    @JsonBackReference("university-faculties")  // Unique name for university reference
     @NotNull(message = "University must not be null")
     @Builder.Default
     private UniversityDTO university = new UniversityDTO();
 
+    @JsonManagedReference("faculty-departments")  // Unique name for departments reference
     @Builder.Default
     private List<DepartmentDTO> departments = new ArrayList<>();
 
     private LocalDateTime createdAt;
 
     private LocalDateTime lastUpdate;
-
-    public String getUniversityName() {
-        if (university != null && university.getName() != null) {
-            return university.getName();
-        } else {
-            return "Desconocida";
-        }
-    }
-
-
 }
+

@@ -1,6 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -27,12 +28,16 @@ public class UniversityDTO {
     @Size(max = 200, message = "Location must be at most 200 characters long")
     private String location;
 
-    @Builder.Default
-    private List<FacultyDTO> faculties = new ArrayList<>();
-
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime lastUpdate;
+
+    // Managed reference (One-to-many relationship)
+    @JsonManagedReference("university-faculties") // Unique name for faculties reference
+    @Builder.Default
+    private List<FacultyDTO> faculties = new ArrayList<>();
 }
+
+
