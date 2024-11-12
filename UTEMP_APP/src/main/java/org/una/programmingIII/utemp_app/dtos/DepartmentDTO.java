@@ -1,6 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,8 +31,10 @@ public class DepartmentDTO {
     @Builder.Default
     private FacultyDTO faculty = new FacultyDTO();
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime lastUpdate;
 
     @JsonManagedReference("department-courses")  // Unique name for courses reference

@@ -1,6 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -39,8 +40,10 @@ public class FileMetadatumDTO {
     @Size(max = 500, message = "Storage path must be at most 500 characters long")
     private String storagePath;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime lastUpdate;
 
     // Nuevos campos para manejo de fragmentos
