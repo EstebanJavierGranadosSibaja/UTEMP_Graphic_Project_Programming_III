@@ -194,20 +194,14 @@ public class UserPermissionViewController extends Controller {
             updatedPermissions.remove(permission);
         }
 
-        // Actualizamos los permisos en currentUser
         currentUser.setPermissions(updatedPermissions);
-
-        // Sincronizamos el contexto con el usuario actualizado
         AppContext.getInstance().setUserDTO(currentUser);
 
-        // Verificación
         System.out.println("Permisos actualizados: " + currentUser.getPermissions());
         System.out.println("USUARIO: " + currentUser);
 
-        // Volver a inicializar los checkboxes
         initializeCheckboxes();
     }
-
 
     @FXML
     public void onActionConfirmBtn(ActionEvent event) {
@@ -219,14 +213,12 @@ public class UserPermissionViewController extends Controller {
             AppContext.getInstance().setUserDTO(currentUser);
         }
 
-        // Verificación
         System.out.println("Permisos en UserManagementViewController: " + currentUser.getPermissions());
         System.out.println("USUARIO: " + currentUser);
 
         Stage stage = (Stage) manageUsersCkb.getScene().getWindow();
         stage.close();
     }
-
 
     @FXML
     public void onActionCancelBtn(ActionEvent event) {
