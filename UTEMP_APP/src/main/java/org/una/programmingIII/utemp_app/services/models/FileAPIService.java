@@ -31,7 +31,7 @@ public class FileAPIService extends HttpClientConnectionManager {
 
     public MessageResponse<FileMetadatumDTO> fetchFileMetadataById(Long fileId) {
         return executeWithResponseHandling(() -> {
-            HttpURLConnection connection = createConnectionWithoutBody("/api/files/" + fileId, HttpMethod.GET, null);
+            HttpURLConnection connection = createConnectionWithoutBody("/files/" + fileId, HttpMethod.GET, null);
             Optional<FileMetadatumDTO> response = handleResponseWithType(connection, new TypeReference<FileMetadatumDTO>() {
             });
             return response.map(data -> new MessageResponse<>(data, true, "Metadatos obtenidos exitosamente", null))
@@ -97,7 +97,7 @@ public class FileAPIService extends HttpClientConnectionManager {
 
     private MessageResponse<Void> uploadFileChunk(FileMetadatumDTO fileChunkDTO) {
         return executeWithResponseHandling(() -> {
-            HttpURLConnection connection = createConnectionWithBody("/api/files/upload", HttpMethod.POST, fileChunkDTO, null);
+            HttpURLConnection connection = createConnectionWithBody("/files/upload", HttpMethod.POST, fileChunkDTO, null);
             handleResponseForVoid(connection);
             return new MessageResponse<>(null, true, "Fragmento de archivo subido exitosamente", null);
         }, "Error al subir el fragmento");
@@ -135,7 +135,7 @@ public class FileAPIService extends HttpClientConnectionManager {
         FileOutputStream outputStream = null;
 
         try {
-            connection = createConnectionWithoutBody("/api/files/download/" + fileId, HttpMethod.GET, null);
+            connection = createConnectionWithoutBody("/files/download/" + fileId, HttpMethod.GET, null);
             inputStream = connection.getInputStream();
             outputStream = new FileOutputStream(fullPath);
 
