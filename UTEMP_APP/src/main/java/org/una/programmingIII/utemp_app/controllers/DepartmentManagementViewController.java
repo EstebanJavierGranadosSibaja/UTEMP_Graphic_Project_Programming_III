@@ -246,7 +246,14 @@ public class DepartmentManagementViewController extends Controller {
 
     @FXML
     public void onActionCoursesBtn() {
-        System.out.println("Opening department courses...");
+        DepartmentDTO selectedFaculty = departmentsTbv.getSelectionModel().getSelectedItem();
+
+        if (selectedFaculty == null) {
+            showNotificationToast("Error", "Please select some department.");
+            return;
+        }
+        AppContext.getInstance().setDepartmentDTO(selectedFaculty);
+        ViewManager.getInstance().loadInternalView(Views.COURSE_MANAGEMENT);
     }
 
     @FXML
