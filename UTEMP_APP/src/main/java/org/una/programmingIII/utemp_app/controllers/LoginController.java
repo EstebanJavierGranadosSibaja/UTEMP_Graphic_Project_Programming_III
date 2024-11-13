@@ -36,6 +36,8 @@ public class LoginController extends Controller {
         infoBtn.setOnAction(event -> showInfo());
         numberIdentificationTxf.setOnKeyPressed(this::handleEnterKey);
         passwordPwf.setOnKeyPressed(this::handleEnterKey);
+
+        numberIdentificationTxf.setText("123456789");
     }
 
     private void handleEnterKey(KeyEvent event) {
