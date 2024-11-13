@@ -13,8 +13,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import org.una.programmingIII.utemp_app.dtos.*;
+import org.una.programmingIII.utemp_app.dtos.enums.SubmissionState;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
-import org.una.programmingIII.utemp_app.services.models.AssignmentAPIService;
 import org.una.programmingIII.utemp_app.services.models.FileAPIService;
 import org.una.programmingIII.utemp_app.services.models.SubmissionAPIService;
 import org.una.programmingIII.utemp_app.utils.DTOFiller;
@@ -25,6 +25,7 @@ import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class SubmissionsViewController extends Controller {
 
@@ -42,9 +43,8 @@ public class SubmissionsViewController extends Controller {
 
     /*---------------------------- Services ----------------------------*/
     private final BaseApiServiceManager<SubmissionDTO> submissionService = new SubmissionAPIService();
-//    private final AssignmentAPIService assignmentAPIService = new AssignmentAPIService();
-    private final SubmissionAPIService submissionAPIService = new SubmissionAPIService();
     private final FileAPIService fileAPIService = new FileAPIService();
+    private final SubmissionAPIService submissionAPIService = new SubmissionAPIService();
 
     /*---------------------------- Page Data ----------------------------*/
     private PageDTO<SubmissionDTO> pagesData;
@@ -60,26 +60,36 @@ public class SubmissionsViewController extends Controller {
     public void initialize() {
         assignmentDTO = AppContext.getInstance().getAssignmentDTO();
         userDTO = AppContext.getInstance().getUserDTO();
-        DTOFiller dtoFiller = new DTOFiller();
-        assignmentDTO = dtoFiller.getAssignmentDTO();
+
+        DTOFiller dto = new DTOFiller();
+        assignmentDTO = dto.getAssignmentDTO();
+
+        studentTextF.setText(userDTO.getName());
+        courseAssignmentTxtF.setText(assignmentDTO.getTitle());
 
         setupTable();
         loadSubmissions();
-
     }
 
     /*---------------------------- TableView Setup ----------------------------*/
     private void setupTable() {
         tableView.setEditable(false);
         idC.setCellValueFactory(new PropertyValueFactory<>("id"));
-        assignmentC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAssignment().getTitle()));
-        studentC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudent().getName()));
-        gradeC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGrade().toString()));
-        infoC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComments()));
+        assignmentC.setCellValueFactory(cellData -> createTableCellValue(cellData, submission -> submission.getAssignment().getTitle()));
+        studentC.setCellValueFactory(cellData -> createTableCellValue(cellData, submission -> submission.getStudent().getName()));
+        gradeC.setCellValueFactory(cellData -> createTableCellValue(cellData, submission -> Optional.ofNullable(submission.getGrade()).map(Object::toString).orElse("nulo")));
+        infoC.setCellValueFactory(cellData -> createTableCellValue(cellData, SubmissionDTO::getComments));
 
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) populateFields(newValue);
         });
+    }
+
+    private <T> SimpleStringProperty createTableCellValue(TableColumn.CellDataFeatures<SubmissionDTO, String> cellData, Function<SubmissionDTO, T> getter) {
+        return new SimpleStringProperty(Optional.ofNullable(cellData.getValue())
+                .map(getter)
+                .map(Object::toString)
+                .orElse("nulo"));
     }
 
     /*---------------------------- Data Management ----------------------------*/
@@ -88,7 +98,11 @@ public class SubmissionsViewController extends Controller {
             showError("Assignment not selected");
             return;
         }
-        var response = submissionAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), currentPage, 10);
+        loadPageData(currentPage);
+    }
+
+    private void loadPageData(int pageNumber) {
+        var response = submissionAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), pageNumber, 10);
         if (response.isSuccess()) {
             pagesData = response.getData();
             tableView.setItems(FXCollections.observableArrayList(pagesData.getContent()));
@@ -114,24 +128,12 @@ public class SubmissionsViewController extends Controller {
     /*---------------------------- Action Handlers ----------------------------*/
     @FXML
     public void onActionPrevPageBtn(ActionEvent event) {
-        if (currentPage > 1) loadPage(--currentPage);
+        if (currentPage > 1) loadPageData(--currentPage);
     }
 
     @FXML
     public void onActionNextPageBtn(ActionEvent event) {
-        if (currentPage < maxPage) loadPage(++currentPage);
-    }
-
-    private void loadPage(int pageNumber) {
-        currentPage = pageNumber;
-        var response = submissionAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), currentPage, 10);
-        if (response.isSuccess()) {
-            pagesData = response.getData();
-            tableView.setItems(FXCollections.observableArrayList(pagesData.getContent()));
-            maxPage = pagesData.getTotalPages();
-            updatePageNumber();
-        }
-        super.showReadResponse(response);
+        if (currentPage < maxPage) loadPageData(++currentPage);
     }
 
     @FXML
@@ -153,6 +155,7 @@ public class SubmissionsViewController extends Controller {
             var response = submissionService.updateEntity(selectedSubmission.getId(), selectedSubmission);
             if (response.isSuccess()) {
                 loadSubmissions();
+                handleFileUpload();
             }
         }
     }
@@ -162,10 +165,15 @@ public class SubmissionsViewController extends Controller {
         if (isAnyFieldEmpty()) {
             showError("Por favor, complete todos los campos.");
         } else {
-            SubmissionDTO newSubmission = createSubmission();
-            var response = submissionService.createEntity(newSubmission);
-            if (response.isSuccess()) {
-                loadSubmissions();
+            if (!fileUploadPathTxtF.getText().isEmpty()) {
+                SubmissionDTO newSubmission = createSubmission();
+                var response = submissionService.createEntity(newSubmission);
+                if (response.isSuccess()) {
+                    loadSubmissions();
+//                    handleFileUpload();
+                }
+            } else {
+                showError("No se ingresó un path");
             }
         }
     }
@@ -176,7 +184,7 @@ public class SubmissionsViewController extends Controller {
     }
 
     /*---------------------------- File Upload/Download ----------------------------*/
-    private final String downloadPath = System.getProperty("user.home") + "/Downloads";
+    String downloadPath = null;
 
     @FXML
     public void onActionDownloadFileBtn(ActionEvent event) {
@@ -190,24 +198,31 @@ public class SubmissionsViewController extends Controller {
         }
     }
 
+    FileMetadatumDTO fileMetadatumDTO;
+
     @FXML
-    public void onActionUploadFileBtn(ActionEvent event) {
+    public void onActionLoadPathB(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivos", "*.pdf", "*.docx", "*.txt"));
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            FileMetadatumDTO fileMetadatumDTO = prepareFileMetadata(selectedFile);
-            var response = fileAPIService.uploadFile(selectedFile.getAbsolutePath(), fileMetadatumDTO);
-            if (!response.isSuccess()) {
-                showError(response.getErrorMessage());
-            }
+            fileMetadatumDTO = prepareFileMetadata(selectedFile);
+            fileUploadPathTxtF.setText(selectedFile.getAbsolutePath());
         } else {
             showError("No se seleccionó ningún archivo.");
         }
     }
 
     /*---------------------------- Helper Methods ----------------------------*/
+    private void handleFileUpload() {
+        fileMetadatumDTO.setId(selectedSubmission.getFileMetadata().getFirst().getId());
+        var response = fileAPIService.uploadFile(fileUploadPathTxtF.getText(), fileMetadatumDTO);
+        if (!response.isSuccess()) {
+            showError(response.getErrorMessage());
+        }
+    }
+
     private boolean isAnyFieldEmpty() {
         return courseAssignmentTxtF.getText().isEmpty() || studentTextF.getText().isEmpty();
     }
@@ -217,6 +232,9 @@ public class SubmissionsViewController extends Controller {
         studentTextF.clear();
         gradeTxtF.clear();
         commentaryTxtF.clear();
+
+        studentTextF.setText(userDTO.getName());
+        courseAssignmentTxtF.setText(assignmentDTO.getTitle());
     }
 
     private void updateSubmissionData() {
@@ -228,10 +246,13 @@ public class SubmissionsViewController extends Controller {
 
     private SubmissionDTO createSubmission() {
         return SubmissionDTO.builder()
+                .id(10L)
                 .assignment(assignmentDTO)
                 .student(userDTO)
-                .grade(Double.parseDouble(gradeTxtF.getText()))
+                .grade(5.0) // por defecto
                 .comments(commentaryTxtF.getText())
+                .state(SubmissionState.SUBMITTED)
+                .fileName(fileMetadatumDTO.getFileName())
                 .build();
     }
 
@@ -251,11 +272,11 @@ public class SubmissionsViewController extends Controller {
     }
 
     private void showError(String message) {
-        showNotificationToast("Error", message, Alert.AlertType.ERROR);
+        super.showNotificationToast("Error", message, Alert.AlertType.ERROR);
     }
 
     private boolean confirmDelete() {
-        return showConfirmationMessage("Eliminar Entrega", "¿Estás seguro de que deseas eliminar esta entrega?");
+        return super.showConfirmationMessage("Eliminar Entrega", "¿Estás seguro de que deseas eliminar esta entrega?");
     }
 
     private void deleteSubmission(SubmissionDTO submission) {
@@ -267,11 +288,9 @@ public class SubmissionsViewController extends Controller {
         }
     }
 
-    public void onActionFindByIDBtn(ActionEvent actionEvent) {
-    }
-
+    @FXML
     public void onActionReloadPageBtn(ActionEvent actionEvent) {
-        loadPage(currentPage);
+        loadPageData(currentPage);
     }
 }
 
