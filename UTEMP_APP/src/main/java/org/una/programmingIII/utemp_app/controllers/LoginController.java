@@ -45,10 +45,13 @@ public class LoginController extends Controller {
 
         MessageResponse<TokenResponse> response = authService.login(new AuthRequest(numberId, password));
 
-        showReadResponse(response);
+
         if (response.isSuccess()) {
             AppContext.getInstance().setUserDTO(response.getData().getUser());
+            showNotificationToast("Sesión iniciada","Bienvenido " + response.getData().getUser().getName());
             ViewManager.getInstance().showMainView(Views.MAIN_BACKGROUND, Views.MENU);
+        }else {
+            showReadResponse(response);
         }
     }
 
