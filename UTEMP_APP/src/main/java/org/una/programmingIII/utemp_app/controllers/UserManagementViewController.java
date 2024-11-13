@@ -70,14 +70,13 @@ public class UserManagementViewController extends Controller {
     }
 
     private void setTableView() {
-        double valor = 0.166666;
 
-        userIdTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
-        userIdNumberTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
-        userNameTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
-        emailTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
-        userRoleTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
-        userStateTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(valor));
+        userIdTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(0.10));
+        userIdNumberTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(0.18));
+        userNameTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(0.18));
+        emailTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(0.18));
+        userRoleTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(0.18));
+        userStateTbc.prefWidthProperty().bind(usersTbv.widthProperty().multiply(0.18));
 
         usersTbv.setEditable(false);
         userIdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -110,8 +109,6 @@ public class UserManagementViewController extends Controller {
     }
 
     private UserDTO getCurrentUser() {
-        System.out.println(userStateCbx.getValue());
-
         return UserDTO.builder()
                 .id(parseLong(userIdTxf.getText()))
                 .name(userNameTxf.getText())
