@@ -22,9 +22,6 @@ public abstract class BaseApiServiceManager<T> extends HttpClientConnectionManag
         this.ENTITY_ENDPOINT = ENTITY_ENDPOINT;
         this.typeEntityReference = new TypeReference<T>() {
         };
-
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     // CRUD Operations
