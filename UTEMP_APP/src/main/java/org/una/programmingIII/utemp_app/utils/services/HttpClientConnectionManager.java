@@ -1,7 +1,10 @@
 package org.una.programmingIII.utemp_app.utils.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.una.programmingIII.utemp_app.exceptions.CustomException;
@@ -39,12 +42,26 @@ public class HttpClientConnectionManager {
         this.baseUrl = baseUrl;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
+
+        objectMapper.registerModule(new JavaTimeModule());
+        // Si deseas permitir la serialización de fechas en formato ISO
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     protected static void setToken(String token) {
         HttpClientConnectionManager.token = token;
     }
+    protected void setupConnectionProperties(HttpURLConnection connection, HttpMethod method) throws IOException {
+        connection.setRequestProperty(ACCEPT_HEADER, TYPE_JSON);
+        connection.setRequestMethod(method.name());
+        connection.setConnectTimeout(connectTimeout);
+        connection.setReadTimeout(readTimeout);
+        logger.info("Connection properties set: Method = {}, Connect Timeout = {}, Read Timeout = {}", method.name(), connectTimeout, readTimeout);
+    }
 
+    // Mejor manejo de la excepción cuando no se puede establecer conexión o token es nulo
     protected HttpURLConnection createConnection(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws CustomException, IOException {
         HttpURLConnection connection = null;
         try {
@@ -56,15 +73,26 @@ public class HttpClientConnectionManager {
             connection.setRequestProperty(AUTHORIZATION_HEADER, "Bearer " + token);
             addCustomHeaders(connection, customHeaders);
         } catch (TokenException e) {
-//            ViewManager.getInstance().showMainView(Views.LOGIN);//TODO
-            return null;
+            logger.error("Token no válido o no presente: {}", e.getMessage());
+            ViewManager.getInstance().showMainView(Views.LOGIN);  // Mostramos la vista de login si no hay token.
+            throw new CustomException("No se pudo establecer la conexión: Token inválido.");
         } catch (IOException e) {
-            logger.error("Error creating connection for endpoint {}: {}", endpoint, e.getMessage());
-            throw e;
+            logger.error("Error creando conexión con el endpoint {}: {}", endpoint, e.getMessage());
+            throw new CustomException("No se pudo establecer la conexión con el servidor.");
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            logger.error("Error con la URI: {}", e.getMessage());
+            throw new CustomException("Error con la URI del endpoint.");
         }
         return connection;
+    }
+    protected <R> void writeDataToConnection(HttpURLConnection connection, R dato) throws IOException {
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = objectMapper.writeValueAsBytes(dato);
+            os.write(input);
+        } catch (IOException e) {
+            logger.error("Error writing data to connection: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
     protected HttpURLConnection createLoginConnection() throws IOException {
@@ -73,14 +101,21 @@ public class HttpClientConnectionManager {
             connection = (HttpURLConnection) new URI(baseUrl + "/auth/login").toURL().openConnection();
             setupConnectionProperties(connection, HttpMethod.POST);
         } catch (IOException e) {
-            logger.error("Error creating login connection: {}", e.getMessage(), e);
-            throw e;
+            logger.error("Error creando conexión para login: {}", e.getMessage(), e);
+            throw new IOException("Error al establecer la conexión para login.");
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            logger.error("Error con la URI del login: {}", e.getMessage(), e);
+            throw new RuntimeException("Error con la URI del login.");
         }
         return connection;
     }
-
+    protected void setupConnectionForOutput(HttpURLConnection connection) {
+        connection.setRequestProperty(CONTENT_TYPE_HEADER, TYPE_JSON);
+        connection.setDoOutput(true);
+    }
+    protected HttpURLConnection createConnectionWithoutBody(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws CustomException, IOException {
+        return createConnection(endpoint, method, customHeaders);
+    }
     protected HttpURLConnection createConnectionWithBody(String endpoint, HttpMethod method, Object body, Map<String, String> customHeaders) throws CustomException, IOException {
         HttpURLConnection connection = createConnection(endpoint, method, customHeaders);
         if (body != null) {
@@ -90,18 +125,15 @@ public class HttpClientConnectionManager {
         return connection;
     }
 
-    protected HttpURLConnection createConnectionWithoutBody(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws CustomException, IOException {
-        return createConnection(endpoint, method, customHeaders);
-    }
-
     protected MessageResponse<Void> executeVoidConnection(String endpoint, HttpMethod method, Map<String, String> customHeaders) {
         HttpURLConnection connection = null;
         try {
             connection = createConnectionWithoutBody(endpoint, method, customHeaders);
             boolean success = handleResponseForVoid(connection);
-            return new MessageResponse<>(null, success, success ? "Operación exitosa" : "Error en la conexión", null);
+            String responseMessage = success ? "Operación exitosa" : "Error en la conexión";
+            return new MessageResponse<>(null, success, responseMessage, null);
         } catch (IOException | CustomException e) {
-            logger.error("Error executing connection for endpoint {}: {}", endpoint, e.getMessage(), e);
+            logger.error("Error al ejecutar conexión para el endpoint {}: {}", endpoint, e.getMessage(), e);
             return new MessageResponse<>(null, false, "Error en la conexión", e.getMessage());
         } finally {
             disconnectConnection(connection);
@@ -116,7 +148,7 @@ public class HttpClientConnectionManager {
             return response.map(c -> new MessageResponse<>(c, true, "Operación exitosa", null))
                     .orElseGet(() -> new MessageResponse<>(null, false, "Error en la respuesta", "No se recibió respuesta válida"));
         } catch (IOException | CustomException e) {
-            logger.error("Error executing connection for endpoint {}: {}", endpoint, e.getMessage(), e);
+            logger.error("Error al ejecutar conexión para el endpoint {}: {}", endpoint, e.getMessage(), e);
             return new MessageResponse<>(null, false, "Error en la conexión", e.getMessage());
         } finally {
             disconnectConnection(connection);
@@ -133,34 +165,12 @@ public class HttpClientConnectionManager {
 
     protected void validateToken() throws CustomException {
         if (token == null || token.isEmpty()) {
-            logger.info("Token is empty");
-            throw new TokenException("No hay token");
+            logger.info("Token no presente o vacío.");
+            throw new TokenException("No se proporcionó un token válido.");
         }
     }
 
-    protected <R> void writeDataToConnection(HttpURLConnection connection, R dato) throws IOException {
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = objectMapper.writeValueAsBytes(dato);
-            os.write(input);
-        } catch (IOException e) {
-            logger.error("Error writing data to connection: {}", e.getMessage(), e);
-            throw e;
-        }
-    }
-
-    protected void setupConnectionProperties(HttpURLConnection connection, HttpMethod method) throws IOException {
-        connection.setRequestProperty(ACCEPT_HEADER, TYPE_JSON);
-        connection.setRequestMethod(method.name());
-        connection.setConnectTimeout(connectTimeout);
-        connection.setReadTimeout(readTimeout);
-        logger.info("Connection properties set: Method = {}, Connect Timeout = {}, Read Timeout = {}", method.name(), connectTimeout, readTimeout);
-    }
-
-    protected void setupConnectionForOutput(HttpURLConnection connection) {
-        connection.setRequestProperty(CONTENT_TYPE_HEADER, TYPE_JSON);
-        connection.setDoOutput(true);
-    }
-
+    // Manejo de respuestas para tipo específico con mayor claridad en los errores
     protected <C> Optional<C> handleResponseWithType(HttpURLConnection connection, TypeReference<C> typeReference) {
         try {
             int responseCode = connection.getResponseCode();
@@ -168,7 +178,7 @@ public class HttpClientConnectionManager {
             String responseContent = readResponse(connection);
             return Optional.of(objectMapper.readValue(responseContent, typeReference));
         } catch (IOException | ApiException e) {
-            logger.error("Error handling response for connection: {}", e.getMessage(), e);
+            logger.error("Error al manejar la respuesta de la conexión: {}", e.getMessage(), e);
             return Optional.empty();
         }
     }
@@ -176,26 +186,29 @@ public class HttpClientConnectionManager {
     protected boolean handleResponseForVoid(HttpURLConnection connection) {
         try {
             int responseCode = connection.getResponseCode();
-            logger.info("Response code: {}", responseCode);
+            logger.info("Código de respuesta: {}", responseCode);
             validateResponseCode(responseCode);
             return true;
         } catch (IOException | ApiException e) {
             message = e.getMessage();
-            logger.error("Error retrieving response code: {}", e.getMessage());
+            logger.error("Error al obtener el código de respuesta: {}", e.getMessage());
             return false;
         }
     }
 
     protected String readResponse(HttpURLConnection connection) throws IOException {
-        logger.info("Reading response from connection");
+        logger.info("Leyendo respuesta de la conexión...");
         try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             StringBuilder response = new StringBuilder();
             String line;
             while ((line = in.readLine()) != null) {
                 response.append(line);
             }
-            logger.info("Response received: {}", response);
+            logger.info("Respuesta recibida: {}", response);
             return response.toString();
+        } catch (IOException e) {
+            logger.error("Error al leer la respuesta: {}", e.getMessage(), e);
+            throw new IOException("Error al leer la respuesta del servidor.");
         }
     }
 
@@ -205,15 +218,15 @@ public class HttpClientConnectionManager {
             case HttpURLConnection.HTTP_CREATED:
                 break;
             case HttpURLConnection.HTTP_UNAUTHORIZED:
-                throw new UnauthorizedException("Unauthorized access. Response code: " + responseCode);
+                throw new UnauthorizedException("Acceso no autorizado. Código de respuesta: " + responseCode);
             case HttpURLConnection.HTTP_FORBIDDEN:
-                throw new ForbiddenException("Access denied. Response code: " + responseCode);
+                throw new ForbiddenException("Acceso prohibido. Código de respuesta: " + responseCode);
             case HttpURLConnection.HTTP_NOT_FOUND:
-                throw new NotFoundException("Resource not found. Response code: " + responseCode);
+                throw new NotFoundException("Recurso no encontrado. Código de respuesta: " + responseCode);
             case HttpURLConnection.HTTP_INTERNAL_ERROR:
-                throw new InternalServerErrorException("Internal server error. Response code: " + responseCode);
+                throw new InternalServerErrorException("Error interno del servidor. Código de respuesta: " + responseCode);
             default:
-                logger.error("Unexpected response code: {}", responseCode);
+                logger.error("Código de respuesta inesperado: {}", responseCode);
                 throw new ApiException("Error: " + responseCode);
         }
     }
