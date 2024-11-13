@@ -70,7 +70,7 @@ public class SubmissionAPIService extends BaseApiServiceManager<SubmissionDTO> {
     }
 
     public MessageResponse<PageDTO<SubmissionDTO>> getSubmissionsByAssignmentId(Long assignmentId, int page, int size) {
-        String endpointWithPagination = ENTITY_ENDPOINT + "/" + assignmentId + "/submissions?page=" + page + "&size=" + size;
+        String endpointWithPagination = ENTITY_ENDPOINT + "/assignment/" + assignmentId + "?page=" + page + "&size=" + size;
         return getEntitiesByEndpoint(endpointWithPagination, new TypeReference<PageDTO<SubmissionDTO>>() {
         }); // Obtiene envíos por ID de asignación
     }
