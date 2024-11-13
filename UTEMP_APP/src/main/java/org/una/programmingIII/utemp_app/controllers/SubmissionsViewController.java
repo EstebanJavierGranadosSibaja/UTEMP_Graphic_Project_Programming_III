@@ -6,14 +6,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import org.una.programmingIII.utemp_app.dtos.*;
-import org.una.programmingIII.utemp_app.dtos.enums.SubmissionState;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.FileAPIService;
 import org.una.programmingIII.utemp_app.services.models.SubmissionAPIService;
@@ -54,6 +52,8 @@ public class SubmissionsViewController extends Controller {
     private SubmissionDTO selectedSubmission;
     private AssignmentDTO assignmentDTO;
     private UserDTO userDTO;
+    private FileMetadatumDTO fileMetadatumDTO;
+    private String downloadPath = null; // por defecto
 
     /*---------------------------- Initialization ----------------------------*/
     @FXML
@@ -144,7 +144,7 @@ public class SubmissionsViewController extends Controller {
     @FXML
     public void onActionDeleteBtn(ActionEvent event) {
         Optional.ofNullable(tableView.getSelectionModel().getSelectedItem())
-                .filter(submission -> confirmDelete())
+                .filter(submission -> super.showConfirmationMessage("Borrar", "Seguro de eliminar la tarea?"))
                 .ifPresent(this::deleteSubmission);
     }
 
@@ -153,9 +153,10 @@ public class SubmissionsViewController extends Controller {
         if (selectedSubmission != null) {
             updateSubmissionData();
             var response = submissionService.updateEntity(selectedSubmission.getId(), selectedSubmission);
+            super.showReadResponse(response);
             if (response.isSuccess()) {
-                loadSubmissions();
                 handleFileUpload();
+                loadSubmissions();
             }
         }
     }
@@ -163,19 +164,17 @@ public class SubmissionsViewController extends Controller {
     @FXML
     public void onActionCreateBtn(ActionEvent event) {
         if (isAnyFieldEmpty()) {
-            showError("Por favor, complete todos los campos.");
+            super.showError("Por favor, complete todos los campos.");
         } else {
-            if (!fileUploadPathTxtF.getText().isEmpty()) {
-                SubmissionDTO newSubmission = createSubmission();
-                var response = submissionService.createEntity(newSubmission);
-                if (response.isSuccess()) {
-                    loadSubmissions();
-//                    handleFileUpload();
-                }
-            } else {
-                showError("No se ingresó un path");
+            selectedSubmission = createSubmission();
+            var response = submissionAPIService.createSubmission(selectedSubmission);
+            super.showReadResponse(response);
+            if (response.isSuccess()) {
+                handleFileUpload();
+                loadSubmissions();
             }
         }
+        fileMetadatumDTO = null;
     }
 
     @FXML
@@ -183,46 +182,86 @@ public class SubmissionsViewController extends Controller {
         ViewManager.getInstance().loadInternalView(Views.COURSES);
     }
 
-    /*---------------------------- File Upload/Download ----------------------------*/
-    String downloadPath = null;
+    @FXML
+    public void onActionReloadPageBtn(ActionEvent actionEvent) {
+        loadPageData(currentPage);
+    }
 
+    /*---------------------------- File Upload/Download ----------------------------*/
     @FXML
     public void onActionDownloadFileBtn(ActionEvent event) {
         try {
             MessageResponse<Void> response = fileAPIService.downloadFileById(assignmentDTO.getId(), downloadPath);
             if (!response.isSuccess()) {
-                showError(response.getErrorMessage());
+                super.showError(response.getErrorMessage());
             }
         } catch (Exception e) {
-            showError("Error al descargar el archivo: " + e.getMessage());
+            super.showError("Error al descargar el archivo: " + e.getMessage());
         }
     }
-
-    FileMetadatumDTO fileMetadatumDTO;
 
     @FXML
     public void onActionLoadPathB(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivos", "*.pdf", "*.docx", "*.txt"));
-        File selectedFile = fileChooser.showOpenDialog(null);
 
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            fileUploadPathTxtF.setText(selectedFile.getAbsolutePath());
+        } else {
+            super.showError("No se seleccionó ningún archivo.");
+        }
+    }
+
+    private void handleFileUpload() {
+        loadFIleInfo();
+        fileMetadatumDTO.setId(null);
+        fileMetadatumDTO.setStudent(userDTO);
+        selectedSubmission.setId(1L);
+        fileMetadatumDTO.setSubmission(selectedSubmission);
+
+        var response = fileAPIService.uploadFile(fileUploadPathTxtF.getText(), fileMetadatumDTO);
+        if (!response.isSuccess()) {
+            super.showError(response.getErrorMessage());
+        }
+    }
+
+    private void loadFIleInfo() {
+        String path = fileUploadPathTxtF.getText();
+
+        if (path.isEmpty()) {
+            super.showError("La ruta del archivo no puede estar vacía.");
+            return;
+        }
+
+        File selectedFile = new File(path);
+        if (selectedFile.exists() && selectedFile.isFile()) {
+            seleccionarArchivo(selectedFile);
+        } else {
+            super.showError("La ruta proporcionada no es válida o el archivo no existe.");
+        }
+    }
+
+    private void seleccionarArchivo(File selectedFile) {
         if (selectedFile != null) {
             fileMetadatumDTO = prepareFileMetadata(selectedFile);
             fileUploadPathTxtF.setText(selectedFile.getAbsolutePath());
         } else {
-            showError("No se seleccionó ningún archivo.");
+            super.showError("No se seleccionó ningún archivo.");
         }
+    }
+
+    private FileMetadatumDTO prepareFileMetadata(File selectedFile) {
+        return FileMetadatumDTO.builder()
+                .submission(selectedSubmission)
+                .student(userDTO)
+                .fileName(getFileNameWithoutExtension(selectedFile))
+                .fileSize(selectedFile.length())
+                .fileType(getFileExtension(selectedFile))
+                .build();
     }
 
     /*---------------------------- Helper Methods ----------------------------*/
-    private void handleFileUpload() {
-        fileMetadatumDTO.setId(selectedSubmission.getFileMetadata().getFirst().getId());
-        var response = fileAPIService.uploadFile(fileUploadPathTxtF.getText(), fileMetadatumDTO);
-        if (!response.isSuccess()) {
-            showError(response.getErrorMessage());
-        }
-    }
-
     private boolean isAnyFieldEmpty() {
         return courseAssignmentTxtF.getText().isEmpty() || studentTextF.getText().isEmpty();
     }
@@ -249,50 +288,30 @@ public class SubmissionsViewController extends Controller {
                 .id(10L)
                 .assignment(assignmentDTO)
                 .student(userDTO)
-                .grade(5.0) // por defecto
+                .grade(Double.parseDouble(gradeTxtF.getText()))
                 .comments(commentaryTxtF.getText())
-                .state(SubmissionState.SUBMITTED)
-                .fileName(fileMetadatumDTO.getFileName())
                 .build();
-    }
-
-    private FileMetadatumDTO prepareFileMetadata(File selectedFile) {
-        return FileMetadatumDTO.builder()
-                .submission(selectedSubmission)
-                .student(userDTO)
-                .fileName(selectedFile.getName())
-                .fileSize(selectedFile.length())
-                .fileType(getFileExtension(selectedFile.getName()))
-                .build();
-    }
-
-    private String getFileExtension(String fileName) {
-        int lastDotIndex = fileName.lastIndexOf('.');
-        return (lastDotIndex == -1) ? "" : fileName.substring(lastDotIndex + 1);
-    }
-
-    private void showError(String message) {
-        super.showNotificationToast("Error", message, Alert.AlertType.ERROR);
-    }
-
-    private boolean confirmDelete() {
-        return super.showConfirmationMessage("Eliminar Entrega", "¿Estás seguro de que deseas eliminar esta entrega?");
     }
 
     private void deleteSubmission(SubmissionDTO submission) {
-        var response = submissionService.deleteEntity(submission.getId());
-        if (response.isSuccess()) {
-            loadSubmissions();
-        } else {
-            showError(response.getErrorMessage());
-        }
+        var response = submissionAPIService.deleteSubmission(submission.getId());
+        if (response.isSuccess()) loadSubmissions();
     }
 
-    @FXML
-    public void onActionReloadPageBtn(ActionEvent actionEvent) {
-        loadPageData(currentPage);
+    private String getFileNameWithoutExtension(File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return dotIndex == -1 ? fileName : fileName.substring(0, dotIndex);
     }
+
+    private String getFileExtension(File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return dotIndex == -1 ? "" : fileName.substring(dotIndex + 1);
+    }
+
 }
+
 
 
 /*
