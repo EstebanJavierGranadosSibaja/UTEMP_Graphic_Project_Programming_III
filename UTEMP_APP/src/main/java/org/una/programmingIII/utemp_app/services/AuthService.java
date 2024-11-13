@@ -14,6 +14,7 @@ import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.responses.TokenResponse;
 import org.una.programmingIII.utemp_app.utils.services.HttpClientConnectionManager;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.Optional;
@@ -40,13 +41,10 @@ public class AuthService extends HttpClientConnectionManager {
             setupConnectionForOutput(connection);
             sendAuthRequest(connection, authRequest);
 
-            // Manejo de la respuesta de autenticación
             Optional<ApiResponse<TokenResponse>> apiResponseOptional = handleResponseWithType(
-                    connection, new TypeReference<ApiResponse<TokenResponse>>() {
-                    }
+                    connection, new TypeReference<ApiResponse<TokenResponse>>() {}
             );
 
-            // Procesar la respuesta de autenticación
             if (apiResponseOptional.isPresent()) {
                 TokenResponse tokenResponse = apiResponseOptional.get().getData();
                 setToken(tokenResponse.getToken());
@@ -56,12 +54,18 @@ public class AuthService extends HttpClientConnectionManager {
                 throw new ApiException("Token no disponible después de autenticación.");
             }
 
-        } catch (InvalidCredentialsException | AccessDeniedException | BadRequestException e) {
-            return createErrorResponse(title, errorMessages, e.getMessage());
+        } catch (InvalidCredentialsException e) {
+            return createErrorResponse(title, errorMessages, "Credenciales inválidas: " + e.getMessage());
+        } catch (AccessDeniedException e) {
+            return createErrorResponse(title, errorMessages, "Acceso denegado: " + e.getMessage());
+        } catch (BadRequestException e) {
+            return createErrorResponse(title, errorMessages, "Solicitud incorrecta: " + e.getMessage());
         } catch (ApiException e) {
             return createErrorResponse(title, errorMessages, "Error en el servidor: " + e.getMessage());
+        } catch (IOException e) {
+            return createErrorResponse(title, errorMessages, "Error de comunicación con el servidor: " + e.getMessage());
         } catch (Exception e) {
-            return createErrorResponse(title, errorMessages, "Error al autenticar: " + e.getMessage());
+            return createErrorResponse(title, errorMessages, "Error desconocido al autenticar: " + e.getMessage());
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -97,6 +101,12 @@ public class AuthService extends HttpClientConnectionManager {
         try (OutputStream os = connection.getOutputStream()) {
             objectMapper.writeValue(os, authRequest);
             os.flush();
+        } catch (IOException e) {
+//            logger.error("Error al enviar la solicitud de autenticación: {}", e.getMessage(), e);
+            throw new IOException("Error al enviar la solicitud de autenticación.");
+        } catch (Exception e) {
+//            logger.error("Error inesperado al enviar la solicitud de autenticación: {}", e.getMessage(), e);
+            throw new Exception("Error inesperado al enviar la solicitud de autenticación.");
         }
     }
 }
