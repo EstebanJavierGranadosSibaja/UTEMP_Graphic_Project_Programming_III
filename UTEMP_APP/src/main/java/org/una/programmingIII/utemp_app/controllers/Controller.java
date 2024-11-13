@@ -97,8 +97,10 @@ public abstract class Controller {
         } else {
             handleError("Error: " + response.getErrorMessage());
         }
+    }
 
-
+    protected void showError(String errorInfo) {
+        showNotificationToast("Error", errorInfo, Alert.AlertType.ERROR);
     }
 }
 //        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/interrogation_icon.png")));
