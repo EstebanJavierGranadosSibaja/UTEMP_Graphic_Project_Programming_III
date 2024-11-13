@@ -24,7 +24,7 @@
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
                             <children>
                                 <MFXTextField id="mfx-text-filed" fx:id="findByIdTxf" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="242.0" promptText="ASSIGMENT ID HERE: " HBox.hgrow="ALWAYS" />
-                                <MFXButton id="mfx-small-button" fx:id="findByCourseIdBtn" maxHeight="40.0" maxWidth="150.0" onAction="#onActionFindByIDBtn" prefHeight="40.0" prefWidth="107.0" text="FIND BY COURSE ID" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button" fx:id="findByCourseIdBtn" maxHeight="40.0" maxWidth="150.0" prefHeight="40.0" prefWidth="107.0" text="FIND BY COURSE ID" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <TableView fx:id="assignmentTbv" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="410.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
@@ -42,7 +42,7 @@
                                     <children>
                                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                             <children>
-                                                <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="35.0" onAction="#onActionReloadPageBtn" prefHeight="35.0" prefWidth="130.0" text="RELOAD PAGE" />
+                                                <MFXButton id="mfx-small-button" maxHeight="35.0" onAction="#onActionReloadPageBtn" prefHeight="35.0" prefWidth="130.0" text="RELOAD PAGE" />
                                             </children>
                                         </HBox>
                                         <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="90.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS" />
@@ -87,7 +87,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="168.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <MFXComboBox id="mfx-text-filed" fx:id="assigmentStateTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="ASSIGMENT STATE" HBox.hgrow="ALWAYS" />
+                                <MFXComboBox id="mfx-text-filed" fx:id="assignmentStateComboBox" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="ASSIGMENT STATE" HBox.hgrow="ALWAYS" />
                                 <MFXDatePicker id="mfx-datepicker" fx:id="assignmentDeadlineDtp" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="DEADLINE" HBox.hgrow="ALWAYS" />
                             </children>
                             <VBox.margin>
@@ -110,14 +110,9 @@
                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <MFXButton id="mfx-small-button" fx:id="backBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionBackBtn" prefHeight="50.0" prefWidth="120.0" text="BACK" HBox.hgrow="ALWAYS" />
+                              <MFXButton id="mfx-small-button" maxHeight="50.0" maxWidth="120.0" onAction="#onActionGoSubmissions" prefHeight="50.0" prefWidth="120.0" text="onActionGoSubmissions" />
                                     </children>
                                 </HBox>
-                                <MFXButton id="mfx-small-button-important" fx:id="downloadFilesBtn" layoutX="247.0" layoutY="11.0" maxHeight="50.0" maxWidth="200.0" onAction="#onActionDownloadFileBtn" prefHeight="50.0" prefWidth="129.0" text="DOWNLOAD FILE" HBox.hgrow="ALWAYS">
-                                    <HBox.margin>
-                                        <Insets />
-                                    </HBox.margin>
-                                </MFXButton>
-                                <MFXButton id="mfx-small-button-important" fx:id="loadFilesBtn" maxHeight="50.0" maxWidth="200.0" onAction="#onActionUploadFileBtn" prefHeight="50.0" prefWidth="111.0" text="UPLOAD FILE" HBox.hgrow="ALWAYS" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="15.0" />
