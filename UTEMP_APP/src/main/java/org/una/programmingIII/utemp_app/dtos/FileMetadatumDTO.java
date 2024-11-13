@@ -21,7 +21,6 @@ public class FileMetadatumDTO {
     private Long id;
 
     @Builder.Default
-    @JsonBackReference("submission-fileMetadata")
     private SubmissionDTO submission = new SubmissionDTO();
 
     @Builder.Default

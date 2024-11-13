@@ -44,21 +44,17 @@ public class CourseDTO {
     // Relationships
     @NotNull(message = "Teacher must not be null")
     @Builder.Default
-    @JsonBackReference("user-courses")  // Unique name for teacher reference
     private UserDTO teacher = new UserDTO();
 
     @NotNull(message = "Department must not be null")
     @Builder.Default
-    @JsonBackReference("department-courses")  // Unique name for department reference
     private DepartmentDTO department = new DepartmentDTO();
 
     // Collections
     @Builder.Default
-    @JsonManagedReference("course-assignments")  // Unique name for assignments reference
     private List<AssignmentDTO> assignment = new ArrayList<>();
 
     @Builder.Default
-    @JsonManagedReference("course-enrollments")  // Unique name for enrollments reference
     private List<EnrollmentDTO> enrollments = new ArrayList<>();
 }
 

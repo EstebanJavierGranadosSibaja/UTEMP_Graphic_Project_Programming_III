@@ -64,19 +64,15 @@ public class UserDTO {
 
     // Relationships and Collections
     @Builder.Default
-    @JsonManagedReference("user-courses")  // Unique name for coursesTeaching
     private List<CourseDTO> coursesTeaching = new ArrayList<>();
 
     @Builder.Default
-    @JsonManagedReference("user-notifications")  // Unique name for notifications
     private List<NotificationDTO> notifications = new ArrayList<>();
 
     @Builder.Default
-    @JsonManagedReference("user-enrollments")  // Unique name for userEnrollments
     private List<EnrollmentDTO> userEnrollments = new ArrayList<>();
 
     @Builder.Default
-    @JsonManagedReference("user-submissions")  // Unique name for submissions
     private List<SubmissionDTO> submissions = new ArrayList<>();
 
     @Override

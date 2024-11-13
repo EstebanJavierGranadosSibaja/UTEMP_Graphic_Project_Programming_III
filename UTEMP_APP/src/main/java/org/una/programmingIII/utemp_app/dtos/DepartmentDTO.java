@@ -26,7 +26,6 @@ public class DepartmentDTO {
     @Size(max = 50, message = "Department name must not exceed 50 characters")
     private String name;
 
-    @JsonBackReference("faculty-departments")  // Unique name for faculty reference
     @NotNull(message = "Faculty must not be null")
     @Builder.Default
     private FacultyDTO faculty = new FacultyDTO();
@@ -37,7 +36,6 @@ public class DepartmentDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime lastUpdate;
 
-    @JsonManagedReference("department-courses")  // Unique name for courses reference
     @Builder.Default
     private List<CourseDTO> courses = new ArrayList<>();
 }

@@ -37,7 +37,6 @@ public class AssignmentDTO {
 
     @NotNull(message = "Course must not be null")
     @Builder.Default
-    @JsonBackReference("course-assignments")
     private CourseDTO course = new CourseDTO();
 
 
@@ -50,7 +49,5 @@ public class AssignmentDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime lastUpdate;
 
-    @Builder.Default
-    @JsonManagedReference("assignment-submissions")
-    private List<SubmissionDTO> submissions = new ArrayList<>();
+
 }

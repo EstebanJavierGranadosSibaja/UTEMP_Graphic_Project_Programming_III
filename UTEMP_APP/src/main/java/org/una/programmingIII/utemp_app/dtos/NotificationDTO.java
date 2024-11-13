@@ -22,7 +22,6 @@ public class NotificationDTO {
     private Long id;
 
     @Builder.Default
-    @JsonBackReference("user-notifications")  // Unique name for user reference
     private UserDTO user = new UserDTO();
 
     @NotBlank(message = "Message must not be blank")

@@ -25,12 +25,10 @@ public class SubmissionDTO {
 
     @NotNull(message = "Assignment must not be null")
     @Builder.Default
-    @JsonBackReference("assignment-submissions")  // Unique name for assignment reference
     private AssignmentDTO assignment = new AssignmentDTO();
 
     @NotNull(message = "Student must not be null")
     @Builder.Default
-    @JsonBackReference("user-submissions")
     private UserDTO student = new UserDTO();
 
     @NotBlank(message = "File name must not be blank")
@@ -52,11 +50,9 @@ public class SubmissionDTO {
     private LocalDateTime lastUpdate;
 
     @Builder.Default
-    @JsonBackReference("submission-grades")  // Unique name for grades reference
     private List<GradeDTO> grades = new ArrayList<>();
 
     @Builder.Default
-    @JsonBackReference("submission-fileMetadata")  // Unique name for fileMetadata reference
     private List<FileMetadatumDTO> fileMetadata = new ArrayList<>();
 
     @Override

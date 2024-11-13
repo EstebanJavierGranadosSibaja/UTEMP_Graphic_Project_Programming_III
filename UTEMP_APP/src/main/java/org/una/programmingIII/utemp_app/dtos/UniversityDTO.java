@@ -35,7 +35,6 @@ public class UniversityDTO {
     private LocalDateTime lastUpdate;
 
     // Managed reference (One-to-many relationship)
-    @JsonManagedReference("university-faculties") // Unique name for faculties reference
     @Builder.Default
     private List<FacultyDTO> faculties = new ArrayList<>();
 }

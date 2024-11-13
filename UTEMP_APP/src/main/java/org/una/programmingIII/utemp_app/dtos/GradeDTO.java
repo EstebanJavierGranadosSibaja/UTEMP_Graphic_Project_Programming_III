@@ -22,7 +22,6 @@ public class GradeDTO {
 
     @NotNull(message = "Submission must not be null")
     @Builder.Default
-    @JsonBackReference("submission-grades")
     private SubmissionDTO submission = new SubmissionDTO();
 
     private Double grade;

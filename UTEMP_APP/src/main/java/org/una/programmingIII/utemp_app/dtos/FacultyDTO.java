@@ -26,12 +26,10 @@ public class FacultyDTO {
     @Size(max = 50, message = "Faculty name must be at most 50 characters long")
     private String name;
 
-    @JsonBackReference("university-faculties")  // Unique name for university reference
     @NotNull(message = "University must not be null")
     @Builder.Default
     private UniversityDTO university = new UniversityDTO();
 
-    @JsonManagedReference("faculty-departments")  // Unique name for departments reference
     @Builder.Default
     private List<DepartmentDTO> departments = new ArrayList<>();
 
