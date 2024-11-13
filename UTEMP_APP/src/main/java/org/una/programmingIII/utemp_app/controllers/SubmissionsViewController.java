@@ -1,7 +1,5 @@
 package org.una.programmingIII.utemp_app.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,7 +15,6 @@ import javafx.stage.FileChooser;
 import org.una.programmingIII.utemp_app.dtos.*;
 import org.una.programmingIII.utemp_app.dtos.enums.SubmissionState;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
-import org.una.programmingIII.utemp_app.services.models.AssignmentAPIService;
 import org.una.programmingIII.utemp_app.services.models.FileAPIService;
 import org.una.programmingIII.utemp_app.services.models.SubmissionAPIService;
 import org.una.programmingIII.utemp_app.utils.DTOFiller;
@@ -48,9 +45,6 @@ public class SubmissionsViewController extends Controller {
     private final BaseApiServiceManager<SubmissionDTO> submissionService = new SubmissionAPIService();
     private final FileAPIService fileAPIService = new FileAPIService();
     private final SubmissionAPIService submissionAPIService = new SubmissionAPIService();
-    private final AssignmentAPIService assignmentAPIService = new AssignmentAPIService();
-    private ObjectMapper objectMapper = new ObjectMapper();
-
 
     /*---------------------------- Page Data ----------------------------*/
     private PageDTO<SubmissionDTO> pagesData;
@@ -64,12 +58,14 @@ public class SubmissionsViewController extends Controller {
     /*---------------------------- Initialization ----------------------------*/
     @FXML
     public void initialize() {
+        assignmentDTO = AppContext.getInstance().getAssignmentDTO();
         userDTO = AppContext.getInstance().getUserDTO();
+
         DTOFiller dto = new DTOFiller();
+        assignmentDTO = dto.getAssignmentDTO();
+
         studentTextF.setText(userDTO.getName());
         courseAssignmentTxtF.setText(assignmentDTO.getTitle());
-        assignmentDTO = assignmentAPIService.getAssignmentById(1L).getData();
-        objectMapper.registerModule(new JavaTimeModule());
 
         setupTable();
         loadSubmissions();
@@ -83,7 +79,6 @@ public class SubmissionsViewController extends Controller {
         studentC.setCellValueFactory(cellData -> createTableCellValue(cellData, submission -> submission.getStudent().getName()));
         gradeC.setCellValueFactory(cellData -> createTableCellValue(cellData, submission -> Optional.ofNullable(submission.getGrade()).map(Object::toString).orElse("nulo")));
         infoC.setCellValueFactory(cellData -> createTableCellValue(cellData, SubmissionDTO::getComments));
-        System.out.println(assignmentDTO.toString());
 
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) populateFields(newValue);
@@ -123,7 +118,7 @@ public class SubmissionsViewController extends Controller {
     }
 
     private void populateFields(SubmissionDTO dto) {
-        courseAssignmentTxtF.setText("dto.getAssignment().getTitle()");
+        courseAssignmentTxtF.setText(dto.getAssignment().getTitle());
         studentTextF.setText(dto.getStudent().getName());
         gradeTxtF.setText(String.valueOf(dto.getGrade()));
         commentaryTxtF.setText(dto.getComments());
@@ -167,15 +162,11 @@ public class SubmissionsViewController extends Controller {
 
     @FXML
     public void onActionCreateBtn(ActionEvent event) {
-
-        System.out.println(assignmentAPIService.getAssignmentById(1L).getData().getId());
-
         if (isAnyFieldEmpty()) {
             showError("Por favor, complete todos los campos.");
         } else {
             if (!fileUploadPathTxtF.getText().isEmpty()) {
                 SubmissionDTO newSubmission = createSubmission();
-
                 var response = submissionService.createEntity(newSubmission);
                 if (response.isSuccess()) {
                     loadSubmissions();
@@ -233,8 +224,7 @@ public class SubmissionsViewController extends Controller {
     }
 
     private boolean isAnyFieldEmpty() {
-        //return courseAssignmentTxtF.getText().isEmpty() || studentTextF.getText().isEmpty();
-        return false;
+        return courseAssignmentTxtF.getText().isEmpty() || studentTextF.getText().isEmpty();
     }
 
     private void clearFields() {
@@ -256,12 +246,13 @@ public class SubmissionsViewController extends Controller {
 
     private SubmissionDTO createSubmission() {
         return SubmissionDTO.builder()
+                .id(10L)
                 .assignment(assignmentDTO)
                 .student(userDTO)
                 .grade(5.0) // por defecto
-                .comments("commentaryTxtF.getText()")
+                .comments(commentaryTxtF.getText())
                 .state(SubmissionState.SUBMITTED)
-                .fileName("fileMetadatumDTO.getFileName()")
+                .fileName(fileMetadatumDTO.getFileName())
                 .build();
     }
 
@@ -442,4 +433,3 @@ public class SubmissionDTO {
 }
 
 */
-
