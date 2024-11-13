@@ -14,7 +14,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.una.programmingIII.utemp_app.dtos.DepartmentDTO;
 import org.una.programmingIII.utemp_app.dtos.FacultyDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
+import org.una.programmingIII.utemp_app.dtos.UniversityDTO;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
+import org.una.programmingIII.utemp_app.services.models.DepartmentAPIService;
 import org.una.programmingIII.utemp_app.services.models.FacultyAPIService;
 import org.una.programmingIII.utemp_app.services.models.UniversityAPIService;
 import org.una.programmingIII.utemp_app.utils.Views;
@@ -58,11 +60,11 @@ public class FacultyManagementViewController extends Controller {
     private TableColumn<FacultyDTO, String> facultyNameTbc;
 
     @FXML
-    private TableColumn<FacultyDTO, String> universityNameTbc;
+    private TableColumn<UniversityDTO, String> universityNameTbc;
 
     private boolean initFlag = false;
     private BaseApiServiceManager<FacultyDTO> baseApiServiceManager;
-    private FacultyAPIService facultyAPIService;
+    private FacultyAPIService facultyAPIServiceaculty;
     private UniversityAPIService universityAPIService;
     private int pageNumber = 0, maxPage = 1;
 
@@ -70,7 +72,7 @@ public class FacultyManagementViewController extends Controller {
     public void initialize() {
         if (!initFlag) {
             universityAPIService = new UniversityAPIService();
-            facultyAPIService = new FacultyAPIService();
+            facultyAPIServiceaculty = new FacultyAPIService();
             baseApiServiceManager = new FacultyAPIService();
             setTableView();
             loadInitialData();
@@ -80,16 +82,16 @@ public class FacultyManagementViewController extends Controller {
 
     private void setTableView() {
 
-        facultyIdTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.20));
-        facultyNameTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.40));
-        universityNameTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.40));
+        facultyIdTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.10));
+        facultyNameTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.45));
+        universityNameTbc.prefWidthProperty().bind(facultiesTbv.widthProperty().multiply(0.45));
 
         facultiesTbv.setEditable(false);
         facultyIdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
         facultyIdTbc.setSortable(true);
         facultyNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
-        universityNameTbc.setCellValueFactory(new PropertyValueFactory<>("university"));
-        facultiesTbv.setPlaceholder(new Label("No hay facultades disponibles."));
+        universityNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
+        facultiesTbv.setPlaceholder(new Label("THERE ARE NO FACULTIES AVAILABLE AT THIS TIME."));
         universityFacultyTxf.setText(AppContext.getInstance().getUniversityDTO().getName());
         facultiesTbv.getSortOrder().add(facultyIdTbc);
         facultyIdTbc.setSortType(TableColumn.SortType.ASCENDING);
@@ -104,7 +106,6 @@ public class FacultyManagementViewController extends Controller {
     private void fillFieldsFromSelectedFaculty(FacultyDTO faculty) {
         facultyIdTxf.setText(String.valueOf(faculty.getId()));
         facultyNameTxf.setText(faculty.getName());
-        System.out.print(faculty.getUniversity().getName());
     }
 
     private void loadInitialData() {
@@ -112,10 +113,6 @@ public class FacultyManagementViewController extends Controller {
     }
 
     private FacultyDTO getCurrentFaculty() {
-        Long universityId = AppContext.getInstance().getUniversityDTO().getId();
-//        if (facultyId == null || universityId == null) {
-//            return null;
-//        }
         return FacultyDTO.builder()
                 .id(parseLong(facultyIdTxf.getText()))
                 .name(facultyNameTxf.getText())
@@ -125,7 +122,6 @@ public class FacultyManagementViewController extends Controller {
 
     @FXML
     public void onActionCreateFacultyBtn(ActionEvent event) {
-        System.out.println(getCurrentFaculty());
         handleUniversityAction(() -> baseApiServiceManager.createEntity(getCurrentFaculty()));
         onActionClearFieldsBtn(event);
     }
@@ -133,43 +129,45 @@ public class FacultyManagementViewController extends Controller {
     @FXML
     public void onActionUpdateFacultyBtn(ActionEvent event) {
         handleUniversityAction(() -> baseApiServiceManager.updateEntity(getCurrentFaculty().getId(), getCurrentFaculty()));
-        onActionClearFieldsBtn(event);}
-
-    @FXML
-    public void onActionDeleteFacultyBtn(ActionEvent event) {
-        handleUniversityAction(() -> baseApiServiceManager.deleteEntity(parseLong(facultyIdTxf.getText())));
         onActionClearFieldsBtn(event);
     }
 
-    private void handleUniversityAction(Supplier<MessageResponse<Void>> action) {
-        if (!validateFields()) {
+    @FXML
+    public void onActionDeleteFacultyBtn(ActionEvent event) {
+        if(facultyIdTbc.getText().isEmpty() || facultyIdTbc.getText() == null)
+        {
+            showNotificationToast("Error", "Please select some faculty.");
             return;
         }
-        MessageResponse<Void> response = action.get();
-        showReadResponse(response); // Usar el método readResponse de la clase padre
-        if (response.isSuccess()) {
-            loadInitialData(); // Recargar la tabla después de las acciones CRUD
+        if (showConfirmationMessage("DELETE FACULTY", "DO YOU CONFIRM THE DELETION OF THIS FACULTY?")) {
+            handleUniversityAction(() -> baseApiServiceManager.deleteEntity(parseLong(facultyIdTxf.getText())));
+            onActionClearFieldsBtn(event);
         }
-    }
-
-    private boolean validateFields() {
-        if (facultyNameTxf.getText().isEmpty()) {
-            showError("Por favor, completa todos los campos requeridos.");
-            return false;
-        }
-//        // Verifica que los campos ID sean números válidos
-//        if (parseLong(facultyIdTxf.getText()) == null || parseLong(universityFacultyTxf.getText()) == null) {
-//            showError("El ID de la facultad y la universidad deben ser números válidos.");
-//            return false;
-//        }
-        return true;
     }
 
     @FXML
     public void onActionClearFieldsBtn(ActionEvent event) {
         facultyIdTxf.clear();
         facultyNameTxf.clear();
-        //universityFacultyTxf.clear();
+    }
+
+    @FXML
+    public void onActionFindByNameBtn(ActionEvent event) {
+        String nameToFind = findByNameTxf.getText().trim();
+        if (nameToFind.isEmpty()) {
+            showError("Por favor, ingresa un nombre para buscar.");
+            return;
+        }
+        try {
+        } catch (Exception e) {
+            showError("Error al buscar facultad: " + e.getMessage());
+        }
+    }
+
+    private void navigatePage(int page) {
+        if (page >= 0 && page < maxPage) {
+            loadPage(page);
+        }
     }
 
     @FXML
@@ -182,15 +180,58 @@ public class FacultyManagementViewController extends Controller {
         navigatePage(pageNumber + 1);
     }
 
-    private void navigatePage(int page) {
-        if (page >= 0 && page < maxPage) {
-            loadPage(page);
+    @FXML
+    public void onActionReloadPageBtn(ActionEvent event) {
+        loadPage(pageNumber);
+    }
+
+    @FXML
+    public void onActionBackBtn(ActionEvent event) {
+        ViewManager.getInstance().loadInternalView(Views.UNIVERSITY_MANAGEMENT);
+    }
+
+    @FXML
+    public void onActionDepartmentsBtn(ActionEvent event) {
+        FacultyDTO selectedFaculty = facultiesTbv.getSelectionModel().getSelectedItem();
+
+        if (selectedFaculty == null) {
+            showNotificationToast("Error", "Please select some faculty.");
+            return;
         }
+        AppContext.getInstance().setFacultyDTO(selectedFaculty);
+        ViewManager.getInstance().loadInternalView(Views.DEPARTMENT_MANAGEMENT);
+    }
+
+    private Long parseLong(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            showError("El ID no puede estar vacío.");
+            return null;
+        }
+        if (!text.matches("\\d+")) {
+            showError("El ID debe ser un número válido.");
+            return null;
+        }
+        try {
+            return Long.valueOf(text);
+        } catch (NumberFormatException e) {
+            showError("El ID debe ser un número válido.");
+            return null;
+        }
+    }
+
+    private void showError(String message) {
+        System.err.println(message);
+        showNotificationToast("Error", message, Alert.AlertType.ERROR);
+    }
+
+    private void showInfo(String message) {
+        System.out.println(message);
+        showNotificationToast("Información", message, Alert.AlertType.INFORMATION);
     }
 
     private void loadPage(int page) {
         try {
-            MessageResponse<PageDTO<FacultyDTO>> response = facultyAPIService.getFacultiesByUniversityId(AppContext.getInstance().getUniversityDTO().getId(), 0, 10);
+            MessageResponse<PageDTO<FacultyDTO>> response = facultyAPIServiceaculty.getFacultiesByUniversityId(AppContext.getInstance().getUniversityDTO().getId(), page, 10);
             showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());
@@ -214,88 +255,22 @@ public class FacultyManagementViewController extends Controller {
         return FXCollections.observableArrayList(list != null ? list : List.of());
     }
 
-    @FXML
-    public void onActionFindByNameBtn(ActionEvent event) {
-        String nameToFind = findByNameTxf.getText().trim();
-        if (nameToFind.isEmpty()) {
-            showError("Por favor, ingresa un nombre para buscar.");
+    private void handleUniversityAction(Supplier<MessageResponse<Void>> action) {
+        if (!validateFields()) {
             return;
         }
-        try {
-//            MessageResponse<PageDTO<FacultyDTO>> response = facultyAPIService.findByName(nameToFind, PageRequest.of(0, 10));
-//            readResponse(response); // Usar el método readResponse de la clase padre
-//            if (response.isSuccess()) {
-//                loadTable(response.getData());
-//            }
-        } catch (Exception e) {
-            showError("Error al buscar facultad: " + e.getMessage());
+        MessageResponse<Void> response = action.get();
+        showReadResponse(response);
+        if (response.isSuccess()) {
+            loadInitialData();
         }
     }
 
-    @FXML
-    public void onActionReloadPageBtn(ActionEvent event) {
-        loadPage(pageNumber); // Recargar la página actual
-    }
-
-    @FXML
-    public void onActionBackBtn(ActionEvent event) {
-        ViewManager.getInstance().loadInternalView(Views.MENU);
-    }
-
-    @FXML
-    public void onActionDepartmentsBtn(ActionEvent event) {
-        FacultyDTO selectedFaculty = facultiesTbv.getSelectionModel().getSelectedItem();
-        if (selectedFaculty != null) {
-            MessageResponse<PageDTO<DepartmentDTO>> response = facultyAPIService.getDepartmentsByFacultyId(selectedFaculty.getId(), 0, 10);
-            showReadResponse(response); // Usar el método readResponse de la clase padre
-            if (response.isSuccess()) {
-                AppContext.getInstance().setPageDepartment(response.getData());
-                AppContext.getInstance().setFacultyDTO(selectedFaculty);
-                ViewManager.getInstance().loadInternalView(Views.DEPARTMENT_MANAGEMENT);
-            }
-        } else {
-            showError("Por favor, selecciona una facultad.");
+    private boolean validateFields() {
+        if (facultyNameTxf.getText().isEmpty()) {
+            showError("Por favor, completa todos los campos requeridos.");
+            return false;
         }
-    }
-
-    @FXML
-    public void onActionHelpInfoBtn(ActionEvent event) {
-        super.showNotificationToast("Ayuda gestión universidad", "Usa la tabla para seleccionar información");
-    }
-
-    private Long parseLong(String text) {
-        if (text == null || text.trim().isEmpty()) {
-            showError("El ID no puede estar vacío.");
-            return null;
-        }
-        if (!text.matches("\\d+")) { // Verifica que la cadena contenga solo números
-            showError("El ID debe ser un número válido.");
-            return null;
-        }
-        try {
-            return Long.valueOf(text);
-        } catch (NumberFormatException e) {
-            showError("El ID debe ser un número válido.");
-            return null;
-        }
-    }
-
-    private void showError(String message) {
-        System.err.println(message);
-        showNotificationToast("Error", message, Alert.AlertType.ERROR);
-    }
-
-    private void showInfo(String message) {
-        System.out.println(message);
-        showNotificationToast("Información", message, Alert.AlertType.INFORMATION);
-    }
-
-    @FXML
-    private void onActionUpdateUniversityBtn(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionDeparmentsBtn(ActionEvent event) {
-        ViewManager.getInstance().loadInternalView(Views.DEPARTMENT_MANAGEMENT);
+        return true;
     }
 }

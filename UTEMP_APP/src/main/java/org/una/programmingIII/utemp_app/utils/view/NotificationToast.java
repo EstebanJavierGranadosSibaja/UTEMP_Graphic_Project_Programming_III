@@ -19,7 +19,6 @@ import java.util.Objects;
 
 public class NotificationToast extends Application {
     private static final int MAX_CHARACTERS = 150;
-    // Variable estática para el último Stage mostrado
     private static Stage lastNotificationStage = null;
     private final int minHeight = 40, maxHeight = 200;
     private final int minWidth = 150, maxWidth = 900;
@@ -77,9 +76,9 @@ public class NotificationToast extends Application {
         Label label = new Label(message);
         label.setFont(new Font("Arial", 16));
         label.setWrapText(true);
-        label.setStyle("-fx-background-color: transparent;" +
+        label.setStyle("-fx-background-color: rgba(0,0,0,0);" +
                 "-fx-padding: 10px;" +
-                "-fx-text-fill: #8fffee;" +
+                "-fx-text-fill: rgb(255,255,255);" +
                 "-fx-font-weight: bold;");
         label.setMaxHeight(maxHeight);
         label.setMinHeight(minHeight);
@@ -89,11 +88,12 @@ public class NotificationToast extends Application {
 
     private StackPane createNotificationStackPane(Label label) {
         StackPane stackPane = new StackPane(label);
-        stackPane.setStyle("-fx-background-color: linear-gradient(to top left, #000000, #203935, #000000);" +
+        stackPane.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(146,113,195), rgb(126,83,186), rgb(117,68,188));" +
                 "-fx-background-radius: 15px;" +
-                "-fx-border-color: #8fffee;" +
-                "-fx-border-width: 1px;" +
+                "-fx-border-color: rgb(99,6,175);" +
+                "-fx-border-width: 2px;" +
                 "-fx-border-radius: 15px;");
+
         return stackPane;
     }
 
@@ -137,7 +137,7 @@ public class NotificationToast extends Application {
     }
 
     private void setAppIcon(Stage notificationStage) {
-        String iconPath = "/icons/notification-icon.png";
+        String iconPath = "/images/bell2.png";
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath)));
         notificationStage.getIcons().add(icon);
     }

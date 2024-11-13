@@ -49,13 +49,6 @@ public class FacultyAPIService extends BaseApiServiceManager<FacultyDTO> {
         });
     }
 
-    public MessageResponse<PageDTO<DepartmentDTO>> getDepartmentsByFacultyId(Long facultyId, int page, int size) {
-        // Obtiene los departamentos asociados a una facultad por ID
-        String endpoint = ENTITY_ENDPOINT + "/" + facultyId + "/departments?page=" + page + "&size=" + size;
-        return super.getEntitiesByEndpoint(endpoint, new TypeReference<PageDTO<DepartmentDTO>>() {
-        });
-    }
-
     public MessageResponse<Void> addDepartmentToFaculty(Long facultyId, DepartmentDTO departmentDTO) {
         // Agrega un departamento a una facultad
         String endpoint = ENTITY_ENDPOINT + "/" + facultyId + "/departments";

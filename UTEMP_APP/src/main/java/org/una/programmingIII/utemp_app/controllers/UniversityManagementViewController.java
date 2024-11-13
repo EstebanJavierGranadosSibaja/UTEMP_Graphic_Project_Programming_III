@@ -66,9 +66,9 @@ public class UniversityManagementViewController extends Controller {
     }
 
     private void setTableView() {
-        idTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
-        nameTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.40));
-        locationTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.40));
+        idTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.10));
+        nameTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.45));
+        locationTbc.prefWidthProperty().bind(table.widthProperty().multiply(0.45));
 
         table.setEditable(false);
         idTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -140,16 +140,26 @@ public class UniversityManagementViewController extends Controller {
         UniversityDTO universityDTO = getCurrentUniversity();
         universityDTO.setId(null);
         handleUniversityAction(() -> baseApiServiceManager.createEntity(universityDTO));
+        onActionClearFieldsBtn(event);
     }
 
     @FXML
     public void onActionUpdateUniversityBtn(ActionEvent event) {
         handleUniversityAction(() -> baseApiServiceManager.updateEntity(getCurrentUniversity().getId(), getCurrentUniversity()));
+        onActionClearFieldsBtn(event);
     }
 
     @FXML
     public void onActionDeleteUniversityBtn(ActionEvent event) {
-        handleUniversityAction(() -> baseApiServiceManager.deleteEntity(parseLong(universityIdTxf.getText())));
+        if(universityIdTxf.getText().isEmpty() || universityIdTxf.getText() == null)
+        {
+            showNotificationToast("Error", "Please select some university.");
+            return;
+        }
+        if (showConfirmationMessage("DELETE UNIVERSITY", "DO YOU CONFIRM THE DELETION OF THIS USER?")) {
+            handleUniversityAction(() -> baseApiServiceManager.deleteEntity(parseLong(universityIdTxf.getText())));
+            onActionClearFieldsBtn(event);
+        }
     }
 
     @FXML
@@ -201,13 +211,14 @@ public class UniversityManagementViewController extends Controller {
 
     @FXML
     public void onActionFacultiesBtn(ActionEvent event) {
-        AppContext.getInstance().setUniversityDTO(getCurrentUniversity());
-        ViewManager.getInstance().loadInternalView(Views.FACULTIES_MANAGEMENT);
-    }
+        UniversityDTO selectedUniversity = table.getSelectionModel().getSelectedItem();
 
-    @FXML
-    public void onActionHelpInfoBtn(ActionEvent event) {
-        super.showNotificationToast("Ayuda gestion universidad", "usa la tabla para seleccionar información");
+        if (selectedUniversity == null) {
+            showNotificationToast("Error", "Please select some university.");
+            return;
+        }
+        AppContext.getInstance().setUniversityDTO(selectedUniversity);
+        ViewManager.getInstance().loadInternalView(Views.FACULTIES_MANAGEMENT);
     }
 
     // Helper Methods

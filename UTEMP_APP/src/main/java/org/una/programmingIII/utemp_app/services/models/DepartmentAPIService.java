@@ -43,6 +43,12 @@ public class DepartmentAPIService extends BaseApiServiceManager<DepartmentDTO> {
         return super.executeVoidRequest(endpoint, HttpMethod.DELETE, null);
     }
 
+    public MessageResponse<PageDTO<DepartmentDTO>> getDepartmentsByFacultyId(Long facultyId, int page, int size) {
+        String endpoint = ENTITY_ENDPOINT + "/faculty/" + facultyId + "?page=" + page + "&size=" + size;
+        return super.getEntitiesByEndpoint(endpoint, new TypeReference<PageDTO<DepartmentDTO>>() {
+        });
+    }
+
     public MessageResponse<PageDTO<CourseDTO>> getCoursesByDepartmentId(Long departmentId, int page, int size) {
         // Implementa la lógica para obtener cursos por departamento desde la API
         String endpoint = ENTITY_ENDPOINT + "/" + departmentId + "/courses?page=" + page + "&size=" + size;

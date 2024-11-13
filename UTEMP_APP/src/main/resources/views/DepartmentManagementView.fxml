@@ -69,18 +69,18 @@
                                 <MFXButton id="mfx-small-button" fx:id="clearFieldsBtn" maxHeight="50.0" maxWidth="120.0" minWidth="30.0" onAction="#onActionClearFieldsBtn" prefHeight="50.0" prefWidth="100.0" text="CLEAR FIELDS" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                        <MFXTextField id="mfx-text-filed" fx:id="departmentIdTxf" editable="false" floatingText="DEPARTMENT ID:" maxHeight="50.0" maxWidth="1.7976931348623157E308" minWidth="30.0" prefHeight="50.0" prefWidth="395.0" selectable="false" VBox.vgrow="ALWAYS" />
-                        <MFXTextField id="mfx-text-filed" fx:id="facultyDepartmentTxf" editable="false" floatingText="FACULTY OF THE DEPARTMENT:" layoutX="20.0" layoutY="106.0" maxHeight="50.0" maxWidth="1.7976931348623157E308" minWidth="30.0" prefHeight="50.0" prefWidth="395.0" selectable="false" VBox.vgrow="ALWAYS" />
-                        <MFXTextField id="mfx-text-filed" fx:id="departmentNameTxf" floatingText="DEPARTMENT NAME:" layoutX="20.0" layoutY="20.0" maxHeight="50.0" maxWidth="1.7976931348623157E308" minWidth="30.0" prefHeight="50.0" prefWidth="395.0" VBox.vgrow="ALWAYS" />
+                        <MFXTextField id="mfx-text-filed" fx:id="departmentIdTxf" editable="false" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" minWidth="30.0" prefHeight="50.0" prefWidth="395.0" promptText="DEPARTMENT ID:" selectable="false" VBox.vgrow="ALWAYS" />
+                        <MFXTextField id="mfx-text-filed" fx:id="facultyDepartmentTxf" editable="false" floatMode="ABOVE" layoutX="20.0" layoutY="106.0" maxHeight="50.0" maxWidth="1.7976931348623157E308" minWidth="30.0" prefHeight="50.0" prefWidth="395.0" promptText="DEPARTMENT FACULTY:" selectable="false" VBox.vgrow="ALWAYS" />
+                        <MFXTextField id="mfx-text-filed" fx:id="departmentNameTxf" floatMode="ABOVE" layoutX="20.0" layoutY="20.0" maxHeight="50.0" maxWidth="1.7976931348623157E308" minWidth="30.0" prefHeight="50.0" prefWidth="395.0" promptText="DEPARTMENT NAME:" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="470.0" spacing="15.0" VBox.vgrow="ALWAYS">
                             <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                                      <MFXButton id="mfx-small-button-important" fx:id="deleteBtn" maxHeight="50.0" maxWidth="120.0" minWidth="30.0" onAction="#onActionDeleteFacultyBtn" prefHeight="50.0" prefWidth="100.0" text="DELETE" HBox.hgrow="ALWAYS" />
+                                      <MFXButton id="mfx-small-button-important" fx:id="deleteBtn" maxHeight="50.0" maxWidth="120.0" minWidth="30.0" onAction="#onActionDeleteDepartmentBtn" prefHeight="50.0" prefWidth="100.0" text="DELETE" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                                <MFXButton id="mfx-small-button-important" fx:id="createBtn" maxHeight="50.0" maxWidth="100.0" minWidth="30.0" onAction="#onActionCreateFacultyBtn" prefHeight="50.0" prefWidth="100.0" text="CREATE" HBox.hgrow="ALWAYS" />
-                                <MFXButton id="mfx-small-button-important" fx:id="updateBtn" maxHeight="50.0" maxWidth="200.0" minWidth="30.0" onAction="#onActionUpdateUniversityBtn" prefHeight="50.0" prefWidth="100.0" text="UPDATE" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button-important" fx:id="createBtn" maxHeight="50.0" maxWidth="100.0" minWidth="30.0" onAction="#onActionCreateDepartmentBtn" prefHeight="50.0" prefWidth="100.0" text="CREATE" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button-important" fx:id="updateBtn" maxHeight="50.0" maxWidth="200.0" minWidth="30.0" onAction="#onActionUpdateDepartmentBtn" prefHeight="50.0" prefWidth="100.0" text="UPDATE" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="152.0" prefWidth="387.0" spacing="15.0" VBox.vgrow="ALWAYS">

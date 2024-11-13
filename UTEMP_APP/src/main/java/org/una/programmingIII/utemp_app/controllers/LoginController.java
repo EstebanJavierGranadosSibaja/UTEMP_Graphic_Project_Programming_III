@@ -4,6 +4,8 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import org.una.programmingIII.utemp_app.requests.AuthRequest;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.responses.TokenResponse;
@@ -32,6 +34,14 @@ public class LoginController extends Controller {
         loginBtn.setOnAction(event -> handleLogin());
         helpBtn.setOnAction(event -> showHelp());
         infoBtn.setOnAction(event -> showInfo());
+        numberIdentificationTxf.setOnKeyPressed(this::handleEnterKey);
+        passwordPwf.setOnKeyPressed(this::handleEnterKey);
+    }
+
+    private void handleEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleLogin();
+        }
     }
 
     private void handleLogin() {
@@ -44,7 +54,6 @@ public class LoginController extends Controller {
         }
 
         MessageResponse<TokenResponse> response = authService.login(new AuthRequest(numberId, password));
-
 
         if (response.isSuccess()) {
             AppContext.getInstance().setUserDTO(response.getData().getUser());

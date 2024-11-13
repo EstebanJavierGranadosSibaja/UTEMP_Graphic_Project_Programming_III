@@ -40,7 +40,7 @@
 /* ========================== */
 
 .context-menu {
-    -fx-background-color: linear-gradient(to top left, #000000, #203935, #000000); /* Fondo oscuro */
+    -fx-background-color: linear-gradient(to bottom, rgb(146,113,195), rgb(126,83,186), rgb(117,68,188));
     -fx-border-radius: 8px; /* Bordes redondeados */
     -fx-padding: 5px; /* Relleno alrededor */
 }
@@ -84,7 +84,7 @@
 /* Estilo para las etiquetas */
 #label {
     -fx-font-family: "Arial Black"; /* Nueva fuente */
-    -fx-font-size: 20px; /* Tamaño de fuente más grande */
+    -fx-font-size: 25px; /* Tamaño de fuente más grande */
     -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
     -fx-font-weight: bold; /* Texto en negrita */
     -fx-padding: 10px; /* Espaciado alrededor del texto */
@@ -94,7 +94,7 @@
 /* Estilo para las etiquetas */
 #label-username {
     -fx-font-family: "Arial Black"; /* Nueva fuente */
-    -fx-font-size: 15px; /* Tamaño de fuente más grande */
+    -fx-font-size: 20px; /* Tamaño de fuente más grande */
     -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
     -fx-font-weight: bold; /* Texto en negrita */
     -fx-padding: 10px; /* Espaciado alrededor del texto */
@@ -149,7 +149,7 @@
 #mfx-small-button-important {
     -fx-background-color: #743885; /* Color lila oscuro */
     -fx-text-fill: #ffffff; /* Color de texto lila claro */
-    -fx-font-size: 10px;
+    -fx-font-size: 12px;
     -fx-padding: 10px 20px;
     -fx-font-weight: bold;
     -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
@@ -166,7 +166,7 @@
 #mfx-small-button {
     -fx-background-color: #8056bc; /* Color lila oscuro */
     -fx-text-fill: #ffffff; /* Color de texto lila claro */
-    -fx-font-size: 10px;
+    -fx-font-size: 12px;
     -fx-padding: 10px 20px;
     -fx-font-weight: bold;
     -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
@@ -183,7 +183,7 @@
 #mfx-small-menu-button-important {
     -fx-background-color: #743885; /* Color lila oscuro */
     -fx-text-fill: #ffffff; /* Color de texto lila claro */
-    -fx-font-size: 15px;
+    -fx-font-size: 12px;
     -fx-padding: 10px 20px;
     -fx-font-weight: bold;
     -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
@@ -265,17 +265,19 @@
 
 /* ----------- TABLEVIEW ----------- */
 .table-view {
-    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-background-color: rgba(214, 208, 220, 0.42); /* Fondo transparente */
     -fx-border-radius: 10px; /* Bordes redondeados */
     -fx-border-color: #d68fff; /* Color del borde exterior */
     -fx-padding: 5px; /* Relleno externo */
     -fx-font-family: 'Lato', sans-serif; /* Fuente */
     -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* Texto blanco */
+
 }
 
 /* Estilo para las filas del TableView */
 .table-view .table-row-cell {
-    -fx-background-color: transparent; /* Fondo por defecto */
+    -fx-background-color: #8056bc; /* Fondo por defecto */
     -fx-background-radius: 5px;
     -fx-border-color: transparent; /* Sin borde por defecto */
     -fx-padding: 5px;
@@ -284,16 +286,16 @@
 
 /* Alternancia de colores en las filas */
 .table-view .table-row-cell:odd {
-    -fx-background-color: rgb(255, 255, 255); /* Fondo de la pista */
+    -fx-background-color: rgb(214, 208, 220); /* Fondo de la pista */
 }
 
 .table-view .table-row-cell:even {
-    -fx-background-color: rgb(255, 255, 255); /* Fondo de la pista */
+    -fx-background-color: rgb(214, 208, 220); /* Fondo de la pista */
 }
 
 /* Color de la fila seleccionada */
 .table-view .table-row-cell:selected {
-    -fx-background-color: #cbb7dd; /* Color de fondo para la fila seleccionada */
+    -fx-background-color: #c3a0e3; /* Color de fondo para la fila seleccionada */
     -fx-text-fill: #ffffff; /* Texto blanco */
 }
 
@@ -317,7 +319,7 @@
 
 /* Efecto hover para las celdas */
 .table-view .cell:hover {
-    -fx-background-color: #cbb7dd; /* Color de fondo en hover */
+    -fx-background-color: #c3a0e3; /* Color de fondo en hover */
     -fx-text-fill: #000000; /* Color del texto en hover */
 }
 

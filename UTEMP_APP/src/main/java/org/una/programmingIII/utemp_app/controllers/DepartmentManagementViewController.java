@@ -5,6 +5,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -18,6 +19,7 @@ import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.DepartmentAPIService;
 import org.una.programmingIII.utemp_app.utils.Views;
 import org.una.programmingIII.utemp_app.utils.services.BaseApiServiceManager;
+import org.una.programmingIII.utemp_app.utils.view.AppContext;
 import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 
 import java.util.List;
@@ -35,10 +37,8 @@ public class DepartmentManagementViewController extends Controller {
     private MFXTextField findByNameTxf;
     @FXML
     private TableView<DepartmentDTO> departmentsTbv;
-
     @FXML
     private Label pageNumberLbl;
-
     @FXML
     private MFXButton createBtn;
     @FXML
@@ -87,11 +87,16 @@ public class DepartmentManagementViewController extends Controller {
     }
 
     private void setTableView() {
+        departmentIdTbc.prefWidthProperty().bind(departmentsTbv.widthProperty().multiply(0.10));
+        facultyNameTbc.prefWidthProperty().bind(departmentsTbv.widthProperty().multiply(0.45));
+        departmentNameTbc.prefWidthProperty().bind(departmentsTbv.widthProperty().multiply(0.45));
+
         departmentsTbv.setEditable(false);
         departmentIdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
         departmentNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
-        facultyNameTbc.setCellValueFactory(new PropertyValueFactory<>("facultyName"));
-        departmentsTbv.setPlaceholder(new Label("No hay departamentos disponibles."));
+        facultyNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
+        facultyDepartmentTxf.setText(AppContext.getInstance().getFacultyDTO().getName());
+        departmentsTbv.setPlaceholder(new Label("THERE ARE NO DEPARTMENTS AVAILABLE AT THIS TIME"));
 
         departmentsTbv.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -100,26 +105,47 @@ public class DepartmentManagementViewController extends Controller {
         });
     }
 
+    @FXML
+    public void onActionCreateDepartmentBtn() {
+        DepartmentDTO newDepartment = getCurrentDepartment();
+        if (newDepartment != null) {
+            handleDepartmentAction(() -> baseApiServiceManager.createEntity(newDepartment));
+        } else {
+            showError("No se pudo crear el departamento. Verifica los datos.");
+        }
+        onActionClearFieldsBtn();
+    }
+
+    @FXML
+    public void onActionUpdateDepartmentBtn() {
+        DepartmentDTO updatedDepartment = getCurrentDepartment();
+        if (updatedDepartment != null && updatedDepartment.getId() != null) {
+            handleDepartmentAction(() -> baseApiServiceManager.updateEntity(updatedDepartment.getId(), updatedDepartment));
+        } else {
+            showError("No se pudo actualizar el departamento. Verifica los datos.");
+        }
+        onActionClearFieldsBtn();
+    }
+
+    @FXML
+    public void onActionDeleteDepartmentBtn() {
+        if(departmentIdTxf.getText().isEmpty() || departmentIdTxf.getText() == null)
+        {
+            System.out.println(departmentIdTxf.getText());
+            showNotificationToast("Error", "Please select some department.");
+            return;
+        }
+        if (showConfirmationMessage("DELETE FACULTY", "DO YOU CONFIRM THE DELETION OF THIS FACULTY?")) {
+            handleDepartmentAction(() -> baseApiServiceManager.deleteEntity(parseLong(departmentIdTxf.getText())));
+            onActionClearFieldsBtn();
+            loadPage(pageNumber);
+        }
+    }
+
     private void fillFieldsFromSelectedDepartment(DepartmentDTO department) {
         departmentIdTxf.setText(String.valueOf(department.getId()));
         departmentNameTxf.setText(department.getName());
-        facultyDepartmentTxf.setText(department.getFaculty() != null ? department.getFaculty().getName() : "");
     }
-
-//    @FXML
-//    public void onActionCreateDepartmentBtn() {
-//        handleDepartmentAction(() -> baseApiServiceManager.createEntity(getCurrentDepartment()));
-//    }
-//
-//    @FXML
-//    public void onActionUpdateDepartmentBtn() {
-//        handleDepartmentAction(() -> baseApiServiceManager.updateEntity(getCurrentDepartment().getId(), getCurrentDepartment()));
-//    }
-//
-//    @FXML
-//    public void onActionDeleteDepartmentBtn() {
-//        handleDepartmentAction(() -> baseApiServiceManager.deleteEntity(parseLong(departmentIdTxf.getText())));
-//    }
 
     private void handleDepartmentAction(Supplier<MessageResponse<Void>> action) {
         if (!validateFields()) {
@@ -141,7 +167,6 @@ public class DepartmentManagementViewController extends Controller {
     public void onActionClearFieldsBtn() {
         departmentIdTxf.clear();
         departmentNameTxf.clear();
-        facultyDepartmentTxf.clear();
     }
 
     private void loadInitialData() {
@@ -150,9 +175,8 @@ public class DepartmentManagementViewController extends Controller {
 
     private void loadPage(int page) {
         try {
-            MessageResponse<PageDTO<DepartmentDTO>> response = baseApiServiceManager.getAllEntities(PageRequest.of(page, 10), new TypeReference<PageDTO<DepartmentDTO>>() {
-            });
-            super.showReadResponse(response);
+            MessageResponse<PageDTO<DepartmentDTO>> response = departmentAPIService.getDepartmentsByFacultyId(AppContext.getInstance().getFacultyDTO().getId(), page, 10);
+            showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());
                 pageNumberLbl.setText(String.valueOf(page + 1));
@@ -167,9 +191,8 @@ public class DepartmentManagementViewController extends Controller {
 
     protected void loadTable(PageDTO<DepartmentDTO> page) {
         maxPage = page.getTotalPages();
-        List<DepartmentDTO> list = page.getContent();
         departmentsTbv.getItems().clear();
-        departmentsTbv.setItems(listToObservableList(list));
+        departmentsTbv.setItems(listToObservableList(page.getContent()));
     }
 
     protected ObservableList<DepartmentDTO> listToObservableList(List<DepartmentDTO> list) {
@@ -192,7 +215,7 @@ public class DepartmentManagementViewController extends Controller {
         return DepartmentDTO.builder()
                 .id(parseLong(departmentIdTxf.getText()))
                 .name(departmentNameTxf.getText())
-                .faculty(new FacultyDTO()) // Ajusta según cómo obtienes la facultad
+                .faculty(AppContext.getInstance().getFacultyDTO())
                 .build();
     }
 
@@ -236,39 +259,6 @@ public class DepartmentManagementViewController extends Controller {
     public void onActionHelpInfoBtn() {
         System.out.println("Displaying help info...");
         showNotificationToast("ayuda para administrar", " reinicia el pc");
-    }
-
-    @FXML
-    public void onActionCreateFacultyBtn() {
-        // Lógica para crear un nuevo departamento
-        DepartmentDTO newDepartment = getCurrentDepartment();
-        if (newDepartment != null) {
-            handleDepartmentAction(() -> baseApiServiceManager.createEntity(newDepartment));
-        } else {
-            showError("No se pudo crear el departamento. Verifica los datos.");
-        }
-    }
-
-    @FXML
-    public void onActionUpdateUniversityBtn() {
-        // Lógica para actualizar un departamento existente
-        DepartmentDTO updatedDepartment = getCurrentDepartment();
-        if (updatedDepartment != null && updatedDepartment.getId() != null) {
-            handleDepartmentAction(() -> baseApiServiceManager.updateEntity(updatedDepartment.getId(), updatedDepartment));
-        } else {
-            showError("No se pudo actualizar el departamento. Verifica los datos.");
-        }
-    }
-
-    @FXML
-    public void onActionDeleteFacultyBtn() {
-        // Lógica para eliminar un departamento
-        Long departmentId = parseLong(departmentIdTxf.getText());
-        if (departmentId != null) {
-            handleDepartmentAction(() -> baseApiServiceManager.deleteEntity(departmentId));
-        } else {
-            showError("No se pudo eliminar el departamento. ID inválido.");
-        }
     }
 
 }

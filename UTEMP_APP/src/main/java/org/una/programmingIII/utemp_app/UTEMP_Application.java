@@ -18,10 +18,9 @@ public class UTEMP_Application extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("UTEMP Application");
 
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/University.png"))); // Asegúrate de que el ícono esté en esta ruta
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/University.png")));
         primaryStage.getIcons().add(icon);
 
-        // Inicializar y mostrar la vista principal
         ViewManager viewManager = ViewManager.getInstance();
         viewManager.initialize(primaryStage);
         viewManager.showMainView(Views.LOGIN);
