@@ -54,4 +54,18 @@ public class FileMetadatumDTO {
 
     private int totalChunks; // Número total de fragmentos
 
+    @Override
+    public String toString() {
+        return "CourseDTO{" +
+                "id=" + id +
+                ", name='" + fileSize + '\'' +
+                ", description='" + fileName + '\'' +
+                ", state=" + fileType +
+                ", createdAt=" + createdAt +
+                ", lastUpdate=" + lastUpdate +
+                ", teacher=" + storagePath +
+                ", department=" + (student != null ? student.getId() : "null") +
+                '}';
+    }
+
 }

@@ -58,4 +58,19 @@ public class SubmissionDTO {
     @Builder.Default
     @JsonBackReference("submission-fileMetadata")  // Unique name for fileMetadata reference
     private List<FileMetadatumDTO> fileMetadata = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "SubmissionDTO{" +
+                "id=" + id +
+                ", fileName='" + fileName + '\'' +
+                ", grade=" + grade +
+                ", comments='" + comments + '\'' +
+                ", state=" + state +
+                ", createdAt=" + createdAt +
+                ", lastUpdate=" + lastUpdate +
+                ", studentId=" + (student != null ? student.getId() : "null") +
+                ", assignmentId=" + (assignment != null ? assignment.getId() : "null") +
+                '}';
+    }
 }

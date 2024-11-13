@@ -78,4 +78,19 @@ public class UserDTO {
     @Builder.Default
     @JsonManagedReference("user-submissions")  // Unique name for submissions
     private List<SubmissionDTO> submissions = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + (password != null ? "*****" : "null") + '\'' +  // Ocultamos la contraseña
+                ", identificationNumber='" + identificationNumber + '\'' +
+                ", state=" + state +
+                ", role=" + role +
+                ", createdAt=" + createdAt +
+                ", lastUpdate=" + lastUpdate +
+                '}';
+    }
 }
