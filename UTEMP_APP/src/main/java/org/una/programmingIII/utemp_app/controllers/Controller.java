@@ -75,6 +75,10 @@ public abstract class Controller {
         showNotificationToast(title, message, Alert.AlertType.INFORMATION);
     }
 
+    protected void showNotificationToast(String message) {
+        showNotificationToast(null, message, Alert.AlertType.INFORMATION);
+    }
+
     protected TextFormatter<String> createTextFormatter(String regex) {
         return new TextFormatter<>(change -> {
             String newText = change.getControlNewText();

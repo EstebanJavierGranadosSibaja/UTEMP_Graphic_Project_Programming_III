@@ -52,10 +52,4 @@ public class MenuController extends Controller {
             showError("Error al cargar la vista de gestión de inscripciones: " + e.getMessage());
         }
     }
-
-    private void showError(String message) {
-        // Método para mostrar errores
-        System.err.println(message);
-        // Podrías agregar lógica para mostrar un cuadro de diálogo con el mensaje de error.
-    }
 }

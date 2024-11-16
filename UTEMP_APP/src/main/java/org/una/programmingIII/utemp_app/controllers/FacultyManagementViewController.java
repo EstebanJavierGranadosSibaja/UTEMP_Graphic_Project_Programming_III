@@ -219,10 +219,6 @@ public class FacultyManagementViewController extends Controller {
         }
     }
 
-    private void showError(String message) {
-        System.err.println(message);
-        showNotificationToast("Error", message, Alert.AlertType.ERROR);
-    }
 
     private void showInfo(String message) {
         System.out.println(message);

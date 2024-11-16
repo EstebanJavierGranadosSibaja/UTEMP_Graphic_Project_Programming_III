@@ -234,10 +234,6 @@ public class UniversityManagementViewController extends Controller {
         }
     }
 
-    private void showError(String message) {
-        System.err.println(message);
-    }
-
     private void showInfo(String message) {
         System.out.println(message);
     }

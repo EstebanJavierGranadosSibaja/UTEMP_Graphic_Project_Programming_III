@@ -207,10 +207,6 @@ public class DepartmentManagementViewController extends Controller {
         }
     }
 
-    private void showError(String message) {
-        System.err.println(message);
-    }
-
     private DepartmentDTO getCurrentDepartment() {
         return DepartmentDTO.builder()
                 .id(parseLong(departmentIdTxf.getText()))

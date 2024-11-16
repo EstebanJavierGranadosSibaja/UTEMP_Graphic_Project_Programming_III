@@ -263,7 +263,4 @@ public class UserManagementViewController extends Controller {
         }
     }
 
-    private void showError(String message) {
-        System.err.println(message);
-    }
 }
