@@ -273,4 +273,5 @@ public class UserManagementViewController extends Controller {
             showError("Error al cargar la página: " + e.getMessage());
         }
     }
+
 }

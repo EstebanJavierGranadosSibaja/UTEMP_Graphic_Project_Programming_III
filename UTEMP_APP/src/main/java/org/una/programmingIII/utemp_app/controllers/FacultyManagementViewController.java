@@ -219,6 +219,7 @@ public class FacultyManagementViewController extends Controller {
         }
     }
 
+
     private void showInfo(String message) {
         System.out.println(message);
         showNotificationToast("Información", message, Alert.AlertType.INFORMATION);

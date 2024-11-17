@@ -19,52 +19,45 @@ public class SubmissionAPIService extends BaseApiServiceManager<SubmissionDTO> {
     }
 
     public MessageResponse<PageDTO<SubmissionDTO>> getAllSubmissions(int page, int size) {
-        // Obtiene todas las entidades de tipo SubmissionDTO paginadas
         return super.getAllEntities(PageRequest.of(page, size));
     }
 
     public MessageResponse<SubmissionDTO> getSubmissionById(Long id) {
-        // Obtiene una entidad SubmissionDTO por ID
         return super.getEntityById(id);
     }
 
-    public MessageResponse<Void> createSubmission(SubmissionDTO submissionDTO) {
-        // Crea una nueva entidad SubmissionDTO
-        return super.createEntity(submissionDTO);
+    public MessageResponse<SubmissionDTO> createSubmission(SubmissionDTO submissionDTO) {
+        String endpoint = ENTITY_ENDPOINT;
+        return super.executeCustomRequest(endpoint, HttpMethod.POST, submissionDTO, null, super.typeEntityReference);
     }
 
-    public MessageResponse<Void> updateSubmission(Long id, SubmissionDTO submissionDTO) {
-        // Actualiza una entidad SubmissionDTO existente por ID
-        return super.updateEntity(id, submissionDTO);
+    public MessageResponse<SubmissionDTO> updateSubmission(Long id, SubmissionDTO submissionDTO) {
+        String endpoint = ENTITY_ENDPOINT + "/" + id;
+        return super.executeCustomRequest(endpoint, HttpMethod.PUT, submissionDTO, null, super.typeEntityReference);
     }
 
     public MessageResponse<Void> deleteSubmission(Long id) {
-        // Elimina una entidad SubmissionDTO por ID
         return super.deleteEntity(id);
     }
 
     public MessageResponse<FileMetadatumDTO> addFileMetadatumToSubmission(Long submissionId, FileMetadatumDTO fileMetadatumDTO) throws Exception {
-        // Usa el método createEntity para agregar metadata de archivo a una submission
         String endpoint = ENTITY_ENDPOINT + "/" + submissionId + "/file-metadata";
         return super.executeCustomRequest(createConnectionWithBody(endpoint, HttpMethod.POST, fileMetadatumDTO, null), new TypeReference<FileMetadatumDTO>() {
         });
     }
 
     public MessageResponse<GradeDTO> addGradeToSubmission(Long submissionId, GradeDTO gradeDTO) throws Exception {
-        // Usa el método createEntity para agregar una calificación a una submission
         String endpoint = ENTITY_ENDPOINT + "/" + submissionId + "/grades";
         return super.executeCustomRequest(endpoint, HttpMethod.POST, gradeDTO, null, new TypeReference<GradeDTO>() {
         });
     }
 
     public MessageResponse<Void> removeFileMetadatumFromSubmission(Long submissionId, Long fileMetadatumId) {
-        // Elimina metadata de archivo de una submission específica
         String endpoint = ENTITY_ENDPOINT + "/" + submissionId + "/file-metadata/" + fileMetadatumId;
         return super.executeVoidRequest(endpoint, HttpMethod.DELETE, null);
     }
 
     public MessageResponse<Void> removeGradeFromSubmission(Long submissionId, Long gradeId) {
-        // Elimina una calificación de una submission específica
         String endpoint = ENTITY_ENDPOINT + "/" + submissionId + "/grades/" + gradeId;
         return super.executeVoidRequest(endpoint, HttpMethod.DELETE, null);
     }

@@ -251,7 +251,7 @@ public class CourseManagementViewController extends Controller{
                 pageNumber = page;
             }
         } catch (Exception e) {
-            showError("Error al cargar la página: " + e.getMessage());
+            super.showError("Error al cargar la página: " + e.getMessage());
         }
     }
 }

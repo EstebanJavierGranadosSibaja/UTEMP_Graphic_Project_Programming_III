@@ -28,7 +28,7 @@ public class NotificationToast extends Application {
     @Setter
     private String title;
     @Setter
-    private int duration = 8;
+    private int duration = 16;
     private int lines;
 
     public NotificationToast(String message, String title) {

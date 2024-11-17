@@ -9,9 +9,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
+import javafx.util.converter.DoubleStringConverter;
 import org.una.programmingIII.utemp_app.dtos.*;
+import org.una.programmingIII.utemp_app.dtos.enums.SubmissionState;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.FileAPIService;
 import org.una.programmingIII.utemp_app.services.models.SubmissionAPIService;
@@ -31,7 +34,7 @@ public class SubmissionsViewController extends Controller {
     @FXML
     private MFXTextField findByIdTxtF, courseAssignmentTxtF, studentTextF, gradeTxtF, commentaryTxtF, fileUploadPathTxtF;
     @FXML
-    private MFXButton prevPageBtn, nextPageBtn, backBtn;
+    private MFXButton prevPageBtn, nextPageBtn, backBtn, findByIDBtn;
     @FXML
     private TableView<SubmissionDTO> tableView;
     @FXML
@@ -58,17 +61,31 @@ public class SubmissionsViewController extends Controller {
     /*---------------------------- Initialization ----------------------------*/
     @FXML
     public void initialize() {
+        setGradeFieldFormatter();
+
         assignmentDTO = AppContext.getInstance().getAssignmentDTO();
         userDTO = AppContext.getInstance().getUserDTO();
 
-        DTOFiller dto = new DTOFiller();
-        assignmentDTO = dto.getAssignmentDTO();
+        setData();
 
         studentTextF.setText(userDTO.getName());
         courseAssignmentTxtF.setText(assignmentDTO.getTitle());
 
         setupTable();
         loadSubmissions();
+    }
+
+    private void setData() {
+        DTOFiller dto = new DTOFiller();
+        assignmentDTO = dto.getAssignmentDTO();
+
+        if (userDTO == null) {
+            userDTO = new UserDTO();
+            userDTO.setId(1L);
+        }
+        if (userDTO.getId() == null) {
+            userDTO.setId(1L);
+        }
     }
 
     /*---------------------------- TableView Setup ----------------------------*/
@@ -96,13 +113,14 @@ public class SubmissionsViewController extends Controller {
     private void loadSubmissions() {
         if (assignmentDTO == null) {
             showError("Assignment not selected");
-            return;
+            throw new IllegalArgumentException("no se seleciono asignacion");
         }
         loadPageData(currentPage);
     }
 
     private void loadPageData(int pageNumber) {
         var response = submissionAPIService.getSubmissionsByAssignmentId(assignmentDTO.getId(), pageNumber, 10);
+
         if (response.isSuccess()) {
             pagesData = response.getData();
             tableView.setItems(FXCollections.observableArrayList(pagesData.getContent()));
@@ -146,35 +164,48 @@ public class SubmissionsViewController extends Controller {
         Optional.ofNullable(tableView.getSelectionModel().getSelectedItem())
                 .filter(submission -> super.showConfirmationMessage("Borrar", "Seguro de eliminar la tarea?"))
                 .ifPresent(this::deleteSubmission);
-    }
+    }//TODO
 
     @FXML
     public void onActionUpdateBtn(ActionEvent event) {
-        if (selectedSubmission != null) {
-            updateSubmissionData();
-            var response = submissionService.updateEntity(selectedSubmission.getId(), selectedSubmission);
-            super.showReadResponse(response);
-            if (response.isSuccess()) {
-                handleFileUpload();
-                loadSubmissions();
-            }
+        if (validateInfo()) return;
+        selectedSubmission = createSubmission();
+
+        MessageResponse<SubmissionDTO> response = submissionAPIService.updateSubmission(selectedSubmission.getId(), selectedSubmission);
+
+        super.showReadResponse(response);
+
+        if (response.isSuccess()) {
+            selectedSubmission = response.getData();//obtiene la asignacion creada
+            handleFileUpload();
+            loadSubmissions();
         }
-    }
+    }//TODO
 
     @FXML
     public void onActionCreateBtn(ActionEvent event) {
-        if (isAnyFieldEmpty()) {
-            super.showError("Por favor, complete todos los campos.");
-        } else {
-            selectedSubmission = createSubmission();
-            var response = submissionAPIService.createSubmission(selectedSubmission);
-            super.showReadResponse(response);
-            if (response.isSuccess()) {
-                handleFileUpload();
-                loadSubmissions();
-            }
+        if (validateInfo()) return;
+        selectedSubmission = createSubmission();
+        MessageResponse<SubmissionDTO> response = submissionAPIService.createSubmission(selectedSubmission);
+        super.showReadResponse(response);
+
+        if (response.isSuccess()) {
+            selectedSubmission = response.getData();//obtiene la asignacion creada
+            handleFileUpload();
+            loadSubmissions();
         }
-        fileMetadatumDTO = null;
+    }
+
+    private boolean validateInfo() {
+        if (isAnyFieldEmpty()) {
+            super.showError("No estan definidos los datos");
+            return false;
+        }
+        if (fileUploadPathTxtF.getText().isEmpty() || validaAndLoadFIleInfo()) {
+            super.showError("path no valido");
+            return false;
+        }
+        return true;
     }
 
     @FXML
@@ -214,8 +245,7 @@ public class SubmissionsViewController extends Controller {
     }
 
     private void handleFileUpload() {
-        loadFIleInfo();
-        fileMetadatumDTO.setId(null);
+        fileMetadatumDTO.setId(0L);
         fileMetadatumDTO.setStudent(userDTO);
         selectedSubmission.setId(1L);
         fileMetadatumDTO.setSubmission(selectedSubmission);
@@ -226,19 +256,15 @@ public class SubmissionsViewController extends Controller {
         }
     }
 
-    private void loadFIleInfo() {
+    private boolean validaAndLoadFIleInfo() {
         String path = fileUploadPathTxtF.getText();
-
-        if (path.isEmpty()) {
-            super.showError("La ruta del archivo no puede estar vacía.");
-            return;
-        }
 
         File selectedFile = new File(path);
         if (selectedFile.exists() && selectedFile.isFile()) {
             seleccionarArchivo(selectedFile);
+            return true;
         } else {
-            super.showError("La ruta proporcionada no es válida o el archivo no existe.");
+            return false;
         }
     }
 
@@ -253,6 +279,7 @@ public class SubmissionsViewController extends Controller {
 
     private FileMetadatumDTO prepareFileMetadata(File selectedFile) {
         return FileMetadatumDTO.builder()
+                .id(0L)
                 .submission(selectedSubmission)
                 .student(userDTO)
                 .fileName(getFileNameWithoutExtension(selectedFile))
@@ -276,6 +303,7 @@ public class SubmissionsViewController extends Controller {
         courseAssignmentTxtF.setText(assignmentDTO.getTitle());
     }
 
+    //submission manage
     private void updateSubmissionData() {
         selectedSubmission.setAssignment(assignmentDTO);
         selectedSubmission.setStudent(userDTO);
@@ -284,13 +312,33 @@ public class SubmissionsViewController extends Controller {
     }
 
     private SubmissionDTO createSubmission() {
+        if (assignmentDTO == null || userDTO == null)
+            throw new IllegalArgumentException("No hay datos definidos para usuario o asignacion");
+
+        double grade = 10.0;//parseGrade(gradeTxtF.getText().trim());
+
+        String comments = Optional.ofNullable(commentaryTxtF.getText())
+                .filter(text -> !text.trim().isEmpty())
+                .orElse("Sin comentarios");
+
         return SubmissionDTO.builder()
-                .id(10L)
+                .state(SubmissionState.SUBMITTED)
                 .assignment(assignmentDTO)
                 .student(userDTO)
-                .grade(Double.parseDouble(gradeTxtF.getText()))
-                .comments(commentaryTxtF.getText())
+                .fileName("Default")
+                .comments(comments)
+                .grade(grade)
                 .build();
+    }
+
+    private double parseGrade(String gradeText) {
+        if (gradeText != null && !gradeText.isEmpty()) {
+            try {
+                return Double.parseDouble(gradeText);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return 0.0;  // Valor por defecto
     }
 
     private void deleteSubmission(SubmissionDTO submission) {
@@ -298,6 +346,7 @@ public class SubmissionsViewController extends Controller {
         if (response.isSuccess()) loadSubmissions();
     }
 
+    //file manage
     private String getFileNameWithoutExtension(File file) {
         String fileName = file.getName();
         int dotIndex = fileName.lastIndexOf('.');
@@ -308,6 +357,21 @@ public class SubmissionsViewController extends Controller {
         String fileName = file.getName();
         int dotIndex = fileName.lastIndexOf('.');
         return dotIndex == -1 ? "" : fileName.substring(dotIndex + 1);
+    }
+
+    //formateador
+    private void setGradeFieldFormatter() {
+        TextFormatter<Double> formatter = new TextFormatter<>(
+                new DoubleStringConverter(),
+                0.0,
+                c -> {
+                    String text = c.getControlNewText();
+                    if (text.matches("^([0-9]|10)(\\.\\d{0,1})?$")) {
+                        return c;
+                    }
+                    return null;
+                });
+        gradeTxtF.setTextFormatter(formatter);
     }
 
 }
