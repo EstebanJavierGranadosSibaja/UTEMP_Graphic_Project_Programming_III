@@ -219,11 +219,6 @@ public class FacultyManagementViewController extends Controller {
         }
     }
 
-    private void showError(String message) {
-        System.err.println(message);
-        showNotificationToast("Error", message, Alert.AlertType.ERROR);
-    }
-
     private void showInfo(String message) {
         System.out.println(message);
         showNotificationToast("Información", message, Alert.AlertType.INFORMATION);
@@ -268,7 +263,7 @@ public class FacultyManagementViewController extends Controller {
 
     private boolean validateFields() {
         if (facultyNameTxf.getText().isEmpty()) {
-            showError("Por favor, completa todos los campos requeridos.");
+            showNotificationToast("Warning", "Please complete all required fields.");
             return false;
         }
         return true;
