@@ -20,10 +20,7 @@ public class FileMetadatumDTO {
     // datos sobre el archivo guardado
     private Long id;
 
-    @Builder.Default
     private SubmissionDTO submission = new SubmissionDTO();
-
-    @Builder.Default
     private UserDTO student = new UserDTO();
 
     @Size(max = 500, message = "Storage path must be at most 500 characters long")
