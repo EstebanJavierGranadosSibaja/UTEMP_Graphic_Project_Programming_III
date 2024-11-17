@@ -74,7 +74,7 @@ public class UniversityManagementViewController extends Controller {
         idTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
         locationTbc.setCellValueFactory(new PropertyValueFactory<>("location"));
-        table.setPlaceholder(new Label("No hay universidades disponibles."));
+        table.setPlaceholder(new Label("THERE ARE NO UNIVERSITIES AVAILABLE AT THIS TIME."));
         table.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 fillFieldsFromSelectedUniversity(newValue);
@@ -224,7 +224,7 @@ public class UniversityManagementViewController extends Controller {
     // Helper Methods
     private void handleUniversityAction(Supplier<MessageResponse<Void>> action) {
         if (!validateFields()) {
-            showError("Por favor, completa todos los campos requeridos.");
+            showNotificationToast("Warning", "Please complete all required fields.");
             return;
         }
         MessageResponse<Void> response = action.get();
@@ -232,10 +232,6 @@ public class UniversityManagementViewController extends Controller {
         if (response.isSuccess()) {
             loadInitialData();
         }
-    }
-
-    private void showError(String message) {
-        System.err.println(message);
     }
 
     private void showInfo(String message) {
