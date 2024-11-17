@@ -73,13 +73,16 @@
                                 <MFXButton id="mfx-small-button" fx:id="clearFieldsBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionClearFieldsBtn" prefHeight="50.0" prefWidth="100.0" text="CLEAR FIELDS" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                        <HBox alignment="CENTER" prefHeight="34.0" prefWidth="458.0" spacing="15.0">
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="458.0" spacing="15.0">
                             <children>
                                 <MFXTextField id="mfx-text-filed" fx:id="courseIdTxf" editable="false" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="COURSE ID:" selectable="false" HBox.hgrow="ALWAYS" />
                                 <MFXTextField id="mfx-text-filed" fx:id="departmentCourseTxf" editable="false" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="DEPARTMENT OF THE COURSE:" selectable="false" HBox.hgrow="ALWAYS" />
                             </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="20.0" layoutY="84.0" prefHeight="46.0" prefWidth="458.0" spacing="15.0">
+                        <HBox alignment="CENTER" layoutX="20.0" layoutY="84.0" prefHeight="50.0" prefWidth="458.0" spacing="15.0">
                             <children>
                                 <MFXTextField id="mfx-text-filed" fx:id="courseNameTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="COURSE NAME:" HBox.hgrow="ALWAYS" />
                                 <MFXTextField id="mfx-text-filed" fx:id="courseDescriptionTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="395.0" promptText="COURSE DESCRIPTION:" HBox.hgrow="ALWAYS" />
@@ -87,9 +90,9 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="168.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0">
                             <children>
-                                <MFXComboBox id="mfx-text-filed" fx:id="courseState" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="COURSE STATE" HBox.hgrow="ALWAYS" />
-                                <MFXTextField id="mfx-text-filed" fx:id="teacherIdTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="167.0" prefHeight="50.0" prefWidth="167.0" promptText="TEACHER ID:" />
-                                <MFXButton id="mfx-small-button" fx:id="showTeachersBtn" contentDisplay="GRAPHIC_ONLY" maxHeight="35.0" maxWidth="35.0" minHeight="0.0" minWidth="0.0" onAction="#onActionShowTeachersBtn" prefHeight="7.0" prefWidth="40.0">
+                                <MFXComboBox id="mfx-text-filed" fx:id="courseStateCbx" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="COURSE STATE" HBox.hgrow="ALWAYS" />
+                                <MFXTextField id="mfx-text-filed" fx:id="teacherIdTxf" floatMode="ABOVE" maxHeight="50.0" maxWidth="170.0" prefHeight="50.0" prefWidth="170.0" promptText="TEACHER ID:" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button" fx:id="showTeachersBtn" contentDisplay="GRAPHIC_ONLY" maxHeight="50.0" maxWidth="50.0" minHeight="0.0" minWidth="0.0" onAction="#onActionShowTeachersBtn" prefHeight="50.0" prefWidth="40.0" text="TEACHERS" HBox.hgrow="ALWAYS">
                                     <graphic>
                                         <ImageView fitHeight="28.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
@@ -100,9 +103,9 @@
                                 </MFXButton>
                             </children>
                         </HBox>
-                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="470.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="470.0" spacing="15.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
                                       <MFXButton id="mfx-small-button-important" fx:id="deleteBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionDeleteCourseBtn" prefHeight="50.0" prefWidth="100.0" text="DELETE" HBox.hgrow="ALWAYS" />
                            </children>
