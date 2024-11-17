@@ -10,9 +10,11 @@ public class AppContext {
     private static AppContext instance;
 
     private UserDTO userDTO;
+    private UserDTO teacherDTO;
+
     private UniversityDTO universityDTO;
-    private DepartmentDTO departmentDTO;
     private FacultyDTO facultyDTO;
+    private DepartmentDTO departmentDTO;
     private CourseDTO courseDTO;
     private AssignmentDTO assignmentDTO;
 
