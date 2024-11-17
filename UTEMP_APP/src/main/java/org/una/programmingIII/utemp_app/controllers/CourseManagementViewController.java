@@ -1,6 +1,5 @@
 package org.una.programmingIII.utemp_app.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -12,13 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.data.domain.PageRequest;
 import org.una.programmingIII.utemp_app.dtos.CourseDTO;
 import org.una.programmingIII.utemp_app.dtos.DepartmentDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.dtos.UserDTO;
 import org.una.programmingIII.utemp_app.dtos.enums.CourseState;
-import org.una.programmingIII.utemp_app.dtos.enums.UserRole;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.CourseAPIService;
 import org.una.programmingIII.utemp_app.utils.Views;
@@ -53,6 +50,7 @@ public class CourseManagementViewController extends Controller{
     private CourseAPIService courseAPIService;
     private boolean initFlag = false;
     private int pageNumber = 0, maxPage = 1;
+    private UserDTO teacher = new UserDTO();
 
     @Override
     public void initialize() {
@@ -70,19 +68,19 @@ public class CourseManagementViewController extends Controller{
     }
 
     private void setTableView() {
-        double idValue = 0.1000;
-        double generalValue = 0.3333;
 
-        courseIdTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(idValue));
-        courseNameTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(generalValue));
-        courseStateTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(generalValue));
-        departmentNameTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(generalValue));
+        courseIdTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(0.10));
+        courseNameTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(0.30));
+        courseStateTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(0.30));
+        departmentNameTbc.prefWidthProperty().bind(coursesTbv.widthProperty().multiply(0.30));
 
         coursesTbv.setEditable(false);
         courseIdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
         courseNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
         courseStateTbc.setCellValueFactory(new PropertyValueFactory<>("state"));
         departmentNameTbc.setCellValueFactory(new PropertyValueFactory<>("department"));
+        departmentCourseTxf.setText(AppContext.getInstance().getDepartmentDTO().getName());
+
 
         coursesTbv.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -95,8 +93,7 @@ public class CourseManagementViewController extends Controller{
         courseIdTxf.setText(String.valueOf(course.getId()));
         courseNameTxf.setText(course.getName());
         courseDescriptionTxf.setText(course.getDescription());
-        departmentCourseTxf.setText(course.getDepartment().getName());
-        teacherIdTxf.setText(course.getTeacher().getName());
+        teacherIdTxf.setText(course.getTeacherID().toString());
         courseStateCbx.setValue(course.getState());
     }
 
@@ -111,6 +108,9 @@ public class CourseManagementViewController extends Controller{
                 .name(courseNameTxf.getText())
                 .description(courseDescriptionTxf.getText())
                 .state(courseStateCbx.getValue())
+                .teacher(AppContext.getInstance().getTeacherDTO())
+                .teacherID(parseLong(teacherIdTxf.getText()))
+                .department(AppContext.getInstance().getDepartmentDTO())
                 .build();
     }
 
@@ -125,8 +125,9 @@ public class CourseManagementViewController extends Controller{
 
     @FXML
     public void onActionUpdateCourseBtn(ActionEvent event) {
-        CourseDTO CourseDTO = getCurrentCourse();
-        handleUserAction(() -> baseApiServiceManager.updateEntity(CourseDTO.getId(), CourseDTO));
+        CourseDTO courseDTO = getCurrentCourse();
+        courseDTO.setTeacher(teacher);
+        handleUserAction(() -> baseApiServiceManager.updateEntity(courseDTO.getId(), courseDTO));
         onActionClearFieldsBtn(event);
         loadPage(pageNumber);
     }
@@ -140,7 +141,11 @@ public class CourseManagementViewController extends Controller{
 
     @FXML
     public void onActionShowTeachersBtn(ActionEvent event) {
-
+        ViewManager.getInstance().showModalView(Views.TEACHERS);
+        if(AppContext.getInstance().getTeacherDTO() != null) {
+            teacherIdTxf.setText(String.valueOf(AppContext.getInstance().getTeacherDTO().getId()));
+            teacher = AppContext.getInstance().getTeacherDTO();
+        }
     }
 
     @FXML
@@ -154,7 +159,6 @@ public class CourseManagementViewController extends Controller{
         courseIdTxf.clear();
         courseNameTxf.clear();
         courseDescriptionTxf.clear();
-        departmentCourseTxf.clear();
         teacherIdTxf.clear();
         courseStateCbx.setValue(null);
         coursesTbv.getSelectionModel().clearSelection();
@@ -191,12 +195,12 @@ public class CourseManagementViewController extends Controller{
 
     @FXML
     public void onActionBackBtn(ActionEvent event) {
-        ViewManager.getInstance().loadInternalView(Views.MENU);
+        ViewManager.getInstance().loadInternalView(Views.DEPARTMENT_MANAGEMENT);
     }
 
     private void handleUserAction(Supplier<MessageResponse<Void>> action) {
         if (!validateFields()) {
-            showError("Por favor, completa todos los campos requeridos.");
+            showNotificationToast("Warning", "Please complete all required fields.");
             return;
         }
         MessageResponse<Void> response = action.get();
@@ -237,9 +241,8 @@ public class CourseManagementViewController extends Controller{
 
     private void loadPage(int page) {
         try {
-            MessageResponse<PageDTO<CourseDTO>> response = courseAPIService.getAllEntities(PageRequest.of(page, 10), new TypeReference<>() {
-            });
-            super.showReadResponse(response);
+            MessageResponse<PageDTO<CourseDTO>> response = courseAPIService.getCoursesByDepartmentId(AppContext.getInstance().getDepartmentDTO().getId(), page, 10);
+            showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());
                 pageNumberLbl.setText(String.valueOf(page + 1));
@@ -250,9 +253,5 @@ public class CourseManagementViewController extends Controller{
         } catch (Exception e) {
             showError("Error al cargar la página: " + e.getMessage());
         }
-    }
-
-    private void showError(String message) {
-        System.err.println(message);
     }
 }

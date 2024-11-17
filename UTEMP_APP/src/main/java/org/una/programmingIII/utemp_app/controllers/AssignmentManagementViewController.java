@@ -245,8 +245,4 @@ public class AssignmentManagementViewController extends Controller {
                 .map(Object::toString)
                 .orElse("nulo"));
     }
-
-    private void showError(String message) {
-        super.showNotificationToast("Error", message, Alert.AlertType.ERROR);
-    }
 }
