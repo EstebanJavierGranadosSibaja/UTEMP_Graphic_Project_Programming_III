@@ -40,27 +40,9 @@ public class DepartmentManagementViewController extends Controller {
     @FXML
     private Label pageNumberLbl;
     @FXML
-    private MFXButton createBtn;
-    @FXML
-    private MFXButton updateBtn;
-    @FXML
-    private MFXButton deleteBtn;
-    @FXML
-    private MFXButton clearFieldsBtn;
-    @FXML
-    private MFXButton findByNameBtn;
-    @FXML
-    private MFXButton coursesBtn;
-    @FXML
-    private MFXButton backBtn;
-    @FXML
-    private MFXButton helpInfoBtn;
-    @FXML
     private MFXButton prevPageBtn;
     @FXML
     private MFXButton nextPageBtn;
-    @FXML
-    private MFXButton reloadPageBtn;
 
     private BaseApiServiceManager<DepartmentDTO> baseApiServiceManager;
     private DepartmentAPIService departmentAPIService;
@@ -149,7 +131,7 @@ public class DepartmentManagementViewController extends Controller {
 
     private void handleDepartmentAction(Supplier<MessageResponse<Void>> action) {
         if (!validateFields()) {
-            showError("Por favor, completa todos los campos requeridos.");
+            showNotificationToast("Warning", "Please complete all required fields.");
             return;
         }
         MessageResponse<Void> response = action.get();
@@ -207,10 +189,6 @@ public class DepartmentManagementViewController extends Controller {
         }
     }
 
-    private void showError(String message) {
-        System.err.println(message);
-    }
-
     private DepartmentDTO getCurrentDepartment() {
         return DepartmentDTO.builder()
                 .id(parseLong(departmentIdTxf.getText()))
@@ -235,7 +213,7 @@ public class DepartmentManagementViewController extends Controller {
 
     @FXML
     public void onActionReloadPageBtn() {
-        loadPage(pageNumber); // Recarga la página actual
+        loadPage(pageNumber);
     }
 
     @FXML
@@ -246,13 +224,13 @@ public class DepartmentManagementViewController extends Controller {
 
     @FXML
     public void onActionCoursesBtn() {
-        DepartmentDTO selectedFaculty = departmentsTbv.getSelectionModel().getSelectedItem();
+        DepartmentDTO selectDepartment = departmentsTbv.getSelectionModel().getSelectedItem();
 
-        if (selectedFaculty == null) {
+        if (selectDepartment == null) {
             showNotificationToast("Error", "Please select some department.");
             return;
         }
-        AppContext.getInstance().setDepartmentDTO(selectedFaculty);
+        AppContext.getInstance().setDepartmentDTO(selectDepartment);
         ViewManager.getInstance().loadInternalView(Views.COURSE_MANAGEMENT);
     }
 
@@ -261,11 +239,4 @@ public class DepartmentManagementViewController extends Controller {
         System.out.println("Going back to faculties...");
         ViewManager.getInstance().loadInternalView(Views.FACULTIES_MANAGEMENT);
     }
-
-    @FXML
-    public void onActionHelpInfoBtn() {
-        System.out.println("Displaying help info...");
-        showNotificationToast("ayuda para administrar", " reinicia el pc");
-    }
-
 }
