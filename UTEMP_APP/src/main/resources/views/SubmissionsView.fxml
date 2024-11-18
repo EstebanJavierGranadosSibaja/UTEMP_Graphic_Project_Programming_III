@@ -44,7 +44,7 @@
                                             </children>
                                         </HBox>
                                         <MFXButton id="mfx-small-button" fx:id="prevPageBtn" onAction="#onActionPrevPageBtn" text="PREVIOUS" HBox.hgrow="ALWAYS" />
-                                        <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS" />
+                                        <Label id="label-number" fx:id="pageNumberLbl" text="0" HBox.hgrow="ALWAYS" />
                                         <MFXButton id="mfx-small-button" fx:id="nextPageBtn" onAction="#onActionNextPageBtn" text="NEXT" HBox.hgrow="ALWAYS" />
                                     </children>
                                 </HBox>
@@ -93,10 +93,10 @@
                         <MFXTextField id="mfx-text-filed" fx:id="fileUploadPathTxtF" floatMode="ABOVE" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="filePath" />
                         <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0">
                             <children>
-                                <MFXButton id="mfx-small-button-important" onAction="#onActionLoadPathB" text="UPLOAD FILE" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button-important" onAction="#onActionLoadPathB" text="Find FIle" HBox.hgrow="ALWAYS" />
                                 <MFXButton id="mfx-small-button-important" onAction="#onActionDownloadFileBtn" text="DOWNLOAD FILE" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
-                                        <Insets />
+                                        <Insets left="220.0" />
                                     </HBox.margin>
                                 </MFXButton>
                             </children>
@@ -105,11 +105,16 @@
                             <children>
                                 <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                        <MFXButton id="mfx-small-button-important" onAction="#onActionDeleteBtn" text="DELETE" HBox.hgrow="ALWAYS" />
+                                        <MFXButton id="mfx-small-button-important" fx:id="deleteBtn" onAction="#onActionDeleteBtn" text="DELETE" HBox.hgrow="ALWAYS" />
+                              <MFXButton id="mfx-small-button-important" fx:id="calificarB" text="Calificar">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </MFXButton>
                                     </children>
                                 </HBox>
-                                <MFXButton id="mfx-small-button-important" onAction="#onActionUpdateBtn" text="UPDATE" HBox.hgrow="ALWAYS" />
-                                <MFXButton id="mfx-small-button-important" onAction="#onActionCreateBtn" text="CREATE" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button-important" fx:id="updateBtn" onAction="#onActionUpdateBtn" text="UPDATE" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button-important" fx:id="createBtn" onAction="#onActionCreateBtn" text="Upload submission" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0" />

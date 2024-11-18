@@ -1,18 +1,17 @@
 package org.una.programmingIII.utemp_app.services.models;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import javafx.application.Platform;
 import lombok.Getter;
 import org.una.programmingIII.utemp_app.configs.BaseConfig;
 import org.una.programmingIII.utemp_app.dtos.FileMetadatumDTO;
-import org.una.programmingIII.utemp_app.exceptions.CustomException;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.HttpMethod;
 import org.una.programmingIII.utemp_app.utils.services.HttpClientConnectionManager;
+import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.swing.filechooser.FileSystemView;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Map;
@@ -57,7 +56,6 @@ public class FileAPIService extends HttpClientConnectionManager {// no borrar es
         return executeVoidRequest(endpoint, HttpMethod.DELETE, null);
     }
 
-
     public MessageResponse<Void> upLoadFile(FileMetadatumDTO fileMetadatumDTO, String filepath) {
         File file = new File(filepath);
         if (!file.exists() || !file.isFile()) {
@@ -84,10 +82,6 @@ public class FileAPIService extends HttpClientConnectionManager {// no borrar es
 
     private void uploadFileInChunks(FileMetadatumDTO fileMetadatumDTO, InputStream fileStream, long fileSize) {
         String endpoint = ENTITY_ENDPOINT + "/receive-chunk";
-        Map<String, String> headers = Map.of(
-                "Content-Type", "multipart/form-data",
-                "File-Metadata", fileMetadatumDTO.toString()
-        );
 
         try {
             byte[] buffer = new byte[CHUNK_SIZE.intValue()];
@@ -97,55 +91,147 @@ public class FileAPIService extends HttpClientConnectionManager {// no borrar es
 
             // Calcular el total de fragmentos de manera precisa
             int totalChunks = (int) Math.ceil((double) fileSize / CHUNK_SIZE);
+            fileMetadatumDTO.setFileSize(fileSize);  // Establecer el tamaño total del archivo
+            fileMetadatumDTO.setTotalChunks(totalChunks); // deberia ser fijo
 
             while ((bytesRead = fileStream.read(buffer)) != -1) {
                 byte[] chunkData = Arrays.copyOfRange(buffer, 0, bytesRead);
-                totalBytesSent += bytesRead;
 
-                // Enviar el fragmento del archivo
-                Map<String, Object> body = Map.of(
-                        "fileChunk", chunkData,
-                        "chunkIndex", chunkIndex,
-                        "totalChunks", totalChunks,
-                        "fileSize", fileSize
-                );
+                // Establecer los parámetros del fragmento
+                fileMetadatumDTO.setFileChunk(chunkData); // Establecer el fragmento de archivo
+                fileMetadatumDTO.setChunkIndex(chunkIndex); // Establecer el índice del fragmento
 
                 // Mostrar progreso en consola
+                totalBytesSent += bytesRead;
                 double progress = (double) totalBytesSent / fileSize * 100;
-                System.out.println(String.format("Subiendo archivo: %.2f%% completado", progress));
+                System.out.printf("Subiendo archivo: %.2f%% completado%n", progress);
 
                 // Ejecutar la solicitud para subir el fragmento
-                MessageResponse<Void> response = executeCustomRequest(endpoint, HttpMethod.POST, body, headers, new TypeReference<Void>() {
-                });
+                MessageResponse<Void> response = executeVoidRequest(endpoint, HttpMethod.POST, fileMetadatumDTO);
                 if (!response.isSuccess()) {
                     System.err.println("Error al subir el fragmento " + chunkIndex);
                     return; // Si alguna parte del archivo falla, retorna el error
                 }
-
                 chunkIndex++; // Incrementar el índice del fragmento
             }
 
             // Confirmación de que el archivo se ha subido completamente
             System.out.println("Archivo subido con éxito.");
 
+            Platform.runLater(() -> {
+                ViewManager.getInstance().createNotification("Archivo subido", "Archivo subido con éxito.");
+            });
+
         } catch (IOException e) {
             logger.error("Error al subir el archivo en fragmentos: {}", e.getMessage(), e);
         }
     }
 
-    protected <C> MessageResponse<C> executeConnectionWithType(String endpoint, HttpMethod method, TypeReference<C> tipoEsperado, Map<String, String> customHeaders) {
-        HttpURLConnection connection = null;
-        try {
-            connection = createConnection(endpoint, method, customHeaders);
-            Optional<C> response = handleResponseWithType(connection, tipoEsperado);
-            return response.map(c -> new MessageResponse<>(c, true, "Operación exitosa", null))
-                    .orElseGet(() -> new MessageResponse<>(null, false, "Error en la respuesta", "No se recibió respuesta válida"));
-        } catch (IOException | CustomException e) {
-            logger.error("Error al ejecutar conexión para el endpoint {}: {}", endpoint, e.getMessage(), e);
-            return new MessageResponse<>(null, false, "Error en la conexión", e.getMessage());
-        } finally {
-            disconnectConnection(connection);
+    public MessageResponse<Void> downloadFile(Long id) {
+        String endpoint = ENTITY_ENDPOINT + "/download/" + id;
+
+        // Inicia la descarga en un hilo separado
+        CompletableFuture.runAsync(() -> {
+            HttpURLConnection connection = null;
+            try {
+                // Crear la conexión al endpoint
+                connection = createConnection(endpoint, HttpMethod.GET, null);
+
+                // Validar el estado de la respuesta
+                int statusCode = connection.getResponseCode();
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    // Obtener el nombre del archivo desde los encabezados
+                    String contentDisposition = connection.getHeaderField("Content-Disposition");
+                    String fileName = contentDisposition != null && contentDisposition.contains("filename=")
+                            ? contentDisposition.split("filename=")[1].replace("\"", "")
+                            : "archivo_descargado";
+
+                    // Ruta donde se guardará el archivo en la carpeta Descargas del usuario
+//                    File downloadsDir = FileSystemView.getFileSystemView().getDefaultDirectory();
+
+                    String downloadDirPath = System.getProperty("user.home") + File.separator + "Downloads";
+                    String downloadPath = downloadDirPath + File.separator + fileName;
+
+                    // Comprobar si el archivo ya existe
+                    File downloadFile = new File(downloadPath);
+                    if (downloadFile.exists()) {
+                        // Si el archivo existe, cambiar el nombre añadiendo un sufijo numérico
+                        String baseName = fileName.substring(0, fileName.lastIndexOf('.')); // Nombre sin la extensión
+                        String extension = fileName.substring(fileName.lastIndexOf('.')); // Extensión del archivo
+                        int counter = 1;
+
+                        // Generar un nuevo nombre con sufijo si el archivo ya existe
+                        while (downloadFile.exists()) {
+                            String newFileName = baseName + "_" + counter + extension;
+                            fileName= newFileName;
+                            downloadPath = downloadDirPath + File.separator + newFileName;
+                            downloadFile = new File(downloadPath);
+
+                            counter++;
+                        }
+                    }
+
+                    // Descargar el archivo
+                    try (InputStream inputStream = connection.getInputStream();
+                         FileOutputStream outputStream = new FileOutputStream(downloadPath)) {
+
+                        byte[] buffer = new byte[512 * 1024]; // Tamaño del fragmento: 512 KB
+                        int bytesRead;
+                        long totalBytesRead = 0;
+
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
+                            totalBytesRead += bytesRead;
+                            double progress = (double) totalBytesRead / connection.getContentLengthLong() * 100;
+                            System.out.printf("Descarga en progreso: %.2f%% completada%n", progress);
+                        }
+
+                        Platform.runLater(() -> {
+                            ViewManager.getInstance().createNotification("Descargado", "Archivo descargado con éxito: " );
+                        });
+                    }
+                } else {
+                    logger.error("Error al descargar el archivo. Código HTTP: {}", statusCode);
+                }
+            } catch (IOException e) {
+                logger.error("Error al descargar el archivo: {}", e.getMessage(), e);
+            } finally {
+                if (connection != null) {
+                    disconnectConnection(connection);
+                }
+            }
+        });
+
+        // Responder inmediatamente que la descarga ha iniciado
+        return new MessageResponse<>(null, true, "Descarga en curso, revisa la carpeta de Descargas de tu sistema", null);
+    }
+
+
+    public String getDownloadPath(String fileName) {
+        // Obtener la ruta de la carpeta de descargas de Windows
+        String downloadDirPath = System.getProperty("user.home") + File.separator + "Downloads";
+
+        // Crear la ruta completa al archivo
+        String downloadPath = downloadDirPath + File.separator + fileName;
+
+        // Comprobar si el archivo ya existe
+        File downloadFile = new File(downloadPath);
+        if (downloadFile.exists()) {
+            // Si el archivo existe, cambiar el nombre añadiendo un sufijo numérico
+            String baseName = fileName.substring(0, fileName.lastIndexOf('.')); // Nombre sin la extensión
+            String extension = fileName.substring(fileName.lastIndexOf('.')); // Extensión del archivo
+            int counter = 1;
+
+            // Generar un nuevo nombre con sufijo si el archivo ya existe
+            while (downloadFile.exists()) {
+                String newFileName = baseName + "_" + counter + extension;
+                downloadPath = downloadDirPath + File.separator + newFileName;
+                downloadFile = new File(downloadPath);
+                counter++;
+            }
         }
+
+        return downloadPath; // Retorna la ruta con el nombre correcto
     }
 
     /**
@@ -161,17 +247,29 @@ public class FileAPIService extends HttpClientConnectionManager {// no borrar es
         }
     }
 
-    /**
-     * Ejecuta una solicitud sin cuerpo de respuesta.
-     */
-    private MessageResponse<Void> executeVoidRequest(String endpoint, HttpMethod method, Object body) {
+
+    // Método genérico para ejecutar una conexión sin esperar un cuerpo de respuesta
+    protected MessageResponse<Void> executeVoidRequest(HttpURLConnection connection) {
         try {
-            HttpURLConnection connection = createConnectionWithBody(endpoint, method, body, null);
-            boolean success = handleResponseForVoid(connection);
-            return new MessageResponse<>(null, success, success ? "Operación exitosa" : "Error en la operación", null);
+            boolean success = super.handleResponseForVoid(connection);
+            return new MessageResponse<>(null, success, success ? "Operación exitosa" : "Error en la conexión", null);
         } catch (Exception e) {
-            logger.error("Error ejecutando solicitud: {}", e.getMessage(), e);
-            return new MessageResponse<>(null, false, "Error ejecutando solicitud", e.getMessage());
+            logger.error("Error en la conexión: {}", e.getMessage(), e);
+            return new MessageResponse<>(null, false, "Error en la conexión", e.getMessage());
+        } finally {
+            disconnectConnection(connection);
+        }
+    }
+
+    // Método genérico para ejecutar una conexión sin esperar un cuerpo de respuesta
+    protected MessageResponse<Void> executeVoidRequest(String endpoint, HttpMethod method, Object entity) {
+        HttpURLConnection connection;
+        try {
+            connection = super.createConnectionWithBody(endpoint, method, entity, null);
+            return executeVoidRequest(connection);
+        } catch (Exception e) {
+            logger.error("Error creando conexión para {}: {}", endpoint, e.getMessage(), e);
+            return new MessageResponse<>(null, false, "Error al crear conexión: ", e.getMessage());
         }
     }
 
@@ -190,16 +288,3 @@ public class FileAPIService extends HttpClientConnectionManager {// no borrar es
         }
     }
 }
-
-
-//public MessageResponse<Void> uploadFile(final File file) {
-//    return null;
-//}
-//private static final int CHUNK_SIZE = 512 * 1024;
-//private static final long MAX_FILE_SIZE = 10L * 1024 * 1024;
-
-//private void showNotification(String title, String message) {
-//    System.out.println(title + ":\n" + message);
-//}
-//private String getDefaultDownloadPath() {
-//    return System.getProperty("user.home") + File.separator + "Downloads";

@@ -28,7 +28,8 @@ public class SubmissionAPIService extends BaseApiServiceManager<SubmissionDTO> {
 
     public MessageResponse<SubmissionDTO> createSubmission(SubmissionDTO submissionDTO) {
         String endpoint = ENTITY_ENDPOINT;
-        return super.executeCustomRequest(endpoint, HttpMethod.POST, submissionDTO, null, super.typeEntityReference);
+        return super.executeCustomRequest(endpoint, HttpMethod.POST, submissionDTO, null, new TypeReference<SubmissionDTO>() {
+        });
     }
 
     public MessageResponse<SubmissionDTO> updateSubmission(Long id, SubmissionDTO submissionDTO) {

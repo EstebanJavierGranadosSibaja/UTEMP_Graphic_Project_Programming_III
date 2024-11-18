@@ -1,6 +1,5 @@
 package org.una.programmingIII.utemp_app.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,13 +22,14 @@ public class SubmissionDTO {
 
     private Long id;
 
-    @NotNull(message = "Assignment must not be null")
-    @Builder.Default
     private AssignmentDTO assignment = new AssignmentDTO();
-
-    @NotNull(message = "Student must not be null")
-    @Builder.Default
     private UserDTO student = new UserDTO();
+
+    private String asignaciontitle;
+    private long asignaciontId;
+    private String studeName;
+    private Long studeId;
+    private Long metadataID;
 
     @NotBlank(message = "File name must not be blank")
     @Size(max = 255, message = "File name must be at most 255 characters long")

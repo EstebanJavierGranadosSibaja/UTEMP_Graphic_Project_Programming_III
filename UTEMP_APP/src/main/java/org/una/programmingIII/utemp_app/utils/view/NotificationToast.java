@@ -22,7 +22,7 @@ public class NotificationToast extends Application {
     private static Stage lastNotificationStage = null;
     private final int minHeight = 40, maxHeight = 200;
     private final int minWidth = 150, maxWidth = 900;
-    private final int pixelesCaracter = 8, maxlines = 3;
+    private final int pixelesCaracter = 16, maxlines = 3;
     @Setter
     private String message;
     @Setter
