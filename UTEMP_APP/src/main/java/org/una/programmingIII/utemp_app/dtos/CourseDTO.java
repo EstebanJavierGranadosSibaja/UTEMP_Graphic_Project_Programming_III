@@ -46,6 +46,8 @@ public class CourseDTO {
     @Builder.Default
     private UserDTO teacher = new UserDTO();
 
+    private Long teacherID;
+
     @NotNull(message = "Department must not be null")
     @Builder.Default
     private DepartmentDTO department = new DepartmentDTO();

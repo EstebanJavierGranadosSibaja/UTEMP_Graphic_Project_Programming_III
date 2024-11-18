@@ -264,7 +264,7 @@ public class FacultyManagementViewController extends Controller {
 
     private boolean validateFields() {
         if (facultyNameTxf.getText().isEmpty()) {
-            showError("Por favor, completa todos los campos requeridos.");
+            showNotificationToast("Warning", "Please complete all required fields.");
             return false;
         }
         return true;

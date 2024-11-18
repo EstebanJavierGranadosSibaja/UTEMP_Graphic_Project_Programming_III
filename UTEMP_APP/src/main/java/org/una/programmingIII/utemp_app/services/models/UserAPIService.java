@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.una.programmingIII.utemp_app.configs.BaseConfig;
-import org.una.programmingIII.utemp_app.dtos.CourseDTO;
-import org.una.programmingIII.utemp_app.dtos.EnrollmentDTO;
-import org.una.programmingIII.utemp_app.dtos.PageDTO;
-import org.una.programmingIII.utemp_app.dtos.UserDTO;
+import org.una.programmingIII.utemp_app.dtos.*;
+import org.una.programmingIII.utemp_app.dtos.enums.UserRole;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.EndPoint;
 import org.una.programmingIII.utemp_app.services.HttpMethod;
@@ -28,6 +26,12 @@ public class UserAPIService extends BaseApiServiceManager<UserDTO> {
         return super.getAllEntities(PageRequest.of(page, size));
     }
 
+    public MessageResponse<PageDTO<UserDTO>> getAllUsersByRole(UserRole role, int page, int size) {
+        String endpoint = this.ENTITY_ENDPOINT + "/usersByRole/" + role + "?page=" + page + "&size=" + size;
+        return super.getEntitiesByEndpoint(endpoint, new TypeReference<PageDTO<UserDTO>>() {
+        });
+    }
+
     // Obtener usuario por ID
     public MessageResponse<UserDTO> getUserByID(Long id) {
         return super.getEntityById(id);
@@ -36,6 +40,13 @@ public class UserAPIService extends BaseApiServiceManager<UserDTO> {
     // Obtener usuario por número de identificación
     public MessageResponse<UserDTO> getUserByIdentificationNumber(String identificationNumber) {
         String endpoint = this.ENTITY_ENDPOINT + "/identification/" + identificationNumber;
+        return super.getEntitiesByEndpoint(endpoint, new TypeReference<UserDTO>() {
+        });
+    }
+
+    // Obtener usuario por número de identificación
+    public MessageResponse<UserDTO> getUserByRole(UserRole role) {
+        String endpoint = this.ENTITY_ENDPOINT + "/role/" + role;
         return super.getEntitiesByEndpoint(endpoint, new TypeReference<UserDTO>() {
         });
     }

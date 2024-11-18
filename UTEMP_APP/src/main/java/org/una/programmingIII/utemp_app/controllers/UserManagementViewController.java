@@ -12,8 +12,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.una.programmingIII.utemp_app.dtos.CourseDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.dtos.UserDTO;
 import org.una.programmingIII.utemp_app.dtos.enums.UserRole;
@@ -25,6 +28,7 @@ import org.una.programmingIII.utemp_app.utils.services.BaseApiServiceManager;
 import org.una.programmingIII.utemp_app.utils.view.AppContext;
 import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -87,7 +91,7 @@ public class UserManagementViewController extends Controller {
         userNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
         userRoleTbc.setCellValueFactory(new PropertyValueFactory<>("role"));
         userStateTbc.setCellValueFactory(new PropertyValueFactory<>("state"));
-        usersTbv.setPlaceholder(new Label("No hay usuarios disponibles."));
+        usersTbv.setPlaceholder(new Label("THERE ARE NO USERS AVAILABLE AT THIS TIME."));
 
         usersTbv.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -185,12 +189,19 @@ public class UserManagementViewController extends Controller {
     @FXML
     public void onActionFindByIdNumberBtn(ActionEvent event) {
         String idToFind = findByIdNumberTxf.getText().trim();
-        if (idToFind.isEmpty()) {
-            showError("Por favor, ingresa un número de identificación para buscar.");
+        if (!idToFind.isEmpty()) {
+            MessageResponse<UserDTO> response = userAPIService.getUserByIdentificationNumber(idToFind);
+            PageDTO<UserDTO> uniqueUser = new PageDTO<>();
+            List<UserDTO> users = new ArrayList<>();
+            users.add(response.getData());
+            uniqueUser.setContent(users);
+            uniqueUser.setTotalPages(1);
+            uniqueUser.setNumber(1);
+            loadTable(uniqueUser);
             return;
         }
         try {
-            System.out.println("Búsqueda exitosa"); // Aquí se podría implementar lógica real
+            showNotificationToast("Error", "Please enter some identification number.");
         } catch (Exception e) {
             showError("Error al buscar usuario: " + e.getMessage());
         }
@@ -208,7 +219,7 @@ public class UserManagementViewController extends Controller {
 
     private void handleUserAction(Supplier<MessageResponse<Void>> action) {
         if (!validateFields()) {
-            showError("Por favor, completa todos los campos requeridos.");
+            showNotificationToast("Warning", "Please complete all required fields.");
             return;
         }
         MessageResponse<Void> response = action.get();
