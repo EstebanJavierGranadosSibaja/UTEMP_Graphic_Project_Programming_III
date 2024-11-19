@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox id="root" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1000.0" spacing="25.0" stylesheets="@../styles/GeneralCss.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.TeachersAndStudentViewController">
+    <padding>
+        <Insets bottom="25.0" left="15.0" right="15.0" top="25.0" />
+    </padding>
+    <children>
+        <Label id="label" fx:id="titleLbl" alignment="CENTER" prefHeight="18.0" prefWidth="501.0" text="TEACHERS VIEW" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+        <Separator prefWidth="200.0" />
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
+         <children>
+            <MFXTextField id="mfx-text-filed" fx:id="findByIdNumberTxf" floatMode="ABOVE" graphicTextGap="0.0" maxHeight="40.0" maxWidth="400.0" prefHeight="40.0" prefWidth="250.0" promptText="ID NUMBER HERE: " HBox.hgrow="ALWAYS" />
+            <MFXButton id="mfx-small-button" fx:id="findByIdNumberBtn" maxHeight="40.0" maxWidth="150.0" onAction="#onActionFindByIdNumberBtn" prefHeight="40.0" prefWidth="100.0" text="FIND BY ID NUMBER" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+        <HBox prefHeight="459.0" prefWidth="470.0" VBox.vgrow="ALWAYS">
+         <children>
+            <TableView fx:id="usersTbv" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="userIdTbc" prefWidth="75.0" text="ID" />
+                  <TableColumn fx:id="userIdNumberTbc" prefWidth="108.0" text="ID NUMBER" />
+                <TableColumn fx:id="userNameTbc" prefWidth="91.0" text="NAME" />
+                  <TableColumn fx:id="userEmailTbc" prefWidth="84.0" text="EMAIL" />
+                  <TableColumn fx:id="userStateTbc" prefWidth="134.0" text="STATE" />
+              </columns>
+            </TableView>
+         </children>
+        </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="35.0" onAction="#onActionReloadPageBtn" prefHeight="35.0" prefWidth="130.0" text="RELOAD PAGE" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <children>
+                  <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="90.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS" />
+                  <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS" />
+                  <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0" maxWidth="90.0" onAction="#onActionNextPageBtn" prefWidth="90.0" text="NEXT" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+        <Separator prefWidth="200.0" />
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" VBox.vgrow="ALWAYS">
+            <children>
+                <MFXButton id="mfx-button" fx:id="cancelBtn" layoutX="10.0" layoutY="10.0" maxHeight="40.0" maxWidth="200.0" onAction="#onActionCancelBtn" prefHeight="40.0" prefWidth="85.0" text="CANCEL" HBox.hgrow="ALWAYS" />
+                <MFXButton id="mfx-button-important" fx:id="confirmBtn" maxHeight="40.0" maxWidth="200.0" onAction="#onActionConfirmBtn" prefHeight="40.0" prefWidth="85.0" text="CONFIRM" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

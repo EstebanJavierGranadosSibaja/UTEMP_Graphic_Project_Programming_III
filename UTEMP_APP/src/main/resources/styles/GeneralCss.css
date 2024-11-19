@@ -1,0 +1,355 @@
+/*------------ROOT-----------*/
+
+/* Fondo principal */
+.root {
+    -fx-background-color: #352d5a; /* Gris oscuro */
+
+    -fx-border-radius: 5;
+    -fx-border-width: 1px;
+    -fx-border-color: #d68fff;
+    font-family: 'Lato', sans-serif;
+    -fx-font-size: 14px; /* Tamaño de fuente para los textos generales */
+    -fx-text-fill: white; /* Color del texto por defecto */
+}
+
+.panel .text-field {
+    -fx-border-radius: 15;
+    -fx-border-width: 1px;
+    -fx-border-color: #d68fff;
+}
+
+.content {
+    -fx-background-color: #ffffff;
+
+    /*-fx-padding: 20px; !* Agregar relleno interno *!*/
+    -fx-border-radius: 6px; /* Bordes redondeados */
+    -fx-border-color: rgba(118, 26, 230, 0.71); /* Bordes sutiles */
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 10, 0, 0, 5); /* Sombra alrededor del contenedor */
+
+    font-family: 'Lato', sans-serif;
+
+
+    -fx-font-size: 14px; /* Tamaño de fuente para los textos generales */
+    -fx-text-fill: #000000; /* Color del texto por defecto */
+
+}
+
+/* ========================== */
+/* 8. Estilo del menú contextual */
+/* ========================== */
+
+.context-menu {
+    -fx-background-color: linear-gradient(to bottom, rgb(146,113,195), rgb(126,83,186), rgb(117,68,188));
+    -fx-border-radius: 8px; /* Bordes redondeados */
+    -fx-padding: 5px; /* Relleno alrededor */
+}
+
+/* ========================== */
+/* 8.2. Estilo de las opciones del menú contextual */
+/* ========================== */
+
+.context-menu .menu-item {
+    -fx-background-color: transparent; /* Fondo transparente por defecto */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+    -fx-padding: 10px 20px; /* Espaciado interno */
+    -fx-font-size: 14px; /* Tamaño de texto */
+    -fx-cursor: hand; /* Cursor de mano al pasar el mouse */
+}
+
+/* Efecto al pasar el mouse sobre una opción del menú */
+.context-menu .menu-item:hover {
+    -fx-background-color: #555555; /* Fondo gris oscuro al hacer hover */
+}
+
+/* Opción seleccionada en el menú */
+.context-menu .menu-item:focused {
+    -fx-background-color: #777777; /* Fondo gris más claro para opción seleccionada */
+}
+
+
+/*------------LABELS-----------*/
+
+
+/* Estilo para las etiquetas */
+#label-title {
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 50px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 2.5, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para las etiquetas */
+#label {
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 25px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 0.8, 1, -1, 2.5); /* Sombra sutil */
+}
+
+#label-department{
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 24px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 0.8, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para las etiquetas */
+#label-username {
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 20px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1.5, 1, -1, 2.5); /* Sombra sutil */
+}
+
+#label-number {
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-font-size: 15px; /* Tamaño de fuente más grande */
+}
+
+
+/*------------BUTTONS-----------*/
+
+
+/* Estilo para los botones */
+#mfx-button {
+    -fx-background-color: #743885; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-button:hover {
+    -fx-background-color: #602571; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+}
+
+/* Estilo para los botones */
+#mfx-button-important {
+    -fx-background-color: #8056bc; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-button-important:hover {
+    -fx-background-color: #6b2fbd; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+}
+
+/* Estilo para los botones */
+#mfx-small-button-important {
+    -fx-background-color: #743885; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 12px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-small-button-important:hover {
+    -fx-background-color: #602571; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+}
+
+/* Estilo para los botones */
+#mfx-small-button {
+    -fx-background-color: #8056bc; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 12px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-small-button:hover {
+    -fx-background-color: #6b2fbd; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+}
+
+/* Estilo para los botones */
+#mfx-small-menu-button-important {
+    -fx-background-color: #743885; /* Color lila oscuro */
+    -fx-text-fill: #ffffff; /* Color de texto lila claro */
+    -fx-font-size: 12px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+}
+
+/* Estilo para los botones al pasar el ratón */
+#mfx-small-menu-button-important:hover {
+    -fx-background-color: #8258d4; /* Lila más oscuro */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+}
+
+/*------------BOXES-----------*/
+
+
+/* Estilo para los VBox */
+#vbox-login {
+    -fx-spacing: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+    -fx-background-radius: 15px;
+}
+
+/* Estilo para el HBox */
+#hbox {
+    -fx-background-color: rgba(63, 53, 108, 0.7); /* Lila más oscuro con transparencia */
+    -fx-background-radius: 15px;
+}
+
+
+/*---------CHECK-BOX-----------*/
+
+
+#mfx-check-box {
+    -fx-background-color: #743885; /* Fondo oscuro con transparencia */
+    -fx-background-radius: 15px; /* Bordes ligeramente redondeados */
+    -fx-text-fill: #ffffff; /* Lila claro más brillante */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+/* CheckBoxes seleccionados */
+#mfx-check-box:selected {
+    -fx-border-radius: 15px; /* Bordes ligeramente redondeados */
+    -fx-background-color: #39b63f; /* Fondo oscuro con transparencia */
+    -fx-border-color: #0b8810; /* Bordes ligeramente redondeados */
+    -fx-text-fill: #ffffff; /* Verde cuando está seleccionado */
+}
+
+
+/*---------TEXT-FIELD-----------*/
+
+
+#mfx-text-filed {
+    -fx-font-weight: bold;
+}
+
+#mfx-text-filed:hover {
+    -fx-background-color: #cbb7dd; /* Color lila más oscuro al pasar el ratón */
+    -fx-border-color: #6f42bd; /* Bordes ligeramente redondeados */
+    -fx-border-width: 2px; /* Ancho del borde */
+}
+
+
+/*------------MFX-DATEPICKER-----------*/
+
+
+/* Estilo del MFXDatePicker */
+#mfx-datepicker {
+    -fx-font-weight: bold;
+}
+
+/* Hover para el MFXDatePicker */
+#mfx-datepicker:hover {
+    -fx-background-color: #cbb7dd; /* Color lila más oscuro al pasar el ratón */
+    -fx-border-color: #6f42bd; /* Bordes ligeramente redondeados */
+    -fx-border-width: 2px; /* Ancho del borde */
+
+}
+
+/* ----------- TABLEVIEW ----------- */
+.table-view {
+    -fx-background-color: rgba(214, 208, 220, 0.42); /* Fondo transparente */
+    -fx-border-radius: 10px; /* Bordes redondeados */
+    -fx-border-color: #d68fff; /* Color del borde exterior */
+    -fx-padding: 5px; /* Relleno externo */
+    -fx-font-family: 'Lato', sans-serif; /* Fuente */
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* Texto blanco */
+
+}
+
+/* Estilo para las filas del TableView */
+.table-view .table-row-cell {
+    -fx-background-color: #8056bc; /* Fondo por defecto */
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent; /* Sin borde por defecto */
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+/* Alternancia de colores en las filas */
+.table-view .table-row-cell:odd {
+    -fx-background-color: rgb(214, 208, 220); /* Fondo de la pista */
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: rgb(214, 208, 220); /* Fondo de la pista */
+}
+
+/* Color de la fila seleccionada */
+.table-view .table-row-cell:selected {
+    -fx-background-color: #c3a0e3; /* Color de fondo para la fila seleccionada */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+}
+
+/* ----------- ENCABEZADO DE LA TABLA ----------- */
+.table-view .column-header {
+    -fx-background-color: #8056bc; /* Color de fondo para encabezado */
+    -fx-text-fill: #ffffff; /* Color del texto */
+    -fx-font-size: 15px; /* Tamaño del texto */
+    /*-fx-font-weight: bold; /* Texto en negrita */
+    -fx-border-color: #d68fff; /* Borde inferior */
+    -fx-border-width: 0 0 2px 0; /* Solo borde inferior */
+    -fx-alignment: CENTER; /* Alineación central del texto */
+}
+
+/* ----------- CELDAS DE LA TABLA ----------- */
+.table-view .cell {
+    -fx-padding: 10px; /* Espaciado interno de celdas */
+    -fx-text-fill: #000000; /* Color del texto en celdas */
+    -fx-alignment: CENTER-LEFT; /* Alineación del texto */
+}
+
+/* Efecto hover para las celdas */
+.table-view .cell:hover {
+    -fx-background-color: #c3a0e3; /* Color de fondo en hover */
+    -fx-text-fill: #000000; /* Color del texto en hover */
+}
+
+/* ----------- BORDES Y SOMBRAS ----------- */
+.table-view .column-header-background {
+    -fx-background-color: transparent; /* Fondo transparente para el área de encabezado */
+    -fx-border-color: #d68fff; /* Color del borde de encabezado */
+    -fx-border-radius: 10px; /* Bordes redondeados */
+}
+
+/* ----------- SCROLLBAR ----------- */
+.table-view .scroll-bar {
+    -fx-background-color: transparent; /* Fondo transparente */
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: #8056bc; /* Color para el control de desplazamiento */
+    -fx-background-radius: 5px; /* Bordes redondeados */
+}
+
+.table-view .scroll-bar .track {
+    -fx-background-color: rgb(203, 183, 221); /* Fondo de la pista */
+}

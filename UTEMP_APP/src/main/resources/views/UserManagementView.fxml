@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0" stylesheets="@../styles/GeneralCss.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.UserManagementViewController">
+    <children>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </padding>
+            <children>
+                <VBox prefHeight="530.0" prefWidth="383.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <MFXTextField id="mfx-text-filed" fx:id="findByIdNumberTxf" floatMode="ABOVE" graphicTextGap="0.0" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="250.0" promptText="ID NUMBER HERE: " HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button" fx:id="findByIdNumberBtn" maxHeight="40.0" maxWidth="150.0" onAction="#onActionFindByIdNumberBtn" prefHeight="40.0" prefWidth="100.0" text="SEARCH" HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+                        <TableView fx:id="usersTbv" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="410.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="userIdTbc" maxWidth="1.7976931348623157E308" prefWidth="63.73333299160004" resizable="false" text="ID" />
+                                <TableColumn fx:id="userIdNumberTbc" maxWidth="1.7976931348623157E308" prefWidth="94.93335723876953" resizable="false" text="ID NUMBER" />
+                                <TableColumn fx:id="userNameTbc" maxWidth="1.7976931348623157E308" prefWidth="89.33345031738281" resizable="false" text="NAME" />
+                                <TableColumn fx:id="emailTbc" maxWidth="1.7976931348623157E308" prefWidth="89.33345031738281" resizable="false" text="EMAIL" />
+                                <TableColumn fx:id="userRoleTbc" prefWidth="93.86663818359375" text="ROLE" />
+                        <TableColumn fx:id="userStateTbc" prefWidth="91.1999572753906" text="STATE" />
+                            </columns>
+                        </TableView>
+                        <HBox alignment="CENTER" prefHeight="74.0" prefWidth="398.0" spacing="5.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="37.0" onAction="#onActionReloadPageBtn" prefHeight="37.0" prefWidth="106.0" text="RELOAD">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </MFXButton>
+                              <Pane prefHeight="37.0" prefWidth="81.0" />
+                                        <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="100.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></MFXButton>
+                                        <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></Label>
+                                        <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0" maxWidth="100.0" onAction="#onActionNextPageBtn" prefWidth="90.0" text="NEXT" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></MFXButton>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </VBox>
+                <Separator orientation="VERTICAL" prefHeight="470.0" prefWidth="14.0" />
+                <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="406.0" spacing="25.0" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                    <children>
+                        <Label id="label" alignment="CENTER" prefHeight="18.0" prefWidth="482.0" text="USER MANAGEMENT" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <MFXButton id="mfx-small-button" fx:id="clearFieldsBtn" maxHeight="50.0" maxWidth="120.0" minWidth="30.0" onAction="#onActionClearFieldsBtn" prefHeight="50.0" prefWidth="100.0" text="CLEAR FIELDS" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                        <HBox alignment="CENTER" prefHeight="34.0" prefWidth="458.0" spacing="15.0">
+                            <children>
+                                <MFXTextField id="mfx-text-filed" fx:id="userIdTxf" allowEdit="false" editable="false" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="395.0" promptText="USER ID:" selectable="false" HBox.hgrow="ALWAYS" />
+                                <MFXTextField id="mfx-text-filed" fx:id="userIdNumberTxf" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="395.0" promptText="USER ID NUMBER:" selectable="false" HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="20.0" layoutY="84.0" prefHeight="46.0" prefWidth="458.0" spacing="15.0">
+                            <children>
+                                <MFXTextField id="mfx-text-filed" fx:id="userNameTxf" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="395.0" promptText="USER NAME:" HBox.hgrow="ALWAYS" />
+                        <MFXTextField id="mfx-text-filed" fx:id="userEmailTxf" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="395.0" promptText="USER EMAIL:" HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+                  <HBox alignment="CENTER" layoutX="20.0" layoutY="168.0" prefHeight="46.0" prefWidth="458.0" spacing="15.0">
+                     <children>
+                                <MFXComboBox id="mfx-text-filed" fx:id="userStateCbx" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="USER STATE" HBox.hgrow="ALWAYS" />
+                        <MFXButton id="mfx-small-button" fx:id="permissonsBtn" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionPermissionsBtn" prefHeight="40.0" prefWidth="116.0" text="SELECT PERMISSONS" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="168.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="438.0" spacing="15.0" />
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="470.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                            <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                                      <MFXButton id="mfx-small-button-important" fx:id="deleteBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionDeleteUserBtn" prefHeight="50.0" prefWidth="120.0" text="DELETE" HBox.hgrow="ALWAYS" />
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </HBox>
+                                <MFXButton id="mfx-small-button-important" fx:id="updateBtn" maxHeight="50.0" maxWidth="200.0" onAction="#onActionUpdateUserBtn" prefHeight="50.0" prefWidth="100.0" text="UPDATE" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button-important" fx:id="createBtn" maxHeight="50.0" maxWidth="200.0" onAction="#onActionCreateUserBtn" prefHeight="50.0" prefWidth="100.0" text="CREATE" HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="152.0" prefWidth="387.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <MFXButton id="mfx-small-button" fx:id="backBtn" maxHeight="50.0" maxWidth="120.0" onAction="#onActionBackBtn" prefHeight="50.0" prefWidth="120.0" text="BACK" HBox.hgrow="ALWAYS" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="15.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+</VBox>

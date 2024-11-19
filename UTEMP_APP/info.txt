@@ -1,0 +1,116 @@
+
+pom
+        <!--        opcionales  -->
+        <!-- Gson: Alternativa a Jackson para la manipulación de JSON -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.google.code.gson</groupId>-->
+        <!--            <artifactId>gson</artifactId>-->
+        <!--            <version>2.10.1</version>-->
+        <!--        </dependency>-->
+
+        <!-- JFoenix: Material Design para JavaFX, proporcionando estilos y componentes modernos -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.jfoenix</groupId>-->
+        <!--            <artifactId>jfoenix</artifactId>-->
+        <!--            <version>9.0.10</version>-->
+        <!--        </dependency>-->
+
+        <!-- FontAwesomeFX: Permite utilizar íconos de Font Awesome en aplicaciones JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>de.jensd</groupId>-->
+        <!--            <artifactId>fontawesomefx</artifactId>-->
+        <!--            <version>8.9</version>-->
+        <!--        </dependency>-->
+
+        <!-- ControlsFX: Proporciona controles adicionales para JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.controlsfx</groupId>-->
+        <!--            <artifactId>controlsfx</artifactId>-->
+        <!--            <version>11.2.1</version>-->
+        <!--        </dependency>-->
+
+        <!-- FormsFX: Facilita la creación de formularios en JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.dlsc.formsfx</groupId>-->
+        <!--            <artifactId>formsfx</artifactId>-->
+        <!--            <version>11.6.0</version>-->
+        <!--        </dependency>-->
+
+        <!-- ValidatorFX: Para la validación de formularios en JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>net.synedra.validatorfx</groupId>-->
+        <!--            <artifactId>validatorfx</artifactId>-->
+        <!--            <version>11.0.0</version>-->
+        <!--        </dependency>-->
+
+        <!-- Ikonli: Proporciona una amplia colección de íconos -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.kordamp.ikonli</groupId>-->
+        <!--            <artifactId>ikonli-javafx</artifactId>-->
+        <!--            <version>12.3.1</version>-->
+        <!--        </dependency>-->
+
+        <!-- BootstrapFX: Para aplicar estilos de Bootstrap a JavaFX -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.kordamp.bootstrapfx</groupId>-->
+        <!--            <artifactId>bootstrapfx-core</artifactId>-->
+        <!--            <version>0.4.0</version>-->
+        <!--        </dependency>-->
+
+        <!-- TilesFX: Proporciona componentes gráficos adicionales -->
+        <!--        <dependency>-->
+        <!--            <groupId>eu.hansolo.tilesfx</groupId>-->
+        <!--            <artifactId>tilesfx</artifactId>-->
+        <!--            <version>11.0.0</version>-->
+        <!--        </dependency>-->
+
+modulo
+        // no se extraen!?
+        // Requiere bibliotecas para manipulación y estilo
+        //    requires org.controlsfx.controls; // Controles adicionales para JavaFX
+        //    requires com.dlsc.formsfx; // Proporciona funcionalidad para formularios avanzados
+        //    requires net.synedra.validatorfx; // Validación de formularios en JavaFX
+        //
+        ////    opcionales
+        //    requires org.kordamp.ikonli.javafx; // Proporciona una colección de íconos
+        //    requires org.kordamp.bootstrapfx.core; // Estilos de Bootstrap para JavaFX
+        //    requires eu.hansolo.tilesfx; // Componentes gráficos adicionales para JavaFX
+        //    requires com.almasb.fxgl.all;
+
+        //    de referencia
+            /*
+             Abre el paquete 'model' para que Jackson y JavaFX puedan acceder
+            opens com.example.cliente.model to com.fasterxml.jackson.databind, javafx.base;
+
+            // Abre otros paquetes para JavaFX
+            opens com.example.cliente to javafx.fxml;
+            opens com.example.cliente.controller to javafx.fxml;
+
+             Exporta los paquetes para su uso
+            exports com.example.cliente;
+            exports com.example.cliente.controller;
+            */
+
+
+            auth
+            /*
+            @Override
+                protected Optional<String> handleResponse(HttpURLConnection connection) throws Exception {
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        StringBuilder response = new StringBuilder();
+                        try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                            String line;
+                            while ((line = in.readLine()) != null) {
+                                response.append(line);
+                            }
+                        }
+                        ApiResponse<String> apiResponse = objectMapper.readValue(response.toString(), new TypeReference<ApiResponse<String>>() {
+                        });
+                        return Optional.of(apiResponse.getData());
+                    } else {
+                        throw new RuntimeException("Error al iniciar sesión, código de respuesta: " + responseCode);
+                    }
+                }
+
+             */
