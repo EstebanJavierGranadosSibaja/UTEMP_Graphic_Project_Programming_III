@@ -13,9 +13,8 @@ module org.una.programmingIII.utemp_app {
     opens org.una.programmingIII.utemp_app.exceptions.http to javafx.fxml;
     opens org.una.programmingIII.utemp_app.controllers to javafx.fxml;
     opens org.una.programmingIII.utemp_app.exceptions to javafx.fxml;
-    opens org.una.programmingIII.utemp_app.tests to javafx.fxml;
-    exports org.una.programmingIII.utemp_app.tests to javafx.graphics;
-
+    opens org.una.programmingIII.utemp_app.utils.view to com.fasterxml.jackson.databind, javafx.fxml;
+    opens org.una.programmingIII.utemp_app.utils.services to com.fasterxml.jackson.databind, javafx.fxml;
 
     // Exporta paquetes
     exports org.una.programmingIII.utemp_app.exceptions.http;
@@ -26,9 +25,11 @@ module org.una.programmingIII.utemp_app {
     exports org.una.programmingIII.utemp_app.utils.services;
     exports org.una.programmingIII.utemp_app.utils.view;
     exports org.una.programmingIII.utemp_app.utils;
-    //opens org.una.programmingIII.utemp_app.utils to com.fasterxml.jackson.databind, javafx.fxml;
-    opens org.una.programmingIII.utemp_app.utils.view to com.fasterxml.jackson.databind, javafx.fxml;
-    opens org.una.programmingIII.utemp_app.utils.services to com.fasterxml.jackson.databind, javafx.fxml;
+    exports org.una.programmingIII.utemp_app.responses;
+    exports org.una.programmingIII.utemp_app.dtos;
+    exports org.una.programmingIII.utemp_app.services;
+    exports org.una.programmingIII.utemp_app.services.models;
+
 
     // Requiere módulos de JavaFX
     requires org.apache.httpcomponents.client5.httpclient5;
@@ -43,8 +44,5 @@ module org.una.programmingIII.utemp_app {
     requires org.slf4j;
     requires java.sql;
 
-    exports org.una.programmingIII.utemp_app.responses;
-    exports org.una.programmingIII.utemp_app.dtos;
-    exports org.una.programmingIII.utemp_app.services;
-    exports org.una.programmingIII.utemp_app.services.models;
+
 }
