@@ -1,7 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -35,6 +35,7 @@ public class UniversityDTO {
     private LocalDateTime lastUpdate;
 
     // Managed reference (One-to-many relationship)
+    @JsonIgnore
     @Builder.Default
     private List<FacultyDTO> faculties = new ArrayList<>();
 }

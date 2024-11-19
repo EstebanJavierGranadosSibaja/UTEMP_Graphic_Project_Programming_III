@@ -1,6 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,7 +28,7 @@ public class SubmissionDTO {
 
     private String asignaciontitle;
     private long asignaciontId;
-    private String studeName;
+    private String studentUniqueName;
     private Long studeId;
     private Long metadataID;
 
@@ -50,9 +51,11 @@ public class SubmissionDTO {
     private LocalDateTime lastUpdate;
 
     @Builder.Default
+    @JsonIgnore
     private List<GradeDTO> grades = new ArrayList<>();
 
     @Builder.Default
+    @JsonIgnore
     private List<FileMetadatumDTO> fileMetadata = new ArrayList<>();
 
     @Override

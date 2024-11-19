@@ -1,7 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -64,15 +64,19 @@ public class UserDTO {
 
     // Relationships and Collections
     @Builder.Default
+    @JsonIgnore
     private List<CourseDTO> coursesTeaching = new ArrayList<>();
 
     @Builder.Default
+    @JsonIgnore
     private List<NotificationDTO> notifications = new ArrayList<>();
 
     @Builder.Default
+    @JsonIgnore
     private List<EnrollmentDTO> userEnrollments = new ArrayList<>();
 
     @Builder.Default
+    @JsonIgnore
     private List<SubmissionDTO> submissions = new ArrayList<>();
 
     @Override

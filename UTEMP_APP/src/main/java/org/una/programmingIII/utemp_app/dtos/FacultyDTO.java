@@ -1,8 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -30,6 +29,7 @@ public class FacultyDTO {
     @Builder.Default
     private UniversityDTO university = new UniversityDTO();
 
+    @JsonIgnore
     @Builder.Default
     private List<DepartmentDTO> departments = new ArrayList<>();
 

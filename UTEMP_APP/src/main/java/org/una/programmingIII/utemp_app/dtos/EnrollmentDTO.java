@@ -1,6 +1,5 @@
 package org.una.programmingIII.utemp_app.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,9 +22,13 @@ public class EnrollmentDTO {
     @Builder.Default
     private CourseDTO course = new CourseDTO();
 
+    private Long courseId;
+
     @NotNull(message = "Student must not be null")
     @Builder.Default
     private UserDTO student = new UserDTO();
+
+    private Long studentId;
 
     @NotNull(message = "State must not be null")
     private EnrollmentState state;

@@ -1,8 +1,7 @@
 package org.una.programmingIII.utemp_app.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -46,17 +45,22 @@ public class CourseDTO {
     @Builder.Default
     private UserDTO teacher = new UserDTO();
 
-    private Long teacherID;
+    private Long userTeacherUniqueID;
 
     @NotNull(message = "Department must not be null")
     @Builder.Default
     private DepartmentDTO department = new DepartmentDTO();
 
+    private Long departmentUniqueID;
+    private String departmentUniqueName;
+
     // Collections
     @Builder.Default
+    @JsonIgnore
     private List<AssignmentDTO> assignment = new ArrayList<>();
 
     @Builder.Default
+    @JsonIgnore
     private List<EnrollmentDTO> enrollments = new ArrayList<>();
 }
 
