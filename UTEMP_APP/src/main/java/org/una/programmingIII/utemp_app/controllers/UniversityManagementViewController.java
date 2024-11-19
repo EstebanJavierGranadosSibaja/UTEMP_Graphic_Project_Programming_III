@@ -88,18 +88,18 @@ public class UniversityManagementViewController extends Controller {
 
     private void loadPage(int page) {
 
-            MessageResponse<PageDTO<UniversityDTO>> response = baseApiServiceManager.getAllEntities(
-                    PageRequest.of(page, 10), new TypeReference<PageDTO<UniversityDTO>>() {
-                    });
-            super.showReadResponse(response);
+        MessageResponse<PageDTO<UniversityDTO>> response = baseApiServiceManager.getAllEntities(
+                PageRequest.of(page, 10), new TypeReference<PageDTO<UniversityDTO>>() {
+                });
+        super.showReadResponse(response);
 
-            if (response.isSuccess()) {
-                loadTable(response.getData());
-                pageNumberLbl.setText(String.valueOf(page + 1));
-                prevPageBtn.setDisable(page == 0);
-                nextPageBtn.setDisable(page >= maxPage - 1);
-                pageNumber = page;
-            }
+        if (response.isSuccess()) {
+            loadTable(response.getData());
+            pageNumberLbl.setText(String.valueOf(page + 1));
+            prevPageBtn.setDisable(page == 0);
+            nextPageBtn.setDisable(page >= maxPage - 1);
+            pageNumber = page;
+        }
     }
 
     protected void loadTable(PageDTO<UniversityDTO> page) {
@@ -151,8 +151,7 @@ public class UniversityManagementViewController extends Controller {
 
     @FXML
     public void onActionDeleteUniversityBtn(ActionEvent event) {
-        if(universityIdTxf.getText().isEmpty() || universityIdTxf.getText() == null)
-        {
+        if (universityIdTxf.getText().isEmpty() || universityIdTxf.getText() == null) {
             showNotificationToast("Error", "Please select some university.");
             return;
         }

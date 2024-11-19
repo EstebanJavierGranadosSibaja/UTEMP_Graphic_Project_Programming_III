@@ -7,8 +7,9 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox id="root" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1000.0" spacing="25.0" stylesheets="@../styles/GeneralCss.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.UserPermissionViewController">
+<VBox id="root" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1000.0" spacing="25.0" stylesheets="@../styles/GeneralCss.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.UserPermissionViewController">
    <padding>
       <Insets bottom="25.0" left="15.0" right="15.0" top="25.0" />
    </padding>
@@ -25,76 +26,106 @@
          </children>
       </HBox>
       <Separator prefWidth="200.0" />
-      <HBox prefHeight="459.0" prefWidth="470.0" VBox.vgrow="ALWAYS">
+      <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="994.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" layoutX="563.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER_LEFT" layoutX="563.0" layoutY="10.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="230.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageUsersCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_USERS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageEnrollmentsCkb" gap="0.0" layoutX="20.0" layoutY="196.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_ENROLLMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageUniversitiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_UNIVERSITIES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_FACULTIES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_DEPARTMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageCoursesCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_COURSES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_ASSIGNMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageSubmissionsCkb" gap="0.0" layoutX="20.0" layoutY="359.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_SUBMISSIONS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="manageGradesCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="180.0" prefHeight="40.0" prefWidth="157.0" text="MANAGE_GRADES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageUsersCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_USERS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageEnrollmentsCkb" gap="0.0" layoutX="20.0" layoutY="196.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_ENROLLMENTS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageUniversitiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_UNIVERSITIES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_FACULTIES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="216.0" minWidth="-Infinity" prefHeight="28.0" prefWidth="216.0" text="MANAGE_DEPARTMENTS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageCoursesCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_COURSES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_ASSIGNMENTS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageSubmissionsCkb" gap="0.0" layoutX="20.0" layoutY="359.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_SUBMISSIONS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="manageGradesCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="180.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="216.0" text="MANAGE_GRADES" VBox.vgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
             <Separator layoutX="454.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0" />
-            <VBox alignment="CENTER" layoutX="415.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="10.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="253.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXCheckbox id="mfx-check-box" fx:id="addTeacherCoursesCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_TEACHER_COURSES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addStudentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="196.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_STUDENT_COURSES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addUniversityFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_UNIVERSITY_FACULTIES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addFacultyDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_FACULTY_DEPARTMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addDepartmentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_DEPARTMENT_COURSES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addCourseAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_COURSE_ASSIGNMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addAssignmentSubmissionCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_ASSIGNMENT_SUBMISSION" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addSubmissionFilesCkb" gap="0.0" layoutX="20.0" layoutY="359.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_SUBMISSION_FILES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="addSubmissionGradesCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="ADD_SUBMISSION_GRADES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addTeacherCoursesCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_TEACHER_COURSES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addStudentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="196.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_STUDENT_COURSES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addUniversityFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_UNIVERSITY_FACULTIES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addFacultyDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_FACULTY_DEPARTMENTS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addDepartmentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_DEPARTMENT_COURSES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addCourseAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_COURSE_ASSIGNMENTS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addAssignmentSubmissionCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="248.0" minWidth="-Infinity" prefHeight="28.0" prefWidth="220.0" text="ADD_ASSIGNMENT_SUBMISSION" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
+                  <MFXCheckbox id="mfx-check-box" fx:id="addSubmissionFilesCkb" gap="0.0" layoutX="20.0" layoutY="359.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_SUBMISSION_FILES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="addSubmissionGradesCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="ADD_SUBMISSION_GRADES" VBox.vgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
             <Separator layoutX="164.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0" />
-            <VBox alignment="CENTER" layoutX="480.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="BOTTOM_LEFT" layoutX="480.0" layoutY="10.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="253.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXCheckbox id="mfx-check-box" fx:id="removeTeacherCourseCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_TEACHER_COURSE" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="removeTeacherCourseCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="28.0" prefWidth="220.0" text="REMOVE_TEACHER_COURSE" VBox.vgrow="ALWAYS" />
                   <MFXCheckbox id="mfx-check-box" fx:id="removeStudentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="196.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_STUDENT_COURSES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="removeUniversityFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_UNIVERSITY_FACULTIES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="removeFacultyDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_FACULTY_DEPARTMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="removeDepartmentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_DEPARTMENT_COURSES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="removeCourseAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_COURSE_ASSIGNMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="removeAssignmentSubmissionCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_ASSIGNMENT_SUBMISSION" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="removeUniversityFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_UNIVERSITY_FACULTIES" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
+                  <MFXCheckbox id="mfx-check-box" fx:id="removeFacultyDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_FACULTY_DEPARTMENTS" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
+                  <MFXCheckbox id="mfx-check-box" fx:id="removeDepartmentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_DEPARTMENT_COURSES" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
+                  <MFXCheckbox id="mfx-check-box" fx:id="removeCourseAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_COURSE_ASSIGNMENTS" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
+                  <MFXCheckbox id="mfx-check-box" fx:id="removeAssignmentSubmissionCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_ASSIGNMENT_SUBMISSION" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
                   <MFXCheckbox id="mfx-check-box" fx:id="removeSubmissionFilesCkb" gap="0.0" layoutX="20.0" layoutY="359.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_SUBMISSION_FILES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="removeSubmissionGradesCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_SUBMISSION_GRADES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="removeSubmissionGradesCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="REMOVE_SUBMISSION_GRADES" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
             <Separator layoutX="164.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0" />
-            <VBox fx:id="" alignment="CENTER" layoutX="526.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox fx:id="" alignment="BOTTOM_LEFT" layoutX="526.0" layoutY="10.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="248.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <MFXCheckbox id="mfx-check-box" fx:id="getTeacherCoursesCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_TEACHER_COURSES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="getStudentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="196.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_STUDENT_ENROLLMENTS," VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="getUniversityFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_UNIVERSITY_FACILITIES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="getFacultyDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_FACULTY_DEPARTMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="getDepartmentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_DEPARTMENT_COURSES," VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="getCourseAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_COURSE_ASSIGNMENTS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="getAssignmentSubmissionCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_ASSIGNMENT_SUBMISSIONS" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="getSubmissionGradesCkb" gap="0.0" layoutX="20.0" layoutY="359.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="GET_SUBMISSION_GRADES" VBox.vgrow="ALWAYS" />
-                  <MFXCheckbox id="mfx-check-box" fx:id="evaluateSubmissionsCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="250.0" prefHeight="40.0" prefWidth="157.0" text="EVALUATE_SUBMISSIONS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="getTeacherCoursesCkb" gap="0.0" layoutX="20.0" layoutY="59.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="220.0" text="GET_TEACHER_COURSES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="getStudentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="196.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="GET_STUDENT_ENROLLMENTS" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
+                  <MFXCheckbox id="mfx-check-box" fx:id="getUniversityFacultiesCkb" gap="0.0" layoutX="20.0" layoutY="20.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="GET_UNIVERSITY_FACILITIES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="getFacultyDepartmentsCkb" gap="0.0" layoutX="20.0" layoutY="119.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="GET_FACULTY_DEPARTMENTS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="getDepartmentCoursesCkb" gap="0.0" layoutX="20.0" layoutY="179.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="GET_DEPARTMENT_COURSES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="getCourseAssignmentsCkb" gap="0.0" layoutX="20.0" layoutY="239.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="GET_COURSE_ASSIGNMENTS" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="getAssignmentSubmissionCkb" gap="0.0" layoutX="20.0" layoutY="299.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="GET_ASSIGNMENT_SUBMISSIONS" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="11.0" />
+                     </font></MFXCheckbox>
+                  <MFXCheckbox id="mfx-check-box" fx:id="getSubmissionGradesCkb" gap="0.0" layoutX="20.0" layoutY="359.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="GET_SUBMISSION_GRADES" VBox.vgrow="ALWAYS" />
+                  <MFXCheckbox id="mfx-check-box" fx:id="evaluateSubmissionsCkb" gap="0.0" layoutX="20.0" layoutY="212.0" maxHeight="40.0" maxWidth="250.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="157.0" text="EVALUATE_SUBMISSIONS" VBox.vgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
          </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
       </HBox>
       <Separator prefWidth="200.0" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" VBox.vgrow="ALWAYS">

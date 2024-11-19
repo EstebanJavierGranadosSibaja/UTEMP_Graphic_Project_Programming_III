@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0" stylesheets="@../styles/GeneralCss.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.FacultyManagementViewController">
+<VBox id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0" stylesheets="@../styles/GeneralCss.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.FacultyManagementViewController">
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
             <padding>
@@ -22,7 +22,7 @@
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
                             <children>
                                 <MFXTextField id="mfx-text-filed" fx:id="findByNameTxf" floatMode="DISABLED" maxHeight="50.0" maxWidth="1.7976931348623157E308" minWidth="30.0" prefHeight="30.0" prefWidth="242.0" promptText="NAME HERE: " HBox.hgrow="ALWAYS" />
-                                <MFXButton id="mfx-small-button" fx:id="findByNameBtn" maxHeight="50.0" maxWidth="150.0" minWidth="30.0" onAction="#onActionFindByNameBtn" prefHeight="26.0" prefWidth="107.0" text="FIND BY NAME" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button" fx:id="findByNameBtn" maxHeight="50.0" maxWidth="150.0" minWidth="30.0" onAction="#onActionFindByNameBtn" prefHeight="26.0" prefWidth="107.0" text="SEARCH" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <TableView fx:id="facultiesTbv" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="410.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
@@ -36,14 +36,14 @@
                             <children>
                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                      <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="175.0" HBox.hgrow="ALWAYS">
                                           <children>
-                                              <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="35.0" minWidth="30.0" onAction="#onActionReloadPageBtn" prefHeight="26.0" prefWidth="130.0" text="RELOAD PAGE" />
+                                              <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="37.0" minWidth="30.0" onAction="#onActionReloadPageBtn" prefHeight="37.0" prefWidth="100.0" text="RELOAD" />
                                           </children>
                                       </HBox>
-                                        <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="90.0" minWidth="30.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS" />
+                                        <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="100.0" minWidth="30.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS" />
                                         <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS" />
-                                        <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0" maxWidth="90.0" minWidth="30.0" onAction="#onActionNextPageBtn" prefWidth="90.0" text="NEXT " HBox.hgrow="ALWAYS" />
+                                        <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0" maxWidth="100.0" minWidth="30.0" onAction="#onActionNextPageBtn" prefWidth="90.0" text="NEXT " HBox.hgrow="ALWAYS" />
                                     </children>
                                 </HBox>
                             </children>

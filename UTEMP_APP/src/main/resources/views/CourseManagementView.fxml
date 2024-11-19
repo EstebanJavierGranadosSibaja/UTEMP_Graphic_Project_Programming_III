@@ -24,7 +24,7 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <MFXTextField id="mfx-text-filed" fx:id="findByNameTxf" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="242.0" promptText="COURSE ID HERE: " HBox.hgrow="ALWAYS" />
+                                <MFXTextField id="mfx-text-filed" fx:id="findByNameTxf" floatMode="ABOVE" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="242.0" promptText="COURSE NAME HERE: " HBox.hgrow="ALWAYS" />
                                 <MFXButton id="mfx-small-button" fx:id="findByCourseIdBtn" maxHeight="40.0" maxWidth="150.0" onAction="#onActionFindByNameBtn" prefHeight="40.0" prefWidth="107.0" text="FIND BY COURSE ID" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>

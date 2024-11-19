@@ -15,11 +15,9 @@ import javafx.stage.FileChooser;
 import javafx.util.converter.DoubleStringConverter;
 import org.una.programmingIII.utemp_app.dtos.*;
 import org.una.programmingIII.utemp_app.dtos.enums.SubmissionState;
-import org.una.programmingIII.utemp_app.dtos.enums.UserPermission;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.FileAPIService;
 import org.una.programmingIII.utemp_app.services.models.SubmissionAPIService;
-import org.una.programmingIII.utemp_app.utils.DTOFiller;
 import org.una.programmingIII.utemp_app.utils.Views;
 import org.una.programmingIII.utemp_app.utils.services.BaseApiServiceManager;
 import org.una.programmingIII.utemp_app.utils.view.AppContext;
@@ -31,6 +29,10 @@ import java.util.function.Function;
 
 public class SubmissionsViewController extends Controller {
 
+    /*---------------------------- Services ----------------------------*/
+    private final BaseApiServiceManager<SubmissionDTO> submissionService = new SubmissionAPIService();
+    private final SubmissionAPIService submissionAPIService = new SubmissionAPIService();
+    private final FileAPIService fileAPIService = new FileAPIService();
     /*---------------------------- FXML Elements ----------------------------*/
     @FXML
     private MFXTextField findByIdTxtF, courseAssignmentTxtF, studentTextF, gradeTxtF, commentaryTxtF, fileUploadPathTxtF;
@@ -42,13 +44,6 @@ public class SubmissionsViewController extends Controller {
     private TableColumn<SubmissionDTO, String> idC, assignmentC, studentC, gradeC, infoC;
     @FXML
     private Label pageNumberLbl;
-
-    /*---------------------------- Services ----------------------------*/
-    private final BaseApiServiceManager<SubmissionDTO> submissionService = new SubmissionAPIService();
-    private final SubmissionAPIService submissionAPIService = new SubmissionAPIService();
-    private final FileAPIService fileAPIService = new FileAPIService();
-
-
     /*---------------------------- Page Data ----------------------------*/
     private PageDTO<SubmissionDTO> pagesData;
     private int currentPage = 0, maxPage = 1;
@@ -58,7 +53,7 @@ public class SubmissionsViewController extends Controller {
     private AssignmentDTO assignmentDTO;
     private UserDTO userDTO;
     private FileMetadatumDTO fileMetadatumDTO;
-    private String downloadPath = null; // por defecto
+    private final String downloadPath = null; // por defecto
 
     /*---------------------------- Initialization ----------------------------*/
     @FXML
@@ -69,8 +64,6 @@ public class SubmissionsViewController extends Controller {
         userDTO = AppContext.getInstance().getUserDTO();
         fileMetadatumDTO = new FileMetadatumDTO();
 
-        setData();
-
         studentTextF.setText(userDTO.getName());
         courseAssignmentTxtF.setText(assignmentDTO.getTitle());
 
@@ -78,46 +71,42 @@ public class SubmissionsViewController extends Controller {
         loadSubmissions();
 
 
-        calificarB.setDisable(true);
-        gradeTxtF.setEditable(false);
-        commentaryTxtF.setEditable(false);
+//        calificarB.setDisable(true);
+//        gradeTxtF.setEditable(false);
+//        commentaryTxtF.setEditable(false);
 
-        for (UserPermission p : userDTO.getPermissions()) {
-            if (p == UserPermission.EVALUATE_SUBMISSIONS) {
-                calificarB.setDisable(false);
-                deleteBtn.setDisable(true);
-                updateBtn.setDisable(true);
-                createBtn.setDisable(true);
-                gradeTxtF.setEditable(true);
-                commentaryTxtF.setEditable(true);
-            }
-        }
+
+//        for (UserPermission p : userDTO.getPermissions()) {
+//            if (p == UserPermission.
+//            //estudiante) {
+//                calificarB.setDisable(false);
+//                deleteBtn.setDisable(true);
+//                updateBtn.setDisable(true);
+//                createBtn.setDisable(true);
+//                gradeTxtF.setEditable(true);
+//                commentaryTxtF.setEditable(true);
+//            }
+//        }
 
         calificarB.setOnAction(event -> onActionCalificar());
-    }
-
-    private void setData() {
-        fileUploadPathTxtF.setText("C:\\Users\\juanc\\Downloads\\Diagrama sin título.drawio.pdf");
-        DTOFiller dto = new DTOFiller();
-        assignmentDTO = dto.getAssignmentDTO();
-
-        if (userDTO == null) {
-            userDTO = new UserDTO();
-            userDTO.setId(1L);
-        }
-        if (userDTO.getId() == null) {
-            userDTO.setId(1L);
-        }
+        backBtn.setOnAction(event -> ViewManager.getInstance().loadInternalView(Views.ASSIGNMENT));
     }
 
     /*---------------------------- TableView Setup ----------------------------*/
     private void setupTable() {
+
+        idC.prefWidthProperty().bind(tableView.widthProperty().multiply(0.10));
+        assignmentC.prefWidthProperty().bind(tableView.widthProperty().multiply(0.20));
+        studentC.prefWidthProperty().bind(tableView.widthProperty().multiply(0.20));
+        gradeC.prefWidthProperty().bind(tableView.widthProperty().multiply(0.10));
+        infoC.prefWidthProperty().bind(tableView.widthProperty().multiply(0.40));
+
         tableView.setEditable(false);
         idC.setCellValueFactory(new PropertyValueFactory<>("id"));
         assignmentC.setCellValueFactory(cellData -> createTableCellValue(cellData, SubmissionDTO::getAsignaciontitle));
-        studentC.setCellValueFactory(cellData -> createTableCellValue(cellData, SubmissionDTO::getStudent));
+        studentC.setCellValueFactory(new PropertyValueFactory<>("studentUniqueName"));
         gradeC.setCellValueFactory(cellData -> createTableCellValue(cellData, submission -> Optional.ofNullable(submission.getGrade()).map(Object::toString).orElse("nulo")));
-        infoC.setCellValueFactory(cellData -> createTableCellValue(cellData, SubmissionDTO::getComments));
+        infoC.setCellValueFactory(new PropertyValueFactory<>("fileName"));
 
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) populateFields(newValue);
@@ -161,7 +150,7 @@ public class SubmissionsViewController extends Controller {
 
     private void populateFields(SubmissionDTO dto) {
         courseAssignmentTxtF.setText(dto.getAsignaciontitle());
-        studentTextF.setText(dto.getStudeName());
+        studentTextF.setText(dto.getStudentUniqueName());
         gradeTxtF.setText(String.valueOf(dto.getGrade()));
         commentaryTxtF.setText(dto.getComments());
         selectedSubmission = dto;
@@ -201,9 +190,6 @@ public class SubmissionsViewController extends Controller {
         selectedSubmission = tableView.getSelectionModel().getSelectedItem();
 
         if (selectedSubmission.getStudent() == null) {
-            super.showError("no se seleciono el estudiante");
-//            return;
-//            selectedSubmission.setStudent(UserDTO.builder().id(selectedSubmission.getStudeId()).build());
             selectedSubmission.setStudent(userDTO);
         }
 
@@ -232,6 +218,7 @@ public class SubmissionsViewController extends Controller {
             fileMetadatumDTO.setSubmission(selectedSubmission);
             handleFileUpload();
             loadSubmissions();
+            clearFields();
         }
     }
 
@@ -323,7 +310,6 @@ public class SubmissionsViewController extends Controller {
         fileMetadatumDTO.setSubmission(selectedSubmission);
         fileMetadatumDTO.setStudent(userDTO);
 
-//        fileAPIService.upLoadFile(fileUploadPathTxtF.getText(), fileMetadatumDTO);
         MessageResponse<Void> response2 = fileAPIService.upLoadFile(fileMetadatumDTO, fileUploadPathTxtF.getText());
         if (!response2.isSuccess()) {
             super.showError(response2.getErrorMessage());
@@ -390,7 +376,7 @@ public class SubmissionsViewController extends Controller {
         double grade = parseGrade(gradeTxtF.getText().trim());
         String comments = Optional.ofNullable(commentaryTxtF.getText())
                 .filter(text -> !text.trim().isEmpty())
-                .orElse("Sin comentarios");
+                .orElse(" ");
 
         return SubmissionDTO.builder()
                 .state(SubmissionState.SUBMITTED)
@@ -446,144 +432,3 @@ public class SubmissionsViewController extends Controller {
     }
 
 }
-
-
-
-/*
-referencia
-@Getter
-@Setter
-@Builder
-public class MessageResponse<T> {
-    private T data;
-    private boolean success;
-    private String titleMessage;
-    private String errorMessage;
-
-    public MessageResponse() {
-    }
-
-    public MessageResponse(T data, boolean success, String titleMessage, String errorMessage) {
-        this.data = data;
-        this.success = success;
-        this.titleMessage = titleMessage;
-        this.errorMessage = errorMessage;
-    }
-}
-
-
-package org.una.programmingIII.utemp_app.dtos;
-
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Data
-public class FileMetadatumDTO {
-
-    private Long id;// predefinodo
-
-    @Builder.Default
-    private SubmissionDTO submission = new SubmissionDTO();//predefinido
-
-    @Builder.Default
-    private UserDTO student = new UserDTO(); // predefinido
-
-    @NotNull(message = "File name must not be null")
-    @Size(max = 255, message = "File name must be at most 255 characters long")
-    private String fileName;// se define durante la subida
-
-    @NotNull(message = "File size must not be null")
-    private Long fileSize;// se define durante la subida
-
-    @Size(max = 100, message = "File type must be at most 100 characters long")
-    private String fileType;// se define durante la subida
-
-    private LocalDateTime createdAt;// se define durante la subida
-
-    private LocalDateTime lastUpdate;// se define durante la subida
-
-    // Nuevos campos para manejo de fragmentos
-    private byte[] fileChunk; // Fragmento del archivo// se define durante la subida
-    private int chunkIndex; // Índice del fragmento// se define durante la subida
-    private int totalChunks; // Número total de fragmentos// se define durante la subida
-
-    @Size(max = 500, message = "Storage path must be at most 500 characters long")
-    private String storagePath;// se define durante la subida
-}
-
-@Setter
-@Getter
-public class PageDTO<T> {
-    // Getters y setters
-    private List<T> content;
-    private int totalPages;
-    private long totalElements;
-    private int number;
-    private int size;
-
-    // Constructor
-
-    public PageDTO() {
-
-    }
-
-    public PageDTO(List<T> content, int totalPages, long totalElements, int number, int size) {
-        this.content = content;
-        this.totalPages = totalPages;
-        this.totalElements = totalElements;
-        this.number = number;
-        this.size = size;
-    }
-}
-}
-
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class SubmissionDTO {
-
-    private Long id;
-
-    @NotNull(message = "Assignment must not be null")
-    @Builder.Default
-    private AssignmentDTO assignment = new AssignmentDTO();
-
-    @NotNull(message = "Student must not be null")
-    @Builder.Default
-    private UserDTO student = new UserDTO();
-
-    @NotBlank(message = "File name must not be blank")
-    @Size(max = 255, message = "File name must be at most 255 characters long")
-    private String fileName;
-
-    private Double grade;
-
-    @Size(max = 500, message = "Comments must be at most 500 characters long")
-    private String comments;
-
-    @Builder.Default
-    private List<GradeDTO> grades = new ArrayList<>();
-
-    @Builder.Default
-    private List<FileMetadatumDTO> fileMetadata = new ArrayList<>();
-
-    @NotNull(message = "State must not be null")
-    private SubmissionState state;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastUpdate;
-}
-
-*/

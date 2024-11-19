@@ -107,6 +107,3 @@ public abstract class Controller {
         showNotificationToast("Error", errorInfo, Alert.AlertType.ERROR);
     }
 }
-//        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/interrogation_icon.png")));
-//        ImageView iconView = new ImageView(icon);
-//        alert.getDialogPane().setGraphic(iconView);

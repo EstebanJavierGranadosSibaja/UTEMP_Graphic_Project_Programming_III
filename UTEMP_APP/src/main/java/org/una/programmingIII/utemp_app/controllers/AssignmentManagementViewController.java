@@ -1,20 +1,18 @@
 package org.una.programmingIII.utemp_app.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.data.domain.PageRequest;
 import org.una.programmingIII.utemp_app.dtos.AssignmentDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.dtos.enums.AssignmentState;
@@ -28,17 +26,16 @@ import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AssignmentManagementViewController extends Controller {
 
-    // 1. Campos privados: UI y servicios
     @FXML
     private MFXTextField findByIdTxf, assigmentIdTxf, courseAssigmentTxf, assignmentTitleTxf, assigmentDescriptionTxf;
     @FXML
-    private MFXComboBox<String> assignmentStateComboBox;
+    private MFXComboBox<AssignmentState> assignmentStateComboBox;
     @FXML
     private MFXDatePicker assignmentDeadlineDtp;
     @FXML
@@ -49,54 +46,92 @@ public class AssignmentManagementViewController extends Controller {
     private TableView<AssignmentDTO> assignmentTbv;
     @FXML
     private TableColumn<AssignmentDTO, Long> assignmentdTbc;
+    //    @FXML
+//    private TableColumn<AssignmentDTO, Instant> assignmentDeadlineTbc;
     @FXML
-    private TableColumn<AssignmentDTO, String> assignmentTitleTbc, courseNameTbc, assignmentStateTbc, assignmentDeadlineTbc;
+    private TableColumn<AssignmentDTO, String> assignmentTitleTbc, courseNameTbc, assignmentStateTbc;
 
     private AssignmentAPIService assignmentService;
     private BaseApiServiceManager<AssignmentDTO> baseApiServiceManager;
     private PageDTO<AssignmentDTO> assignments;
     private AssignmentDTO selectedAssignment;
-    private int currentPage = 1;
+    private Boolean initFlag = false;
+    private int currentPage = 0;
     private int maxPage = 1;
 
-    // 2. Métodos de inicialización y configuración
     @FXML
     public void initialize() {
-        baseApiServiceManager = new AssignmentAPIService();
-        assignmentService = new AssignmentAPIService();
-        setTableView();
-        loadAssignments();
+        ObservableList<AssignmentState> states = FXCollections.observableArrayList(AssignmentState.PENDING, AssignmentState.CANCELLED, AssignmentState.COMPLETED, AssignmentState.ONGOING);
+        assignmentStateComboBox.setItems(states);
 
-        // Inicializar el ComboBox de estados de asignación
-        assignmentStateComboBox.setItems(FXCollections.observableArrayList(
-                Arrays.stream(AssignmentState.values())
-                        .map(Enum::name)
-                        .toArray(String[]::new)
-        ));
+        if (!initFlag) {
+            assignmentService = new AssignmentAPIService();
+            baseApiServiceManager = assignmentService;
+            setTableView();
+            loadInitialData();
+            initFlag = true;
+        }
     }
 
     private void setTableView() {
-        // Configurar las columnas de la tabla
+
+        assignmentdTbc.prefWidthProperty().bind(assignmentTbv.widthProperty().multiply(0.10));
+        courseNameTbc.prefWidthProperty().bind(assignmentTbv.widthProperty().multiply(0.225));
+        assignmentTitleTbc.prefWidthProperty().bind(assignmentTbv.widthProperty().multiply(0.2250));
+        assignmentStateTbc.prefWidthProperty().bind(assignmentTbv.widthProperty().multiply(0.225));
+//        assignmentDeadlineTbc.prefWidthProperty().bind(assignmentTbv.widthProperty().multiply(0.225));
+
         assignmentTbv.setEditable(false);
         assignmentdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
         assignmentTitleTbc.setCellValueFactory(new PropertyValueFactory<>("title"));
-        courseNameTbc.setCellValueFactory(cellData -> createTableCellValue(cellData, assignment -> Optional.ofNullable(assignment.getCourse().getName()).orElse("nulo")));
-        assignmentStateTbc.setCellValueFactory(new PropertyValueFactory<>("state"));
-        assignmentDeadlineTbc.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+        courseNameTbc.setCellValueFactory(cellData -> createTableCellValue(cellData, assignment -> Optional.ofNullable(AppContext.getInstance().getCourseDTO().getName()).orElse("nulo")));
+        assignmentStateTbc.setCellValueFactory(cellData -> createTableCellValue(cellData, AssignmentDTO::getState));
+//        assignmentDeadlineTbc.setCellValueFactory(cellData -> createTableCellValue(cellData, AssignmentDTO::getDeadline));//correccion
+        courseAssigmentTxf.setText(AppContext.getInstance().getCourseDTO().getName());
 
-        // Listener para actualizar los campos cuando se selecciona una fila
         assignmentTbv.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) fillFieldsFromSelectedAssignment(newValue);
+            if (newValue != null) {
+                fillFieldsFromSelectedUser(newValue);
+            }
         });
     }
 
-    // 3. Métodos de operaciones (CRUD)
+    private void fillFieldsFromSelectedUser(AssignmentDTO assignmentDTO) {
+        assigmentIdTxf.setText(String.valueOf(assignmentDTO.getId()));
+        assignmentTitleTxf.setText(assignmentDTO.getTitle());
+        assigmentDescriptionTxf.setText(assignmentDTO.getDescription());
+        assignmentStateComboBox.setText(assignmentDTO.getState().toString());
+        assignmentDeadlineDtp.setValue(LocalDate.parse(assignmentDTO.getDeadline().toString()));
+    }
+
+    private void loadInitialData() {
+        loadAssignments();
+    }
+
+    private AssignmentDTO getCurrentAssignment() {
+        return AssignmentDTO.builder()
+                .id(parseLong(assigmentIdTxf.getText()))
+                .title(assignmentTitleTxf.getText())
+                .description(assigmentDescriptionTxf.getText())
+                .state(assignmentStateComboBox.getValue())
+                .course(AppContext.getInstance().getCourseDTO())
+                .deadline(assignmentDeadlineDtp.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())//ver?
+                .build();
+    }
+
+    @FXML
+    public void onActionClearFieldsBtn(ActionEvent event) {
+        assigmentIdTxf.clear();
+        assignmentTitleTxf.clear();
+        assigmentDescriptionTxf.clear();
+        assignmentStateComboBox.clear();
+        assignmentStateComboBox.setValue(null);
+        assignmentDeadlineDtp.setValue(null);
+    }
+
     private void loadAssignments() {
         try {
-            MessageResponse<PageDTO<AssignmentDTO>> response = baseApiServiceManager.getAllEntities(
-                    PageRequest.of(currentPage, 10), new TypeReference<PageDTO<AssignmentDTO>>() {
-                    }
-            );
+            MessageResponse<PageDTO<AssignmentDTO>> response = assignmentService.getAssignmentsByCourseId(AppContext.getInstance().getCourseDTO().getId(), currentPage, 10);
             if (response.isSuccess()) {
                 assignments = response.getData();
                 loadTable(assignments);
@@ -142,21 +177,12 @@ public class AssignmentManagementViewController extends Controller {
     }
 
     @FXML
-    public void onActionClearFieldsBtn(ActionEvent event) {
-        // Limpiar todos los campos de manera eficiente
-        Arrays.asList(assigmentIdTxf, courseAssigmentTxf, assignmentTitleTxf, assigmentDescriptionTxf).forEach(MFXTextField::clear);
-        assignmentDeadlineDtp.clear();
-    }
-
-    @FXML
     public void onActionDeleteAssignmentBtn(ActionEvent event) {
         selectedAssignment = assignmentTbv.getSelectionModel().getSelectedItem();
         if (selectedAssignment != null && showConfirmationMessage("Eliminar Asignación", "¿Estás seguro de que deseas eliminar esta asignación?")) {
-            MessageResponse<Void> response = baseApiServiceManager.deleteEntity(selectedAssignment.getId());
-            super.showReadResponse(response);
-            if (response.isSuccess()) {
-                loadAssignments();
-            }
+            handleUserAction(() -> baseApiServiceManager.deleteEntity(parseLong(assigmentIdTxf.getText())));
+            onActionClearFieldsBtn(event);
+            loadAssignments();
         } else {
             showNotificationToast("Advertencia", "Por favor, selecciona una asignación para eliminar.");
         }
@@ -164,40 +190,18 @@ public class AssignmentManagementViewController extends Controller {
 
     @FXML
     public void onActionUpdateAssignmentBtn(ActionEvent event) {
-        selectedAssignment = assignmentTbv.getSelectionModel().getSelectedItem();
-        if (selectedAssignment != null) {
-            setData();
-            MessageResponse<Void> response = baseApiServiceManager.createEntity(selectedAssignment);
-            super.showReadResponse(response);
-            if (response.isSuccess()) {
-                loadAssignments();
-            }
-        } else {
-            showNotificationToast("Advertencia", "Por favor, selecciona una asignación para editar.");
-        }
+        AssignmentDTO assignmentDTO = getCurrentAssignment();
+        handleUserAction(() -> baseApiServiceManager.updateEntity(assignmentDTO.getId(), assignmentDTO));
+        onActionClearFieldsBtn(event);
+        loadAssignments();
     }
 
     @FXML
     public void onActionCreateAssignmentBtn(ActionEvent event) {
-        String title = assignmentTitleTxf.getText();
-        String description = assigmentDescriptionTxf.getText();
-        String state = assignmentStateComboBox.getSelectedItem();
-        LocalDate deadline = assignmentDeadlineDtp.getValue();
-
-        if (title.isEmpty() || description.isEmpty() || state == null || deadline == null) {
-            showError("Por favor, complete todos los campos.");
-            return;
-        }
-
-        selectedAssignment = new AssignmentDTO();
-        setData();
-        selectedAssignment.setId(null);
-
-        MessageResponse<Void> response = baseApiServiceManager.createEntity(selectedAssignment);
-        super.showReadResponse(response);
-        if (response.isSuccess()) {
-            loadAssignments();
-        }
+        AssignmentDTO assignmentDTO = getCurrentAssignment();
+        handleUserAction(() -> assignmentService.createEntity(assignmentDTO));
+        onActionClearFieldsBtn(event);
+        loadAssignments();
     }
 
     @FXML
@@ -210,21 +214,8 @@ public class AssignmentManagementViewController extends Controller {
         selectedAssignment = assignmentTbv.getSelectionModel().getSelectedItem();
         if (selectedAssignment != null) {
             AppContext.getInstance().setAssignmentDTO(selectedAssignment);
-            ViewManager.getInstance().loadInternalView(Views.ASSIGNMENT);
+            ViewManager.getInstance().loadInternalView(Views.SUBMISSIONS);
         }
-    }
-
-    // 4. Métodos auxiliares y utilitarios
-    private void setData() {
-        String title = assignmentTitleTxf.getText();
-        String description = assigmentDescriptionTxf.getText();
-        String state = assignmentStateComboBox.getSelectedItem();
-        LocalDate deadline = assignmentDeadlineDtp.getValue();
-
-        selectedAssignment.setTitle(title);
-        selectedAssignment.setDescription(description);
-        selectedAssignment.setState(AssignmentState.valueOf(state));
-        selectedAssignment.setDeadline(Instant.from(deadline));
     }
 
     private void fillFieldsFromSelectedAssignment(AssignmentDTO assignment) {
@@ -244,5 +235,31 @@ public class AssignmentManagementViewController extends Controller {
                 .map(getter)
                 .map(Object::toString)
                 .orElse("nulo"));
+    }
+
+    private Long parseLong(String text) {
+        try {
+            return Long.parseLong(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private void handleUserAction(Supplier<MessageResponse<Void>> action) {
+        if (!validateFields()) {
+            showNotificationToast("Warning", "Please complete all required fields.");
+            return;
+        }
+        MessageResponse<Void> response = action.get();
+        super.showReadResponse(response);
+        if (response.isSuccess()) {
+            loadInitialData();
+        }
+    }
+
+    private boolean validateFields() {
+        return !assignmentTitleTxf.getText().isEmpty()
+                && !assigmentDescriptionTxf.getText().isEmpty() && !assignmentDeadlineDtp.getText().isEmpty()
+                && !assignmentStateComboBox.getText().isEmpty();
     }
 }

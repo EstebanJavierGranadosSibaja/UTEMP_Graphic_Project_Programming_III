@@ -11,12 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.una.programmingIII.utemp_app.dtos.DepartmentDTO;
 import org.una.programmingIII.utemp_app.dtos.FacultyDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.dtos.UniversityDTO;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
-import org.una.programmingIII.utemp_app.services.models.DepartmentAPIService;
 import org.una.programmingIII.utemp_app.services.models.FacultyAPIService;
 import org.una.programmingIII.utemp_app.services.models.UniversityAPIService;
 import org.una.programmingIII.utemp_app.utils.Views;
@@ -134,8 +132,7 @@ public class FacultyManagementViewController extends Controller {
 
     @FXML
     public void onActionDeleteFacultyBtn(ActionEvent event) {
-        if(facultyIdTbc.getText().isEmpty() || facultyIdTbc.getText() == null)
-        {
+        if (facultyIdTbc.getText().isEmpty() || facultyIdTbc.getText() == null) {
             showNotificationToast("Error", "Please select some faculty.");
             return;
         }

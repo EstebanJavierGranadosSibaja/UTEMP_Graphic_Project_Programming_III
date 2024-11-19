@@ -37,7 +37,6 @@ public class LoginController extends Controller {
         numberIdentificationTxf.setOnKeyPressed(this::handleEnterKey);
         passwordPwf.setOnKeyPressed(this::handleEnterKey);
 
-        numberIdentificationTxf.setText("123456789");
     }
 
     private void handleEnterKey(KeyEvent event) {
@@ -59,9 +58,9 @@ public class LoginController extends Controller {
 
         if (response.isSuccess()) {
             AppContext.getInstance().setUserDTO(response.getData().getUser());
-            showNotificationToast("Sesión iniciada","Bienvenido " + response.getData().getUser().getName());
+            showNotificationToast("Sesión iniciada", "Bienvenido " + response.getData().getUser().getName());
             ViewManager.getInstance().showMainView(Views.MAIN_BACKGROUND, Views.MENU);
-        }else {
+        } else {
             showReadResponse(response);
         }
     }

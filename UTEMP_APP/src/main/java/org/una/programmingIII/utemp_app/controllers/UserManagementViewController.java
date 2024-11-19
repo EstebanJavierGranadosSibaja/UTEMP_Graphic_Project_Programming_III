@@ -12,11 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.una.programmingIII.utemp_app.dtos.CourseDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.dtos.UserDTO;
 import org.una.programmingIII.utemp_app.dtos.enums.UserRole;
@@ -63,6 +60,8 @@ public class UserManagementViewController extends Controller {
 
         ObservableList<UserState> states = FXCollections.observableArrayList(UserState.ACTIVE, UserState.INACTIVE, UserState.SUSPENDED, UserState.DEPRECATED);
         userStateCbx.setItems(states);
+
+        userIdNumberTxf.delegateSetTextFormatter(super.textFormatterOnlyNumbers());
 
         if (!initFlag) {
             userAPIService = new UserAPIService();
@@ -154,14 +153,17 @@ public class UserManagementViewController extends Controller {
 
     @FXML
     public void onActionPermissionsBtn(ActionEvent event) {
-        UserDTO userToShow = usersTbv.getSelectionModel().getSelectedItem();
+        if (usersTbv.getSelectionModel().getSelectedItem() != null || validateFields()) {
+            UserDTO userToShow = usersTbv.getSelectionModel().getSelectedItem();
 
-        if (userIdTxf.getText() == null || userIdTxf.getText().isEmpty()) {
-            userToShow = getCurrentUser();
+            if (userIdTxf.getText() == null || userIdTxf.getText().isEmpty()) {
+                userToShow = getCurrentUser();
+            }
+
+            AppContext.getInstance().setUserDTO(userToShow);
+            ViewManager.getInstance().showModalView(Views.PERMISSIONS);
         }
-
-        AppContext.getInstance().setUserDTO(userToShow);
-        ViewManager.getInstance().showModalView(Views.PERMISSIONS);
+        showNotificationToast("Warning", "Need select some user or fill all necessary fields.");
     }
 
     @FXML
@@ -173,8 +175,8 @@ public class UserManagementViewController extends Controller {
         userStateCbx.getSelectionModel().clearSelection();
         userStateCbx.setValue(null);
         usersTbv.getSelectionModel().clearSelection();
+        AppContext.getInstance().getUserDTO().getPermissions().clear();
     }
-
 
     @FXML
     public void onActionPrevPageBtn(ActionEvent event) {
@@ -230,8 +232,12 @@ public class UserManagementViewController extends Controller {
     }
 
     private boolean validateFields() {
-        return !userNameTxf.getText().isEmpty() && !userEmailTxf.getText().isEmpty()
-                && !userIdNumberTxf.getText().isEmpty() && !userStateCbx.getText().isEmpty();
+        if (!userNameTxf.getText().isEmpty() && !userEmailTxf.getText().isEmpty() && !userIdNumberTxf.getText().isEmpty() &&
+                !userStateCbx.getText().isEmpty() && userIdNumberTxf.getText().length() == 9) {
+            return true;
+        }
+        showNotificationToast("Warning", "Need fill all necessary fields.");
+        return false;
     }
 
     private Long parseLong(String text) {
@@ -260,7 +266,8 @@ public class UserManagementViewController extends Controller {
     private void loadPage(int page) {
         try {
             MessageResponse<PageDTO<UserDTO>> response = userAPIService.getAllEntities(
-                    PageRequest.of(page, 10, Sort.by("id").ascending()), new TypeReference<>() {});
+                    PageRequest.of(page, 10, Sort.by("id").ascending()), new TypeReference<>() {
+                    });
             super.showReadResponse(response);
             if (response.isSuccess()) {
                 loadTable(response.getData());

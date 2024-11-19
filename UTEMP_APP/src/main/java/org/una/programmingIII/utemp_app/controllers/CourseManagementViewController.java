@@ -16,6 +16,7 @@ import org.una.programmingIII.utemp_app.dtos.DepartmentDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.dtos.UserDTO;
 import org.una.programmingIII.utemp_app.dtos.enums.CourseState;
+import org.una.programmingIII.utemp_app.dtos.enums.UserRole;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.CourseAPIService;
 import org.una.programmingIII.utemp_app.utils.Views;
@@ -26,7 +27,7 @@ import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class CourseManagementViewController extends Controller{
+public class CourseManagementViewController extends Controller {
     @FXML
     private MFXTextField courseIdTxf, departmentCourseTxf, courseNameTxf, courseDescriptionTxf, teacherIdTxf, findByNameTxf;
     @FXML
@@ -36,13 +37,13 @@ public class CourseManagementViewController extends Controller{
     @FXML
     private TableView<CourseDTO> coursesTbv;
     @FXML
-    private TableColumn<UserDTO, Long> courseIdTbc;
+    private TableColumn<CourseDTO, Long> courseIdTbc;
     @FXML
-    private TableColumn<UserDTO, String> courseNameTbc;
+    private TableColumn<CourseDTO, String> courseNameTbc;
     @FXML
-    private TableColumn<UserDTO, DepartmentDTO> departmentNameTbc;
+    private TableColumn<CourseDTO, DepartmentDTO> departmentNameTbc;
     @FXML
-    private TableColumn<UserDTO, CourseState> courseStateTbc;
+    private TableColumn<CourseDTO, CourseState> courseStateTbc;
     @FXML
     private Label pageNumberLbl;
 
@@ -78,7 +79,7 @@ public class CourseManagementViewController extends Controller{
         courseIdTbc.setCellValueFactory(new PropertyValueFactory<>("id"));
         courseNameTbc.setCellValueFactory(new PropertyValueFactory<>("name"));
         courseStateTbc.setCellValueFactory(new PropertyValueFactory<>("state"));
-        departmentNameTbc.setCellValueFactory(new PropertyValueFactory<>("department"));
+        departmentNameTbc.setCellValueFactory(new PropertyValueFactory<>("departmentUniqueName"));
         departmentCourseTxf.setText(AppContext.getInstance().getDepartmentDTO().getName());
 
 
@@ -93,7 +94,7 @@ public class CourseManagementViewController extends Controller{
         courseIdTxf.setText(String.valueOf(course.getId()));
         courseNameTxf.setText(course.getName());
         courseDescriptionTxf.setText(course.getDescription());
-        teacherIdTxf.setText(course.getTeacherID().toString());
+        teacherIdTxf.setText(course.getUserTeacherUniqueID().toString());
         courseStateCbx.setValue(course.getState());
     }
 
@@ -108,8 +109,8 @@ public class CourseManagementViewController extends Controller{
                 .name(courseNameTxf.getText())
                 .description(courseDescriptionTxf.getText())
                 .state(courseStateCbx.getValue())
-                .teacher(AppContext.getInstance().getTeacherDTO())
-                .teacherID(parseLong(teacherIdTxf.getText()))
+                .teacher(AppContext.getInstance().getTeacherOrStudentDTO())
+                .userTeacherUniqueID(parseLong(teacherIdTxf.getText()))
                 .department(AppContext.getInstance().getDepartmentDTO())
                 .build();
     }
@@ -141,17 +142,19 @@ public class CourseManagementViewController extends Controller{
 
     @FXML
     public void onActionShowTeachersBtn(ActionEvent event) {
-        ViewManager.getInstance().showModalView(Views.TEACHERS);
-        if(AppContext.getInstance().getTeacherDTO() != null) {
-            teacherIdTxf.setText(String.valueOf(AppContext.getInstance().getTeacherDTO().getId()));
-            teacher = AppContext.getInstance().getTeacherDTO();
+        AppContext.getInstance().setLabelTextTitle("TEACHERS VIEW");
+        AppContext.getInstance().setUserRole(UserRole.TEACHER);
+        ViewManager.getInstance().showModalView(Views.TEACHERS_AND_STUDENTS);
+        if (AppContext.getInstance().getTeacherOrStudentDTO() != null) {
+            teacherIdTxf.setText(String.valueOf(AppContext.getInstance().getTeacherOrStudentDTO().getId()));
+            teacher = AppContext.getInstance().getTeacherOrStudentDTO();
         }
     }
 
     @FXML
     public void onActionAssigmentsBtn(ActionEvent event) {
         AppContext.getInstance().setCourseDTO(getCurrentCourse());
-        ViewManager.getInstance().showModalView(Views.ASSIGNMENT);
+        ViewManager.getInstance().loadInternalView(Views.ASSIGNMENT);
     }
 
     @FXML

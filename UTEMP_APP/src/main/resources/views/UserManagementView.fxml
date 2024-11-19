@@ -9,9 +9,10 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0" stylesheets="@../styles/GeneralCss.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.UserManagementViewController">
+<VBox id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0" stylesheets="@../styles/GeneralCss.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.UserManagementViewController">
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
             <padding>
@@ -23,7 +24,7 @@
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
                             <children>
                                 <MFXTextField id="mfx-text-filed" fx:id="findByIdNumberTxf" floatMode="ABOVE" graphicTextGap="0.0" maxHeight="40.0" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="250.0" promptText="ID NUMBER HERE: " HBox.hgrow="ALWAYS" />
-                                <MFXButton id="mfx-small-button" fx:id="findByIdNumberBtn" maxHeight="40.0" maxWidth="150.0" onAction="#onActionFindByIdNumberBtn" prefHeight="40.0" prefWidth="100.0" text="FIND BY ID NUMBER" HBox.hgrow="ALWAYS" />
+                                <MFXButton id="mfx-small-button" fx:id="findByIdNumberBtn" maxHeight="40.0" maxWidth="150.0" onAction="#onActionFindByIdNumberBtn" prefHeight="40.0" prefWidth="100.0" text="SEARCH" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <TableView fx:id="usersTbv" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="410.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
@@ -40,14 +41,24 @@
                             <children>
                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                                          <children>
-                                              <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="35.0" onAction="#onActionReloadPageBtn" prefHeight="35.0" prefWidth="130.0" text="RELOAD PAGE" />
-                                          </children>
-                                      </HBox>
-                                        <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="90.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS" />
-                                        <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS" />
-                                        <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0" maxWidth="90.0" onAction="#onActionNextPageBtn" prefWidth="90.0" text="NEXT" HBox.hgrow="ALWAYS" />
+                                        <MFXButton id="mfx-small-button" fx:id="reloadPageBtn" maxHeight="37.0" onAction="#onActionReloadPageBtn" prefHeight="37.0" prefWidth="106.0" text="RELOAD">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </MFXButton>
+                              <Pane prefHeight="37.0" prefWidth="81.0" />
+                                        <MFXButton id="mfx-small-button" fx:id="prevPageBtn" maxHeight="35.0" maxWidth="100.0" onAction="#onActionPrevPageBtn" prefWidth="90.0" text="PREVIOUS" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></MFXButton>
+                                        <Label id="label-number" fx:id="pageNumberLbl" text="1" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></Label>
+                                        <MFXButton id="mfx-small-button" fx:id="nextPageBtn" maxHeight="35.0" maxWidth="100.0" onAction="#onActionNextPageBtn" prefWidth="90.0" text="NEXT" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></MFXButton>
                                     </children>
                                 </HBox>
                             </children>

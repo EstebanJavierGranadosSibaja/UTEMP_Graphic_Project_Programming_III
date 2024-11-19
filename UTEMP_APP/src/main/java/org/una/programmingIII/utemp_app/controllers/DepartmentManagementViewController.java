@@ -1,19 +1,15 @@
 package org.una.programmingIII.utemp_app.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.data.domain.PageRequest;
 import org.una.programmingIII.utemp_app.dtos.DepartmentDTO;
-import org.una.programmingIII.utemp_app.dtos.FacultyDTO;
 import org.una.programmingIII.utemp_app.dtos.PageDTO;
 import org.una.programmingIII.utemp_app.responses.MessageResponse;
 import org.una.programmingIII.utemp_app.services.models.DepartmentAPIService;
@@ -90,6 +86,7 @@ public class DepartmentManagementViewController extends Controller {
     @FXML
     public void onActionCreateDepartmentBtn() {
         DepartmentDTO newDepartment = getCurrentDepartment();
+        newDepartment.setId(0L);
         if (newDepartment != null) {
             handleDepartmentAction(() -> baseApiServiceManager.createEntity(newDepartment));
         } else {
@@ -111,8 +108,7 @@ public class DepartmentManagementViewController extends Controller {
 
     @FXML
     public void onActionDeleteDepartmentBtn() {
-        if(departmentIdTxf.getText().isEmpty() || departmentIdTxf.getText() == null)
-        {
+        if (departmentIdTxf.getText().isEmpty() || departmentIdTxf.getText() == null) {
             System.out.println(departmentIdTxf.getText());
             showNotificationToast("Error", "Please select some department.");
             return;

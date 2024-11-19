@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.MainBackgroundViewController">
+<BorderPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.programmingIII.utemp_app.controllers.MainBackgroundViewController">
    <top>
       <HBox id="hbox" alignment="CENTER" prefHeight="134.0" prefWidth="1000.0" spacing="75.0" styleClass="hbox" BorderPane.alignment="CENTER">
          <children>
@@ -22,9 +22,7 @@
                      <Image url="@../images/University.png" />
                   </ImageView>
                   <MFXButton id="mfx-small-button-important" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" onAction="#onActionMyCoursesBtn" prefHeight="50.0" prefWidth="120.0" text="MY COURSES" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="mfx-small-button-important" fx:id="goMenu" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="120.0" text="Go To Menu" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="mfx-small-button-important" fx:id="assignations" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="120.0" text="assignations" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="mfx-small-button-important" fx:id="submissionB" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="120.0" text="submission" HBox.hgrow="ALWAYS" />
+                  <MFXButton id="mfx-small-button-important" fx:id="goMenu" maxHeight="50.0" maxWidth="120.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="120.0" text="GO TO MENU" HBox.hgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
@@ -32,7 +30,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="125.0" prefWidth="167.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label id="label-username" fx:id="usernameLbl" alignment="CENTER_RIGHT" maxHeight="50.0" maxWidth="200.0" prefHeight="50.0" prefWidth="78.0" text="USERNAME" HBox.hgrow="ALWAYS" />
+                  <Label id="label-username" fx:id="usernameLbl" alignment="CENTER_RIGHT" maxHeight="50.0" maxWidth="200.0" minWidth="-Infinity" prefHeight="50.0" prefWidth="158.0" text="USERNAME" HBox.hgrow="ALWAYS" />
                   <MFXButton id="mfx-small-button-important" contentDisplay="GRAPHIC_ONLY" maxHeight="20.0" maxWidth="20.0" onAction="#onActionUserInformationBtn" prefHeight="20.0" prefWidth="20.0" HBox.hgrow="ALWAYS">
                      <graphic>
                         <ImageView fx:id="imvUser" fitHeight="32.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" styleClass="rounded-image">
