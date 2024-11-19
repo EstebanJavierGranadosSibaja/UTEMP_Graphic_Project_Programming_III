@@ -91,6 +91,15 @@
     -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 0.8, 1, -1, 2.5); /* Sombra sutil */
 }
 
+#label-department{
+    -fx-font-family: "Arial Black"; /* Nueva fuente */
+    -fx-font-size: 24px; /* Tamaño de fuente más grande */
+    -fx-text-fill: #ffffff; /* Color lila claro para contraste en texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-padding: 10px; /* Espaciado alrededor del texto */
+    -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 0.8, 1, -1, 2.5); /* Sombra sutil */
+}
+
 /* Estilo para las etiquetas */
 #label-username {
     -fx-font-family: "Arial Black"; /* Nueva fuente */
@@ -124,7 +133,7 @@
 
 /* Estilo para los botones al pasar el ratón */
 #mfx-button:hover {
-    -fx-background-color: #8a4b9c; /* Lila más oscuro */
+    -fx-background-color: #602571; /* Lila más oscuro */
     -fx-text-fill: #ffffff; /* Color de texto lila claro */
 }
 
@@ -141,7 +150,7 @@
 
 /* Estilo para los botones al pasar el ratón */
 #mfx-button-important:hover {
-    -fx-background-color: #8c62c8; /* Lila más oscuro */
+    -fx-background-color: #6b2fbd; /* Lila más oscuro */
     -fx-text-fill: #ffffff; /* Color de texto lila claro */
 }
 
@@ -158,7 +167,7 @@
 
 /* Estilo para los botones al pasar el ratón */
 #mfx-small-button-important:hover {
-    -fx-background-color: #8a4b9c; /* Lila más oscuro */
+    -fx-background-color: #602571; /* Lila más oscuro */
     -fx-text-fill: #ffffff; /* Lila claro más brillante */
 }
 
@@ -175,7 +184,7 @@
 
 /* Estilo para los botones al pasar el ratón */
 #mfx-small-button:hover {
-    -fx-background-color: #8c62c8; /* Lila más oscuro */
+    -fx-background-color: #6b2fbd; /* Lila más oscuro */
     -fx-text-fill: #ffffff; /* Lila claro más brillante */
 }
 
@@ -192,7 +201,7 @@
 
 /* Estilo para los botones al pasar el ratón */
 #mfx-small-menu-button-important:hover {
-    -fx-background-color: #8a4b9c; /* Lila más oscuro */
+    -fx-background-color: #8258d4; /* Lila más oscuro */
     -fx-text-fill: #ffffff; /* Lila claro más brillante */
 }
 
@@ -222,6 +231,7 @@
     -fx-text-fill: #ffffff; /* Lila claro más brillante */
     -fx-effect: dropshadow(gaussian, rgba(1, 1, 1, 0.3), 1, 1, -1, 2.5); /* Sombra sutil */
     -fx-font-weight: bold;
+    -fx-font-size: 12px;
 }
 
 /* CheckBoxes seleccionados */
