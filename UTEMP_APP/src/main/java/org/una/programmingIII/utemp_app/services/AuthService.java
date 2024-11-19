@@ -42,7 +42,8 @@ public class AuthService extends HttpClientConnectionManager {
             sendAuthRequest(connection, authRequest);
 
             Optional<ApiResponse<TokenResponse>> apiResponseOptional = handleResponseWithType(
-                    connection, new TypeReference<ApiResponse<TokenResponse>>() {}
+                    connection, new TypeReference<ApiResponse<TokenResponse>>() {
+                    }
             );
 
             if (apiResponseOptional.isPresent()) {
