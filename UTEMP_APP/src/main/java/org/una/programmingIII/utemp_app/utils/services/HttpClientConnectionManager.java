@@ -44,15 +44,14 @@ public class HttpClientConnectionManager {
         this.readTimeout = readTimeout;
 
         objectMapper.registerModule(new JavaTimeModule());
-        // Si deseas permitir la serialización de fechas en formato ISO
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     protected static void setToken(String token) {
         HttpClientConnectionManager.token = token;
     }
+
     protected void setupConnectionProperties(HttpURLConnection connection, HttpMethod method) throws IOException {
         connection.setRequestProperty(ACCEPT_HEADER, TYPE_JSON);
         connection.setRequestMethod(method.name());
@@ -85,6 +84,7 @@ public class HttpClientConnectionManager {
         }
         return connection;
     }
+
     protected <R> void writeDataToConnection(HttpURLConnection connection, R dato) throws IOException {
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = objectMapper.writeValueAsBytes(dato);
@@ -109,13 +109,16 @@ public class HttpClientConnectionManager {
         }
         return connection;
     }
+
     protected void setupConnectionForOutput(HttpURLConnection connection) {
         connection.setRequestProperty(CONTENT_TYPE_HEADER, TYPE_JSON);
         connection.setDoOutput(true);
     }
+
     protected HttpURLConnection createConnectionWithoutBody(String endpoint, HttpMethod method, Map<String, String> customHeaders) throws CustomException, IOException {
         return createConnection(endpoint, method, customHeaders);
     }
+
     protected HttpURLConnection createConnectionWithBody(String endpoint, HttpMethod method, Object body, Map<String, String> customHeaders) throws CustomException, IOException {
         HttpURLConnection connection = createConnection(endpoint, method, customHeaders);
         if (body != null) {
@@ -216,6 +219,8 @@ public class HttpClientConnectionManager {
         switch (responseCode) {
             case HttpURLConnection.HTTP_OK:
             case HttpURLConnection.HTTP_CREATED:
+            case HttpURLConnection.HTTP_PARTIAL:
+            case HttpURLConnection.HTTP_ACCEPTED:
                 break;
             case HttpURLConnection.HTTP_UNAUTHORIZED:
                 throw new UnauthorizedException("Acceso no autorizado. Código de respuesta: " + responseCode);
