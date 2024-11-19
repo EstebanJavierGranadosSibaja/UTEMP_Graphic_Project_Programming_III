@@ -10,7 +10,6 @@ import org.una.programmingIII.utemp_app.services.HttpMethod;
 import org.una.programmingIII.utemp_app.utils.services.HttpClientConnectionManager;
 import org.una.programmingIII.utemp_app.utils.view.ViewManager;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.Arrays;
@@ -163,7 +162,7 @@ public class FileAPIService extends HttpClientConnectionManager {// no borrar es
                         // Generar un nuevo nombre con sufijo si el archivo ya existe
                         while (downloadFile.exists()) {
                             String newFileName = baseName + "_" + counter + extension;
-                            fileName= newFileName;
+                            fileName = newFileName;
                             downloadPath = downloadDirPath + File.separator + newFileName;
                             downloadFile = new File(downloadPath);
 
@@ -187,7 +186,7 @@ public class FileAPIService extends HttpClientConnectionManager {// no borrar es
                         }
 
                         Platform.runLater(() -> {
-                            ViewManager.getInstance().createNotification("Descargado", "Archivo descargado con éxito: " );
+                            ViewManager.getInstance().createNotification("Descargado", "Archivo descargado con éxito: ");
                         });
                     }
                 } else {
