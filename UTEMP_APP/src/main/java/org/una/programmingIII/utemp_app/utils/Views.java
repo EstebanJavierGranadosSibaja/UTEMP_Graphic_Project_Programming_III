@@ -22,7 +22,8 @@ public class Views {
     public static final String ASSIGNMENT = "AssignmentManagement";
 
     public static final String SUBMISSIONS = "SubmissionsView";
-    public static final String TEACHERS = "TeachersView";
+    public static final String TEACHERS_AND_STUDENTS = "TeachersAndStudentsView";
+    public static final String COURSES_VIEW = "CoursesView";
 
     private Views() {
         throw new UnsupportedOperationException("No se puede instanciar esta clase.");
