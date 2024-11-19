@@ -3,7 +3,7 @@ REM Mostrar el estado actual
 git status
 
 REM Hacer un hard reset al commit especificado
-git reset --soft 9b1267f76dee97f43c801483491ca4fcd6b3b16a
+git reset --soft ae598be4125832bd854cf221fea464b3d279f73a
 
 echo Los registros despues del commit han sido borrados, pero los cambios estan en tu directorio de trabajo.
 pause
